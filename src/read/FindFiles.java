@@ -1,9 +1,6 @@
 package read;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +8,9 @@ public class FindFiles {
 
 	private List<String> pathFiles;
 
-	public FindFiles(String directory) {
+	public FindFiles(String projectDirectory) {
 		this.pathFiles = new ArrayList<>();
-		File mainDir = new File(directory);
+		File mainDir = new File(projectDirectory);
 		File[] files = mainDir.listFiles();
 		findFiles(files, 0);
 	}
@@ -29,8 +26,6 @@ public class FindFiles {
 			}
 		}
 	}
-
-	
 
 	public List<String> getPathFiles() {
 		return pathFiles;

@@ -12,15 +12,16 @@ import grammar.Word;
 public class French {
 	
 	private final char AAccentGrave = 'à';
-	private final char AAcentCirconflex = 'â';
+	private final char AAcentCirconflexe = 'â';
 	private final char EAccentAigu = 'é';
 	private final char EAccentGrave = 'è';
-	private final char OAccentCirconflex = 'ô';
-	private final char IAccentCirconflex = 'î';
+	private final char OAccentCirconflexe = 'ô';
+	private final char IAccentCirconflexe = 'î';
 	private final char ITrema = 'ï';
-	
+	private FrenchDictionnary fd;
 	
 	public French() {
+		this.fd=new FrenchDictionnary();
 	}
 	
 	public void correctWord(Word w) {
@@ -30,6 +31,9 @@ public class French {
 				
 			}
 		}
-		
+	}
+	
+	public char matchWord(Word w, int indice) {
+		return 'k';
 	}
 }

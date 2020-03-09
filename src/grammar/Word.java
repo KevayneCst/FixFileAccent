@@ -12,6 +12,10 @@ public class Word {
 		this.word=s;
 	}
 	
+	/**
+	 * Trouve les caractères correspondant à un symbole inconnu, et range dans une liste d'indice du caractère inconnu
+	 * @return la liste d'indices de caractères inconnus
+	 */
 	public List<Integer> findUnknowChar() {
 		List<Integer> list = new ArrayList<>();
 		for (int i=0; i<word.length(); i++) {
