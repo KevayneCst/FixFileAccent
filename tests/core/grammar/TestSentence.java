@@ -1,4 +1,4 @@
-package grammar;
+package core.grammar;
 
 import static org.junit.jupiter.api.Assertions.*;
 

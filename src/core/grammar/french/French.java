@@ -1,8 +1,8 @@
-package grammar.french;
+package core.grammar.french;
 
 import java.util.List;
 
-import grammar.Word;
+import core.grammar.Word;
 
 /**
  * Défini les caractères possédant des accents, et déduis les accents manquants
@@ -14,15 +14,14 @@ public class French {
 	private static FrenchDictionnary fd = new FrenchDictionnary();
 	
 	public French() {
+		//Ne fait rien
 	}
 	
-	public Word matchWordWithDictionnary(Word w) throws CloneNotSupportedException {
+	public Word matchWordWithDictionnary(Word w) {
 		List<Word> potentialMatches = fd.getDictionnary().get(w.getWord().length());
-		System.out.println(potentialMatches);
 		for (Word wd : potentialMatches) {
 			StringBuilder tmp = new StringBuilder(w.getWord());
 			for (int i : w.findUnknowChar()) {
-				System.out.println("Remplacement à l'indice "+i+" par le char:"+wd.getWord().charAt(i));
 				tmp.setCharAt(i, wd.getWord().charAt(i));
 			}
 			if (tmp.toString().equals(wd.getWord())) {
@@ -32,7 +31,7 @@ public class French {
 		return null;
 	}
 	
-	public static void main(String[] args) throws CloneNotSupportedException {
+	public static void main(String[] args) {
 		French f = new French();
 		String unknow ="v�tement";
 		System.out.println("Mot trouvé: "+f.matchWordWithDictionnary(new Word(unknow)));

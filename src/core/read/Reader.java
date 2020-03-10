@@ -1,27 +1,34 @@
-package read;
+package core.read;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ReadFile {
+import core.grammar.Sentence;
 
-	public ReadFile() {
+public class Reader {
+
+	public Reader() {
+		//Ne fait rien
 	}
 	
-	public void readFile(String pathFile) throws IOException {
+	public List<Sentence> readFile(String pathFile) {
+		List<Sentence> list = new ArrayList<>();
 		File fichier = new File(pathFile);
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(fichier));
 			String line;
 			while ((line = br.readLine()) != null) {
-				System.out.println(line);
+				list.add(new Sentence(line));
 			}
 			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
+		return list;
 	}
 }

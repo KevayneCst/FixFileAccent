@@ -1,10 +1,10 @@
-package grammar.french;
+package core.grammar.french;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import grammar.Word;
+import core.grammar.Word;
 
 class TestFrench {
 
@@ -15,7 +15,7 @@ class TestFrench {
 	String uk4 = "cr�ation" ;
 	
 	@Test
-	void testWord() throws CloneNotSupportedException {
+	void testWord() {
 		assertEquals("intéressement",f.matchWordWithDictionnary(new Word(uk1)).getWord());
 		assertEquals("caractère",f.matchWordWithDictionnary(new Word(uk2)).getWord());
 		assertEquals("régulièrement",f.matchWordWithDictionnary(new Word(uk3)).getWord());

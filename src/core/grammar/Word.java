@@ -1,4 +1,4 @@
-package grammar;
+package core.grammar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +42,5 @@ public class Word {
 	@Override
 	public String toString() {
 		return "Word [word=" + word + "]";
-	}
-
-	@Override
-	public Word clone() throws CloneNotSupportedException {
-		return new Word(word);
 	}
 }
