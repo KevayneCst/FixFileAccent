@@ -11,29 +11,30 @@ import grammar.Word;
  */
 public class French {
 	
-	private final char AAccentGrave = 'à';
-	private final char AAcentCirconflexe = 'â';
-	private final char EAccentAigu = 'é';
-	private final char EAccentGrave = 'è';
-	private final char OAccentCirconflexe = 'ô';
-	private final char IAccentCirconflexe = 'î';
-	private final char ITrema = 'ï';
-	private FrenchDictionnary fd;
+	private static FrenchDictionnary fd = new FrenchDictionnary();
 	
 	public French() {
-		this.fd=new FrenchDictionnary();
 	}
 	
-	public void correctWord(Word w) {
-		List<Integer> list = w.findUnknowChar();
-		if (!list.isEmpty()) { //S'il y a des caractères mal encodés à corriger
+	public Word matchWordWithDictionnary(Word w) throws CloneNotSupportedException {
+		List<Word> potentialMatches = fd.getDictionnary().get(w.getWord().length());
+		System.out.println(potentialMatches);
+		for (Word wd : potentialMatches) {
+			StringBuilder tmp = new StringBuilder(w.getWord());
 			for (int i : w.findUnknowChar()) {
-				
+				System.out.println("Remplacement à l'indice "+i+" par le char:"+wd.getWord().charAt(i));
+				tmp.setCharAt(i, wd.getWord().charAt(i));
+			}
+			if (tmp.toString().equals(wd.getWord())) {
+				return wd;
 			}
 		}
+		return null;
 	}
 	
-	public char matchWord(Word w, int indice) {
-		return 'k';
+	public static void main(String[] args) throws CloneNotSupportedException {
+		French f = new French();
+		String unknow ="v�tement";
+		System.out.println("Mot trouvé: "+f.matchWordWithDictionnary(new Word(unknow)));
 	}
 }

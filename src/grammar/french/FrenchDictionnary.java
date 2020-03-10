@@ -4,17 +4,19 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import grammar.Word;
 
 public class FrenchDictionnary {
 	
 	private static final String PATHFILEDICTIONNARY = "data/FrenchDico.in";
-	private List<Word> dictionnary;
+	private Map<Integer,List<Word>> dictionnary;
 	
 	public FrenchDictionnary() {
-		dictionnary=new ArrayList<>();
+		dictionnary=new HashMap<>();
 		fillDictionnary();
 	}
 	
@@ -25,7 +27,7 @@ public class FrenchDictionnary {
 			br = new BufferedReader(new FileReader(fichier));
 			String line;
 			while ((line = br.readLine()) != null) {
-				dictionnary.add(new Word(line));
+				dictionnary.computeIfAbsent(line.length(), k -> new ArrayList<>()).add(new Word(line));
 			}
 			br.close();
 		} catch (Exception e) {
@@ -33,7 +35,7 @@ public class FrenchDictionnary {
 		}
 	}
 
-	public List<Word> getDictionnary() {
+	public Map<Integer,List<Word>> getDictionnary() {
 		return dictionnary;
 	}
 }

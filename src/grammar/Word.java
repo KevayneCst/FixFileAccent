@@ -23,6 +23,7 @@ public class Word {
 				list.add(i);
 			}
 		}
+		System.out.println("J'ai trouvé "+list.size()+" unknow char");
 		return list;
 	}
 
@@ -36,5 +37,15 @@ public class Word {
 
 	public static char getUnknowchar() {
 		return UNKNOWCHAR;
+	}
+	
+	@Override
+	public String toString() {
+		return "Word [word=" + word + "]";
+	}
+
+	@Override
+	public Word clone() throws CloneNotSupportedException {
+		return new Word(word);
 	}
 }
