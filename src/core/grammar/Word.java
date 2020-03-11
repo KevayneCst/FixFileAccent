@@ -23,7 +23,6 @@ public class Word {
 				list.add(i);
 			}
 		}
-		System.out.println("J'ai trouvé "+list.size()+" unknow char");
 		return list;
 	}
 
