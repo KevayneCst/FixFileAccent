@@ -13,7 +13,7 @@ public class Sentence {
 		this.words=sentenceIntoWords();
 	}
 	
-	public List<Word> sentenceIntoWords() {
+	private List<Word> sentenceIntoWords() {
 		List<Word> list = new ArrayList<>();
 		String[] wordsSplit = theLine.split("[[ ]*|[,]*|[;]*|[:]*|[']*|[’]*|[\\.]*|[:]*|[#]*|[$]*|[/]*|[!]*|[?]*|[+]*]+");
 		for (int i = 0; i < wordsSplit.length; i++) {
@@ -36,5 +36,10 @@ public class Sentence {
 
 	public void setWords(List<Word> words) {
 		this.words = words;
+	}
+
+	@Override
+	public String toString() {
+		return "Sentence [theLine=" + theLine + ", words=" + words + "]";
 	}
 }

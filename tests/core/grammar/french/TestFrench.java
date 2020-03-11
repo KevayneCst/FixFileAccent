@@ -13,6 +13,7 @@ class TestFrench {
 	String uk2 = "caract�re" ;
 	String uk3 = "r�guli�rement" ;
 	String uk4 = "cr�ation" ;
+	String falseUnknow = "bonjour";
 	
 	@Test
 	void testWord() {
@@ -20,6 +21,7 @@ class TestFrench {
 		assertEquals("caractère",f.matchWordWithDictionnary(new Word(uk2)).getWord());
 		assertEquals("régulièrement",f.matchWordWithDictionnary(new Word(uk3)).getWord());
 		assertEquals("création",f.matchWordWithDictionnary(new Word(uk4)).getWord());
+		assertEquals("bonjour",f.matchWordWithDictionnary(new Word(falseUnknow)).getWord());
 	}
 
 }
