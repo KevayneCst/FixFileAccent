@@ -5,54 +5,49 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import core.grammar.Sentence;
 
 public class Creater {
 
-	private static final String PATH_RESULT = "./result/";
+	private static final String PATH_SAVE = "./save/";
 
 	public Creater() {
-
+		File tmp = new File(PATH_SAVE);
+		if (!tmp.exists()) {
+			tmp.mkdir();
+		}
 	}
 
-	public boolean createNewFile(String nameFile) {
+	public void writeFile(String pathFile, List<Sentence> list) {
 		try {
-			File f = new File(PATH_RESULT + nameFile);
-			if (f.createNewFile()) {
-				return true;
+			FileWriter myWriter = new FileWriter(pathFile);
+			for (Sentence line : list) {
+				myWriter.write(line.getTheLine());
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	public void writeFile() {
-		try {
-			FileWriter myWriter = new FileWriter("filename.txt");
-			myWriter.write("Files in Java might be tricky, but it is fun enough!");
 			myWriter.close();
-			System.out.println("Successfully wrote to the file.");
+			//System.out.println("Successfully wrote to the file.");
 		} catch (IOException e) {
-			System.out.println("An error occurred.");
+			//System.out.println("An error occurred.");
 			e.printStackTrace();
 		}
 	}
-
-	public static void main(String[] args) {
-		for (int i=0; i<args.length; i++) {
-			System.out.print("["+i+"]: "+args[i]+"\t");
-		}/*
-		String source = "C:\\Users\\Kévin\\Desktop\\oui\\source";
-		File srcDir = new File(source);
-
-		String destination = "./save";
-		File destDir = new File(destination);
-
-		copyFolder(srcDir.toPath(), destDir.toPath());*/
-
+	
+	public void makeSave(String pathSrcDirectory) {
+		SimpleDateFormat customDate = new SimpleDateFormat("'Save' yyyy_MM_dd '-' HH_mm_ss_SSSS");
+		File newDir = new File(PATH_SAVE+customDate.format(new Date()));
+		if (newDir.mkdir()) {
+			copyFolder(new File(pathSrcDirectory).toPath(), newDir.toPath());
+		} else {
+			System.out.println("ERREUR CREATION SAUVEGARDE");
+		}
+		
 	}
 
-	public static void copyFolder(Path src, Path dest) {
+	private void copyFolder(Path src, Path dest) {
 		try {
 			Files.walk(src).forEach(s -> {
 				try {

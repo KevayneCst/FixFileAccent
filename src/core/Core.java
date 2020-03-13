@@ -9,15 +9,18 @@ import core.grammar.Sentence;
 import core.grammar.french.French;
 import core.read.Finder;
 import core.read.Reader;
+import core.write.Creater;
 
 public class Core {
 
 	private Finder f;
 	private static French fr = new French();
 	private static Reader r = new Reader();
+	private static Creater c = new Creater();
 
 	public Core(String pathDirectory) {
 		this.f = new Finder(pathDirectory);
+		c.makeSave(pathDirectory);
 	}
 	
 	public void start() {

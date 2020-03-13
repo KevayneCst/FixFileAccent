@@ -38,4 +38,9 @@ public class FrenchDictionnary {
 	public Map<Integer,List<Word>> getDictionnary() {
 		return dictionnary;
 	}
+	
+	public static void main(String[] args) {
+		FrenchDictionnary fd = new FrenchDictionnary();
+		System.out.println(fd.getDictionnary().get(5));
+	}
 }
