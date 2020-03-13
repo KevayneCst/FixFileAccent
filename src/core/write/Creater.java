@@ -39,13 +39,16 @@ public class Creater {
 	}
 
 	public static void main(String[] args) {
+		for (int i=0; i<args.length; i++) {
+			System.out.print("["+i+"]: "+args[i]+"\t");
+		}/*
 		String source = "C:\\Users\\Kévin\\Desktop\\oui\\source";
 		File srcDir = new File(source);
 
-		String destination = "C:\\Users\\Kévin\\Desktop\\oui\\dest";
+		String destination = "./save";
 		File destDir = new File(destination);
 
-		copyFolder(srcDir.toPath(), destDir.toPath());
+		copyFolder(srcDir.toPath(), destDir.toPath());*/
 
 	}
 
