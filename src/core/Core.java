@@ -36,6 +36,12 @@ public class Core {
 				putIntoMap(afterCorrection, hm.getKey(),fr.correctSentence(st.getWords()));
 			}
 		}
+		
+		for (Map.Entry<String,List<Sentence>> hm : afterCorrection.entrySet()) {
+			for (Sentence s : hm.getValue()) {
+				System.out.println(s.toString());
+			}
+		}
 	}
 	
 	private void putIntoMap(Map<String,List<Sentence>> map, String key, Sentence toAdd) {

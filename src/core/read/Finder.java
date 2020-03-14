@@ -30,9 +30,4 @@ public class Finder {
 	public List<String> getPathFiles() {
 		return pathFiles;
 	}
-	
-	public static void main(String[] args) {
-		Finder f = new Finder("C:\\Users\\Kévin\\Desktop\\Classeur\\IUT\\S3T\\M315 - CPOO\\Choisir ce dossier en tant que workspace");
-		System.out.println(f.getPathFiles());
-	}
 }

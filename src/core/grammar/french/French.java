@@ -69,7 +69,7 @@ public class French {
 				for (int i : unknowsChar) {
 					tmp.setCharAt(i, wd.getWord().charAt(i));
 				}
-				if (tmp.toString().equals(wd.getWord())) {
+				if (tmp.toString().equalsIgnoreCase(wd.getWord())) {
 					return wd;
 				}
 			}

@@ -15,7 +15,7 @@ public class Sentence {
 	
 	private List<Word> sentenceIntoWords() {
 		List<Word> list = new ArrayList<>();
-		String[] wordsSplit = theLine.split("[[ ]*|[,]*|[;]*|[:]*|[']*|[’]*|[\\.]*|[:]*|[#]*|[$]*|[/]*|[!]*|[?]*|[+]*]+");
+		String[] wordsSplit = theLine.split("[[ ]*|[,]*|[;]*|[:]*|[']*|[’]*|[\\.]*|[:]*|[#]*|[$]*|[-]*|[\"]*|[/]*|[!]*|[?]*|[+]*]+");
 		for (int i = 0; i < wordsSplit.length; i++) {
 		    list.add(new Word(wordsSplit[i]));
 		}
