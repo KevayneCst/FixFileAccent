@@ -2,6 +2,7 @@ package core.grammar.french;
 
 import java.util.List;
 
+import core.grammar.Language;
 import core.grammar.Sentence;
 import core.grammar.Word;
 
@@ -11,18 +12,21 @@ import core.grammar.Word;
  * @author ck802131
  *
  */
-public class French {
-
-	private static FrenchDictionnary fd = new FrenchDictionnary();
+public class French extends Language {
 
 	public French() {
-		// Ne fait rien
+		super(new FrenchDictionnary());
 	}
 
+	@Override
 	public Sentence correctSentence(List<Word> listWord) {
 		StringBuilder sb = new StringBuilder();
-		for (Word w : listWord) {
-			sb.append(matchWordWithDictionnary(w).getWord());
+		for (int i = 0; i < listWord.size(); i++) {
+			if (i == listWord.size() - 1) {
+				sb.append(matchWordWithDictionnary(listWord.get(i)).getWord());
+			} else {
+				sb.append(matchWordWithDictionnary(listWord.get(i)).getWord() + " ");
+			}
 		}
 		return new Sentence(sb.toString());
 	}
@@ -47,23 +51,26 @@ public class French {
 	 * par "pièce":<br>
 	 * 
 	 * "cr�er" n'a pas d'accent à l'indice 2. Je prends donc un mot de A, "pièce",
-	 * dont je vais prendre le deuxième indice (ici le caractère 'è' et le partager
-	 * avec mon X, maintenant X = "crèer".<br>
+	 * dont je vais prendre le deuxième indice (ici le caractère 'è', et je le
+	 * partage avec mon X, maintenant X = "crèer".<br>
 	 * Dans ce cas-ci, X != "pièce", on essaye donc avec un autre mot de A, jusqu'à
 	 * tomber sur le bon. donc pour le suivant mot de A, X serait égal à "créer" !=
 	 * "créée", mais pour le mot suivant de A, ici "créer", X serait égal à "créer"
-	 * donc X = mot de A<br><br> DONC le mot qu'on cherchait était "créer".
+	 * donc X = mot de A<br>
+	 * <br>
+	 * DONC le mot qu'on cherchait était "créer".
 	 * 
 	 * 
 	 * @param w Le mot inconnu
 	 * @return
 	 */
+	@Override
 	public Word matchWordWithDictionnary(Word w) {
 		List<Integer> unknowsChar = w.findUnknowChar();
 		if (unknowsChar.isEmpty()) {
 			return w;
 		} else {
-			List<Word> potentialMatches = fd.getDictionnary().get(w.getWord().length());
+			List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getWord().length());
 			for (Word wd : potentialMatches) {
 				StringBuilder tmp = new StringBuilder(w.getWord());
 				for (int i : unknowsChar) {

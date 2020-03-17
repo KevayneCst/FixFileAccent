@@ -22,29 +22,6 @@ public class Creater {
 		}
 	}
 
-	public void writeFile(String pathFile, List<Sentence> list) {
-		try {
-			FileWriter myWriter = new FileWriter(pathFile);
-			for (Sentence line : list) {
-				myWriter.write(line.getTheLine());
-			}
-			myWriter.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void makeSave(String pathSrcDirectory) {
-		SimpleDateFormat customDate = new SimpleDateFormat("'Save' yyyy_MM_dd '-' HH_mm_ss_SSSS");
-		File newDir = new File(PATH_SAVE+customDate.format(new Date()));
-		if (newDir.mkdir()) {
-			copyFolder(new File(pathSrcDirectory).toPath(), newDir.toPath());
-		} else {
-			System.out.println("ERREUR CREATION SAUVEGARDE");
-		}
-		
-	}
-
 	private void copyFolder(Path src, Path dest) {
 		try {
 			Files.walk(src).forEach(s -> {
@@ -62,6 +39,29 @@ public class Creater {
 			});
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}
+	}
+
+	public void makeSave(String pathSrcDirectory) {
+		SimpleDateFormat customDate = new SimpleDateFormat("'Save' yyyy_MM_dd '-' HH_mm_ss_SSSS");
+		File newDir = new File(PATH_SAVE + customDate.format(new Date()));
+		if (newDir.mkdir()) {
+			copyFolder(new File(pathSrcDirectory).toPath(), newDir.toPath());
+		} else {
+			System.out.println("ERREUR CREATION SAUVEGARDE");
+		}
+
+	}
+
+	public void writeFile(String pathFile, List<Sentence> list) {
+		try {
+			FileWriter myWriter = new FileWriter(pathFile);
+			for (Sentence line : list) {
+				myWriter.write(line.getTheLine());
+			}
+			myWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

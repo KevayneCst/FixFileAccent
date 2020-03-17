@@ -12,7 +12,7 @@ class TestSentence {
 	String str4 = "Dans le cas particulier de l'inconstance de la société, on ne peut se passer de réorganiser la plus grande partie des organisations matricielles imaginables, parce qu'il s'agit de notre dernière chance.";
 	String str5 = "Compte tenu de la dégradation des moeurs de ces derniers temps, nous sommes contraints d’uniformiser l'ensemble des problématiques que nous connaissons, à long terme.";
 	String str6 = "Nonobstant l'austérité conjoncturelle, il ne faut pas s'interdire d’expérimenter la totalité des ouvertures s'offrant à nous, pour le futur.";
-	String str7 ="N?Pl;d!oà.Az'#ae&rax$pmd= polçf;kLa:/smp dzs";
+	String str7 = "N?Pl;d!oà.Az'#ae&rax$pmd= polçf;kLa:/smp dzs";
 
 	Sentence s1 = new Sentence(str1);
 	Sentence s2 = new Sentence(str2);
@@ -21,18 +21,18 @@ class TestSentence {
 	Sentence s5 = new Sentence(str5);
 	Sentence s6 = new Sentence(str6);
 	Sentence s7 = new Sentence(str7);
-	
+
 	@Test
 	void testInit() {
-		assertEquals(s1.getTheLine(),str1);
-		assertEquals(s2.getTheLine(),str2);
-		assertEquals(s3.getTheLine(),str3);
-		assertEquals(s4.getTheLine(),str4);
-		assertEquals(s5.getTheLine(),str5);
-		assertEquals(s6.getTheLine(),str6);
-		assertEquals(s7.getTheLine(),str7);
+		assertEquals(s1.getTheLine(), str1);
+		assertEquals(s2.getTheLine(), str2);
+		assertEquals(s3.getTheLine(), str3);
+		assertEquals(s4.getTheLine(), str4);
+		assertEquals(s5.getTheLine(), str5);
+		assertEquals(s6.getTheLine(), str6);
+		assertEquals(s7.getTheLine(), str7);
 	}
-	
+
 	@Test
 	void testSentenceIntoWords() {
 		assertEquals(28, s1.getWords().size());

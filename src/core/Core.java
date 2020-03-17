@@ -5,50 +5,54 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import core.grammar.Language;
+import core.grammar.LanguageFactory;
 import core.grammar.Sentence;
-import core.grammar.french.French;
+import core.grammar.UnknowLanguage;
 import core.read.Finder;
 import core.read.Reader;
 import core.write.Creater;
 
 public class Core {
 
+	private LanguageFactory lf;
+	private Creater c;
+	private Reader r;
 	private Finder f;
-	private static French fr = new French();
-	private static Reader r = new Reader();
-	private static Creater c = new Creater();
+	private Language lang;
 
-	public Core(String pathDirectory) {
-		this.f = new Finder(pathDirectory);
+	public Core(String pathDirectory, String language) throws UnknowLanguage {
+		lf = new LanguageFactory();
+		c = new Creater();
+		r = new Reader();
+		f = new Finder(pathDirectory);
+		lang = lf.createLanguage(language);
 		c.makeSave(pathDirectory);
 	}
-	
+
+	private void putIntoMap(Map<String, List<Sentence>> map, String key, Sentence toAdd) {
+		map.computeIfAbsent(key, k -> new ArrayList<>()).add(toAdd);
+	}
+
 	public void start() {
 		List<String> listPath = f.getPathFiles();
-		Map<String,List<Sentence>> beforeCorrection = new HashMap<>();
-		Map<String,List<Sentence>> afterCorrection = new HashMap<>();
+		Map<String, List<Sentence>> beforeCorrection = new HashMap<>();
+		Map<String, List<Sentence>> afterCorrection = new HashMap<>();
 		for (String s : listPath) {
 			beforeCorrection.put(s, r.readFile(s));
 		}
-		
-		for (Map.Entry<String,List<Sentence>> hm : beforeCorrection.entrySet()) {
+		System.out.println("OULALALALAL");
+		for (Map.Entry<String, List<Sentence>> hm : beforeCorrection.entrySet()) {
 			for (Sentence st : hm.getValue()) {
-				putIntoMap(afterCorrection, hm.getKey(),fr.correctSentence(st.getWords()));
+				System.out.println(st);
+				putIntoMap(afterCorrection, hm.getKey(), lang.correctSentence(st.getWords()));
 			}
 		}
-		
-		for (Map.Entry<String,List<Sentence>> hm : afterCorrection.entrySet()) {
+
+		for (Map.Entry<String, List<Sentence>> hm : afterCorrection.entrySet()) {
 			for (Sentence s : hm.getValue()) {
 				System.out.println(s.toString());
 			}
 		}
-	}
-	
-	private void putIntoMap(Map<String,List<Sentence>> map, String key, Sentence toAdd) {
-		map.computeIfAbsent(key, k -> new ArrayList<>()).add(toAdd);
-	}
-	
-	public static void main(String[] args) {
-		
 	}
 }

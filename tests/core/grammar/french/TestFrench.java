@@ -9,11 +9,11 @@ import core.grammar.Word;
 class TestFrench {
 
 	French f = new French();
+	String falseUnknow = "bonjour";
 	String uk1 = "int�ressement" ;
 	String uk2 = "caract�re" ;
 	String uk3 = "r�guli�rement" ;
 	String uk4 = "cr�ation" ;
-	String falseUnknow = "bonjour";
 	
 	@Test
 	void testWord() {

@@ -4,22 +4,23 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import core.grammar.Dictionnary;
 import core.grammar.Word;
 
-public class FrenchDictionnary {
-	
+public class FrenchDictionnary extends Dictionnary {
+
 	private static final String PATHFILEDICTIONNARY = "data/FrenchDico.in";
-	private Map<Integer,List<Word>> dictionnary;
-	
+
 	public FrenchDictionnary() {
-		dictionnary=new HashMap<>();
-		fillDictionnary();
+		super();
 	}
-	
+
+	@Override
 	public void fillDictionnary() {
 		File fichier = new File(PATHFILEDICTIONNARY);
 		BufferedReader br = null;
@@ -27,20 +28,15 @@ public class FrenchDictionnary {
 			br = new BufferedReader(new FileReader(fichier));
 			String line;
 			while ((line = br.readLine()) != null) {
-				dictionnary.computeIfAbsent(line.length(), k -> new ArrayList<>()).add(new Word(line));
+				String before = line;
+				line = line.trim();
+				if (!line.isEmpty()) {
+					super.getDico().computeIfAbsent(before.length(), k -> new ArrayList<>()).add(new Word(before));
+				}
 			}
 			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public Map<Integer,List<Word>> getDictionnary() {
-		return dictionnary;
-	}
-	
-	public static void main(String[] args) {
-		FrenchDictionnary fd = new FrenchDictionnary();
-		System.out.println(fd.getDictionnary().get(5));
 	}
 }

@@ -12,9 +12,9 @@ import core.grammar.Sentence;
 public class Reader {
 
 	public Reader() {
-		//Ne fait rien
+		// Ne fait rien
 	}
-	
+
 	public List<Sentence> readFile(String pathFile) {
 		List<Sentence> list = new ArrayList<>();
 		File fichier = new File(pathFile);
