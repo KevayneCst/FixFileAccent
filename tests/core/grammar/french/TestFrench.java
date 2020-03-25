@@ -17,11 +17,11 @@ class TestFrench {
 	
 	@Test
 	void testWord() {
-		assertEquals("intéressement",f.matchWordWithDictionnary(new Word(uk1)).getWord());
-		assertEquals("caractère",f.matchWordWithDictionnary(new Word(uk2)).getWord());
-		assertEquals("régulièrement",f.matchWordWithDictionnary(new Word(uk3)).getWord());
-		assertEquals("création",f.matchWordWithDictionnary(new Word(uk4)).getWord());
-		assertEquals("bonjour",f.matchWordWithDictionnary(new Word(falseUnknow)).getWord());
+		assertEquals("intéressement",f.matchWordWithDictionnary(new Word(uk1)).getTheWord());
+		assertEquals("caractère",f.matchWordWithDictionnary(new Word(uk2)).getTheWord());
+		assertEquals("régulièrement",f.matchWordWithDictionnary(new Word(uk3)).getTheWord());
+		assertEquals("création",f.matchWordWithDictionnary(new Word(uk4)).getTheWord());
+		assertEquals("bonjour",f.matchWordWithDictionnary(new Word(falseUnknow)).getTheWord());
 	}
 
 }

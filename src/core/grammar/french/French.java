@@ -7,7 +7,8 @@ import core.grammar.Sentence;
 import core.grammar.Word;
 
 /**
- * Défini les caractères possédant des accents, et déduis les accents manquants
+ * Classe concrète étendant <code>Language</code>, définissant les caractères possédant des accents, et déduis les
+ * accents manquants grâce à son dictionnaire.
  * 
  * @author ck802131
  *
@@ -23,9 +24,9 @@ public class French extends Language {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < listWord.size(); i++) {
 			if (i == listWord.size() - 1) {
-				sb.append(matchWordWithDictionnary(listWord.get(i)).getWord());
+				sb.append(matchWordWithDictionnary(listWord.get(i)).getTheWord());
 			} else {
-				sb.append(matchWordWithDictionnary(listWord.get(i)).getWord() + " ");
+				sb.append(matchWordWithDictionnary(listWord.get(i)).getTheWord() + " ");
 			}
 		}
 		return new Sentence(sb.toString());
@@ -70,13 +71,13 @@ public class French extends Language {
 		if (unknowsChar.isEmpty()) {
 			return w;
 		} else {
-			List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getWord().length());
+			List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
 			for (Word wd : potentialMatches) {
-				StringBuilder tmp = new StringBuilder(w.getWord());
+				StringBuilder tmp = new StringBuilder(w.getTheWord());
 				for (int i : unknowsChar) {
-					tmp.setCharAt(i, wd.getWord().charAt(i));
+					tmp.setCharAt(i, wd.getTheWord().charAt(i));
 				}
-				if (tmp.toString().equalsIgnoreCase(wd.getWord())) {
+				if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
 					return wd;
 				}
 			}

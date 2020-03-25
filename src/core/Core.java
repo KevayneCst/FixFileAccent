@@ -8,11 +8,18 @@ import java.util.Map;
 import core.grammar.Language;
 import core.grammar.LanguageFactory;
 import core.grammar.Sentence;
-import core.grammar.UnknowLanguage;
+import core.grammar.UnknowLanguageException;
 import core.read.Finder;
 import core.read.Reader;
 import core.write.Creater;
 
+/**
+ * Classe contenant l'algorithme et la logique principale nécessaire au bon
+ * fonctionnement de l'application.
+ * 
+ * @author Kévin Constantin
+ *
+ */
 public class Core {
 
 	private LanguageFactory lf;
@@ -21,7 +28,7 @@ public class Core {
 	private Finder f;
 	private Language lang;
 
-	public Core(String pathDirectory, String language) throws UnknowLanguage {
+	public Core(String pathDirectory, String language) throws UnknowLanguageException {
 		lf = new LanguageFactory();
 		c = new Creater();
 		r = new Reader();
@@ -36,23 +43,39 @@ public class Core {
 
 	public void start() {
 		List<String> listPath = f.getPathFiles();
-		Map<String, List<Sentence>> beforeCorrection = new HashMap<>();
+		Map<String, List<Sentence>> firstReading = new HashMap<>();
 		Map<String, List<Sentence>> afterCorrection = new HashMap<>();
+		List<String> filesWhoNeededCorrection = new ArrayList<>();
+
+		// Step 1: Read and store all lines for all files
 		for (String s : listPath) {
-			beforeCorrection.put(s, r.readFile(s));
+			firstReading.put(s, r.readFile(s));
 		}
-		System.out.println("OULALALALAL");
-		for (Map.Entry<String, List<Sentence>> hm : beforeCorrection.entrySet()) {
+
+		// Step 2: Correct all lines who needs to be corrected for all files
+		for (Map.Entry<String, List<Sentence>> hm : firstReading.entrySet()) {
 			for (Sentence st : hm.getValue()) {
-				System.out.println(st);
-				putIntoMap(afterCorrection, hm.getKey(), lang.correctSentence(st.getWords()));
+				if (st.needCorrection()) {
+					System.out.println(st.getTheLine());
+					filesWhoNeededCorrection.add(hm.getKey());
+					putIntoMap(afterCorrection, hm.getKey(), lang.correctSentence(st.getWords()));
+				}
 			}
 		}
 
 		for (Map.Entry<String, List<Sentence>> hm : afterCorrection.entrySet()) {
-			for (Sentence s : hm.getValue()) {
-				System.out.println(s.toString());
+			if (filesWhoNeededCorrection.contains(hm.getKey())) {
+				for (Sentence st : hm.getValue()) {
+					System.out.println(st.getTheLine());
+				}
 			}
+
 		}
+
+		// Step 3: ReWrite all files who needed correction
+		for (String pathFile : filesWhoNeededCorrection) {
+
+		}
+
 	}
 }

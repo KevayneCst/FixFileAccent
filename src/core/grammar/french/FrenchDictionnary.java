@@ -4,14 +4,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import core.grammar.Dictionnary;
 import core.grammar.Word;
 
+/**
+ * Classe concrète étendant <code>Dictionnary</code>, elle indique notamment
+ * l'emplacement du fichier dictionnaire, et implémente la façon de lire se
+ * fichier.
+ * 
+ * @author Kévin Constantin
+ *
+ */
 public class FrenchDictionnary extends Dictionnary {
 
 	private static final String PATHFILEDICTIONNARY = "data/FrenchDico.in";
@@ -36,7 +40,7 @@ public class FrenchDictionnary extends Dictionnary {
 			}
 			br.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Erreur lors de la lecture du fichier: \"" + PATHFILEDICTIONNARY + "\"");
 		}
 	}
 }

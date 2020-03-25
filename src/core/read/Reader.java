@@ -3,12 +3,18 @@ package core.read;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import core.grammar.Sentence;
 
+/**
+ * Classe utilitaire ayant pour but de lire un fichier dont on donnera le chemin
+ * d'accès, afin de créer des phrases exploitables pour le reste des classes.
+ * 
+ * @author Kévin Constantin
+ *
+ */
 public class Reader {
 
 	public Reader() {
@@ -27,7 +33,7 @@ public class Reader {
 			}
 			br.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Erreur lors de la lecture du fichier: \"" + pathFile + "\"");
 		}
 		return list;
 	}

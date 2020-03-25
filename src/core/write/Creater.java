@@ -11,6 +11,13 @@ import java.util.List;
 
 import core.grammar.Sentence;
 
+/**
+ * Classe utilitaire ayant pour but principal de créer des copies
+ * fichiers/dossiers, ou d'écrire sur un fichier ce que l'on souhaite.
+ * 
+ * @author Kévin Constantin
+ *
+ */
 public class Creater {
 
 	private static final String PATH_SAVE = "./save/";
@@ -27,18 +34,18 @@ public class Creater {
 			Files.walk(src).forEach(s -> {
 				try {
 					Path d = dest.resolve(src.relativize(s));
-					if (Files.isDirectory(s)) {
-						if (!Files.exists(d))
+					if (s.toFile().isDirectory()) {
+						if (!d.toFile().exists())
 							Files.createDirectory(d);
 						return;
 					}
 					Files.copy(s, d);
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.out.println("Erreur lors du resolve");
 				}
 			});
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			System.out.println("Erreur lors du walk");
 		}
 	}
 
@@ -50,7 +57,6 @@ public class Creater {
 		} else {
 			System.out.println("ERREUR CREATION SAUVEGARDE");
 		}
-
 	}
 
 	public void writeFile(String pathFile, List<Sentence> list) {
@@ -61,7 +67,7 @@ public class Creater {
 			}
 			myWriter.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Erreur lors de l'écriture du fichier: \"" + pathFile + "\"");
 		}
 	}
 }

@@ -1,6 +1,6 @@
 package core.grammar;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +31,17 @@ class TestSentence {
 		assertEquals(s5.getTheLine(), str5);
 		assertEquals(s6.getTheLine(), str6);
 		assertEquals(s7.getTheLine(), str7);
+	}
+	
+	@Test
+	void testSpaceSplitSentence() {
+		assertEquals(27,s1.spaceSplitSentence().size());
+		assertEquals(26,s2.spaceSplitSentence().size());
+		assertEquals(23,s3.spaceSplitSentence().size());
+		assertEquals(31,s4.spaceSplitSentence().size());
+		assertEquals(24,s5.spaceSplitSentence().size());
+		assertEquals(19,s6.spaceSplitSentence().size());
+		assertEquals(3,s7.spaceSplitSentence().size());
 	}
 
 	@Test

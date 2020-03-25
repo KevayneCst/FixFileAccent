@@ -3,18 +3,25 @@ package core.grammar;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe définissant un mot, elle permet notamment de vérifier si ce mot
+ * contient des accents corrompu, et surtout de savoir où sont-ils dans le mot.
+ * 
+ * @author Kévin Constantin
+ *
+ */
 public class Word {
 
-	private static final char UNKNOWCHAR = '�';
+	public static final char UNKNOWCHAR = '�';
 
 	public static char getUnknowchar() {
 		return UNKNOWCHAR;
 	}
 
-	private String word;
+	private String theWord;
 
 	public Word(String s) {
-		this.word = s;
+		this.theWord = s;
 	}
 
 	/**
@@ -25,24 +32,24 @@ public class Word {
 	 */
 	public List<Integer> findUnknowChar() {
 		List<Integer> list = new ArrayList<>();
-		for (int i = 0; i < word.length(); i++) {
-			if (word.charAt(i) == UNKNOWCHAR) {
+		for (int i = 0; i < theWord.length(); i++) {
+			if (theWord.charAt(i) == UNKNOWCHAR) {
 				list.add(i);
 			}
 		}
 		return list;
 	}
 
-	public String getWord() {
-		return word;
+	public String getTheWord() {
+		return theWord;
 	}
 
-	public void setWord(String word) {
-		this.word = word;
+	public void setTheWord(String word) {
+		this.theWord = word;
 	}
 
 	@Override
 	public String toString() {
-		return "Word [word=" + word + "]";
+		return "Word [word=" + theWord + "]";
 	}
 }

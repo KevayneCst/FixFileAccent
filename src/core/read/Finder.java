@@ -4,6 +4,18 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe utilitaire permettant de trouver l'ensemble des fichiers en
+ * <code>.java</code> d'un répertoire de travail. <br>
+ * <b>ATTENTION</b>: Si le <code>path</code> qui est donné est un dossier situé
+ * en hauteur dans le stockage de votre espace de stockage (du genre le dossier
+ * <code>Utilisateurs</code> le programme va fouiller l'ensemble du dossier et
+ * donc risque de prendre beaucoup de temps selon la taille du dossier. <i>Soyez
+ * judicieux dans le choix de votre dossier de départ</i>.
+ * 
+ * @author Kévin Constantin
+ *
+ */
 public class Finder {
 
 	private List<String> pathFiles;

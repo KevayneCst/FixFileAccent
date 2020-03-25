@@ -1,9 +1,15 @@
 package core;
 
-import core.grammar.UnknowLanguage;
+import core.grammar.UnknowLanguageException;
 
+/**
+ * Classe de lancement.
+ * 
+ * @author Kévin Constantin
+ *
+ */
 public class Launcher {
-	public static void main(String[] args) throws UnknowLanguage {
+	public static void main(String[] args) throws UnknowLanguageException {
 		if (args.length == 2) {
 			System.out.println("Lancement en cours...");
 			Core c = new Core(args[0], args[1]);

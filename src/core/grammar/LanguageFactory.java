@@ -1,18 +1,33 @@
 package core.grammar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import core.grammar.french.French;
 
+/**
+ * Classe implémentant le pattern factory, dont le seul but est de retourner le
+ * <code>Language</code> correspondant à la chaîne de caractère passé en
+ * paramètre de la fonction <code>createLanguage(String s)</code>. Dans le futur,
+ * un potentiel développeur pourra rajouter de nouveaux languages dans cette
+ * classe.
+ * 
+ * @author Kévin Constantin
+ *
+ */
 public class LanguageFactory {
 
+	private List<Language> nonNativeLanguage = new ArrayList<>();
+
 	public LanguageFactory() {
-		//Pattern Factory
+		// Pattern Factory
 	}
-	
-	public Language createLanguage(String s) throws UnknowLanguage {
-		if (s.equalsIgnoreCase("fr")) {
+
+	public Language createLanguage(String s) throws UnknowLanguageException {
+		if (s.equalsIgnoreCase("FR")) {
 			return new French();
 		} else {
-			throw new UnknowLanguage("This language is not supported or do not exist !");
+			throw new UnknowLanguageException("This language is not supported or do not exist !");
 		}
 	}
 }
