@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import core.grammar.french.French;
+
 class TestSentence {
 
 	String str1 = "Tant que durera la crise observée, je n'exclus pas de considérer la plus grande partie des hypothèses du passé, parce que la nature a horreur du vide.";
@@ -13,6 +15,8 @@ class TestSentence {
 	String str5 = "Compte tenu de la dégradation des moeurs de ces derniers temps, nous sommes contraints d’uniformiser l'ensemble des problématiques que nous connaissons, à long terme.";
 	String str6 = "Nonobstant l'austérité conjoncturelle, il ne faut pas s'interdire d’expérimenter la totalité des ouvertures s'offrant à nous, pour le futur.";
 	String str7 = "N?Pl;d!oà.Az'#ae&rax$pmd= polçf;kLa:/smp dzs";
+	
+	Language lang = new French();
 
 	Sentence s1 = new Sentence(str1);
 	Sentence s2 = new Sentence(str2);
@@ -43,16 +47,4 @@ class TestSentence {
 		assertEquals(19,s6.spaceSplitSentence().size());
 		assertEquals(3,s7.spaceSplitSentence().size());
 	}
-
-	@Test
-	void testSentenceIntoWords() {
-		assertEquals(28, s1.getWords().size());
-		assertEquals(26, s2.getWords().size());
-		assertEquals(26, s3.getWords().size());
-		assertEquals(34, s4.getWords().size());
-		assertEquals(26, s5.getWords().size());
-		assertEquals(23, s6.getWords().size());
-		assertEquals(11, s7.getWords().size());
-	}
-
 }

@@ -17,7 +17,7 @@ public class Launcher {
 			System.out.println("Travail terminé !");
 		} else {
 			System.err.println("Usage: Launcher [pathSrcDirectory] [correctionLanguage]");
-			System.out.println("Languages supported: \"FR\"");
+			System.out.println("Language supportés: \"FR\"");
 		}
 	}
 }

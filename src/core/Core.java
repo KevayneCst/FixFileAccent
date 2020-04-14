@@ -34,7 +34,8 @@ public class Core {
 		r = new Reader();
 		f = new Finder(pathDirectory);
 		lang = lf.createLanguage(language);
-		c.makeSave(pathDirectory);
+		c.makeSave(pathDirectory); //TODO log sauvegarde effectué du répertoire d'entrée
+		//TODO custom name save
 	}
 
 	private void putIntoMap(Map<String, List<Sentence>> map, String key, Sentence toAdd) {
@@ -47,18 +48,19 @@ public class Core {
 		Map<String, List<Sentence>> afterCorrection = new HashMap<>();
 		List<String> filesWhoNeededCorrection = new ArrayList<>();
 
-		// Step 1: Read and store all lines for all files
+		// Step 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers
 		for (String s : listPath) {
 			firstReading.put(s, r.readFile(s));
 		}
 
-		// Step 2: Correct all lines who needs to be corrected for all files
+		// Step 2: Corriger toutes les lignes qui ont besoin d'être corrigé pour tous les fichiers
 		for (Map.Entry<String, List<Sentence>> hm : firstReading.entrySet()) {
 			for (Sentence st : hm.getValue()) {
 				if (st.needCorrection()) {
-					System.out.println(st.getTheLine());
 					filesWhoNeededCorrection.add(hm.getKey());
-					putIntoMap(afterCorrection, hm.getKey(), lang.correctSentence(st.getWords()));
+					putIntoMap(afterCorrection, hm.getKey(), st.rebuildSentence(lang.correctSentence(st))); //TODO log la ligne corrigé et le nom du fichier associé (+n° ligne si possible)
+				} else {
+					putIntoMap(afterCorrection,hm.getKey(),st);
 				}
 			}
 		}
@@ -72,7 +74,7 @@ public class Core {
 
 		}
 
-		// Step 3: ReWrite all files who needed correction
+		// Step 3: Réécriture sur tous les fichiers qui ont eu besoin de corretion
 		for (String pathFile : filesWhoNeededCorrection) {
 
 		}

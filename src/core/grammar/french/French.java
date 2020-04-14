@@ -1,5 +1,6 @@
 package core.grammar.french;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import core.grammar.Language;
@@ -20,16 +21,15 @@ public class French extends Language {
 	}
 
 	@Override
-	public Sentence correctSentence(List<Word> listWord) {
-		StringBuilder sb = new StringBuilder();
+	public List<Word> correctSentence(Sentence toCorrect) {
+		
+		//TODO remplacer le paramètre sentence par une liste de mot directement
+		List<Word> listWord = toCorrect.getPurifiedWords();
+		List<Word> correctedWords = new ArrayList<>();
 		for (int i = 0; i < listWord.size(); i++) {
-			if (i == listWord.size() - 1) {
-				sb.append(matchWordWithDictionnary(listWord.get(i)).getTheWord());
-			} else {
-				sb.append(matchWordWithDictionnary(listWord.get(i)).getTheWord() + " ");
-			}
+			correctedWords.add(matchWordWithDictionnary(listWord.get(i)));
 		}
-		return new Sentence(sb.toString());
+		return correctedWords;
 	}
 
 	/**
@@ -81,7 +81,8 @@ public class French extends Language {
 					return wd;
 				}
 			}
-			return null;
+			//TODO log erreur mot non trouvé, inconnu etc
+			return w;
 		}
 	}
 }

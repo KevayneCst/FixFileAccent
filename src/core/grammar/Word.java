@@ -1,7 +1,10 @@
 package core.grammar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Classe définissant un mot, elle permet notamment de vérifier si ce mot
@@ -38,6 +41,50 @@ public class Word {
 			}
 		}
 		return list;
+	}
+	
+	/**
+	 * Purifie l'attribut de la classe <code>(String) theWord</code> en enlevant tous les caractères n'étant pas une lettre.
+	 * @param w
+	 * @return une tableau de taille 2 avec :<br>
+	 * -indice [0] le mot purifié<br>
+	 * -indice [1] une map contenant l'indice et le caractère supprimé (qui n'est pas une lettre)
+	 */
+	public Object[] purifyWord() {
+		Object obj[] = new Object[2];
+		Map<Integer,Character> deletedCharacters = new TreeMap<>();
+		String regexOnlyLetters = "[a-zA-Z]+";
+		String regexOnlyDigits = "[0-9]+";
+		String regexNoLettersAndDigit = "[^A-Za-z0-9]+";
+		String regexLettersSubstractLetters = "[a-zA-Z]+[-][a-zA-Z]+";
+		String regexLettersApostrLetters = "[a-zA-Z]+['][a-zA-Z]+";
+		String regexLettersAccentLetters = "[a-zA-Z]*[\\p{L}*]*[a-zA-Z]*";
+		String regexSpecificChar = "[[,]*|[;]*|[:]*|[']*|[’]*|[\\.]*|[\\\\]*|[:]*|[.]*|[#]*|[$]*|[-]*|[\"]*|[/]*|[!]*|[?]*|[+]*|[{]*|[}]*|[~]*|[@]*|[\\[]*|[\\]]*|[{]*|[}]*|[(]*|[)]*|[&]*|[0-9]*]+";
+		
+		//TODO classe de regex
+		
+		boolean forced = false;
+		if (theWord.contains(Word.UNKNOWCHAR+"")) {
+			String tmp = theWord.replaceAll(Word.UNKNOWCHAR+"", "e");
+			if (tmp.matches(regexOnlyLetters) || tmp.matches(regexNoLettersAndDigit) || tmp.matches(regexLettersSubstractLetters) || tmp.matches(regexLettersApostrLetters) || tmp.matches(regexLettersAccentLetters)) {
+				forced = true;
+			}
+		}
+				
+		if ((theWord.matches(regexOnlyLetters) || theWord.matches(regexNoLettersAndDigit) || theWord.matches(regexOnlyDigits) || forced)) {
+			obj[0] = theWord;
+			obj[1] = deletedCharacters;
+		} else {
+			for (int i = 0; i<theWord.length(); i++) {
+				int k = i+1;
+				if (theWord.substring(i, k).matches(regexSpecificChar)) {
+					deletedCharacters.put(i, theWord.charAt(i));
+				}
+			}
+			obj[0] = theWord.replaceAll(regexSpecificChar, "");
+			obj[1] = deletedCharacters;
+		}
+		return obj;
 	}
 
 	public String getTheWord() {

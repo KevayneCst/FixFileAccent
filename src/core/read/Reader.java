@@ -33,7 +33,8 @@ public class Reader {
 			}
 			br.close();
 		} catch (Exception e) {
-			System.out.println("Erreur lors de la lecture du fichier: \"" + pathFile + "\"");
+			System.out.println("Erreur lors de la lecture du fichier: \"" + pathFile + "\":");
+			e.printStackTrace();
 		}
 		return list;
 	}

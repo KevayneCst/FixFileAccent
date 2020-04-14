@@ -18,7 +18,7 @@ public abstract class Language {
 		dictionnary = d;
 	}
 
-	public abstract Sentence correctSentence(List<Word> listWord);
+	public abstract List<Word> correctSentence(Sentence toCorrect);
 
 	public abstract Word matchWordWithDictionnary(Word w);
 

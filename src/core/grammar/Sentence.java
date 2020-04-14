@@ -2,11 +2,13 @@ package core.grammar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
 
 /**
  * Classe permettant de faire différentes opération sur un chaîne de caractère
- * considéré comme une phrase (qu'elle contienne uniquement du code oui pas) et
- * facilitant la correction de cette phrase (ci cela s'avère être nécessaire)
+ * considéré comme une phrase (qu'elle contienne uniquement du code ou pas) et
+ * facilitant la correction de cette phrase (si cela s'avère être nécessaire)
  * pour la classe <code>Word</code>.
  * 
  * @author Kévin Constantin
@@ -16,10 +18,19 @@ public class Sentence {
 
 	private String theLine;
 	private List<Word> words;
+	private List<Map<Integer, Character>> specificCharDeleted;
+	private List<Word> purifiedWords;
 
+	@SuppressWarnings("unchecked")
 	public Sentence(String s) {
 		this.theLine = s;
-		this.words = sentenceIntoWords();
+		this.words = spaceSplitSentence();
+		this.specificCharDeleted = new ArrayList<>();
+		this.purifiedWords = new ArrayList<>();
+		for (Word w : words) {
+			purifiedWords.add(new Word((String) w.purifyWord()[0]));
+			specificCharDeleted.add((Map<Integer, Character>) w.purifyWord()[1]);
+		}
 	}
 
 	public String getTheLine() {
@@ -43,40 +54,33 @@ public class Sentence {
 		return list;
 	}
 
-	private List<Word> sentenceIntoWords() {
-		List<Word> list = new ArrayList<>();
-		String[] wordsSplit = theLine
-				.split("[[ ]*|[,]*|[;]*|[:]*|[']*|[’]*|[\\.]*|[:]*|[.]*|[#]*|[$]*|[-]*|[\"]*|[/]*|[!]*|[?]*|[+]*]+");
-		for (int i = 0; i < wordsSplit.length; i++) {
-			list.add(new Word(wordsSplit[i]));
-		}
-		return list;
-	}
-
 	/**
+	 * Regénère la phrase à partir des mots corrigés et purifiés pour replacer les
+	 * caractères spéciaux là où ils étaient dans le mot et donc dans la phrase
 	 * 
-	 * @param original
+	 * @param purifiedAndCorrectedWords
 	 * @return
 	 */
-	public Sentence rephrase(Sentence original) {
-		System.out.println("\nPHRASE D'ORIGINE:\"" + original.getTheLine() + "\"");
-
-		StringBuilder originalSentence = new StringBuilder(original.getTheLine());
-		StringBuilder rephrasedSentence = new StringBuilder(theLine);
-		rephrasedSentence.setLength(originalSentence.length());
-
-		for (int i = 0; i < originalSentence.length(); i++) {
-			System.out.println("POTENTIELLEMENT A CE CARACTERE:\"" + originalSentence.charAt(i) + "\"");
-			System.out.println("ORIGINAL EGAL QUOI ??:\"" + rephrasedSentence.charAt(i) + "\"");
-			if (rephrasedSentence.charAt(i) == ' ' || rephrasedSentence.charAt(i) == 0) {
-				System.out.println(
-						"Je remplace le vide à " + i + " par ce caractère:\'" + originalSentence.charAt(i) + "\'");
-				rephrasedSentence.setCharAt(i, originalSentence.charAt(i));
+	public Sentence rebuildSentence(List<Word> purifiedAndCorrectedWords) {
+		StringBuilder sb = new StringBuilder();
+		int lastIndex = purifiedWords.size() - 1;
+		for (int i = 0; i < purifiedAndCorrectedWords.size(); i++) {
+			Word w = rebuildWord(i,purifiedAndCorrectedWords);
+			if (i == lastIndex) {
+				sb.append(w.getTheWord());
+			} else {
+				sb.append(w.getTheWord() + " ");
 			}
 		}
-		System.out.println("AVANT TRANSFORMA:\"" + theLine + "\"");
-		System.out.println("APRES TRANSFORMA:\"" + rephrasedSentence.toString() + "\"");
-		return new Sentence(rephrasedSentence.toString());
+		return new Sentence(sb.toString());
+	}
+
+	public Word rebuildWord(int index,List<Word> purifiedAndCorrectedWords) {
+		StringBuilder sb = new StringBuilder(purifiedAndCorrectedWords.get(index).getTheWord());
+		for (Map.Entry<Integer, Character> map : specificCharDeleted.get(index).entrySet()) {
+			sb.insert(map.getKey(), map.getValue() + "");
+		}
+		return new Word(sb.toString());
 	}
 
 	public void setTheLine(String theLine) {
@@ -85,6 +89,22 @@ public class Sentence {
 
 	public void setWords(List<Word> words) {
 		this.words = words;
+	}
+
+	public List<Map<Integer, Character>> getSpecificCharDeleted() {
+		return specificCharDeleted;
+	}
+
+	public void setSpecificCharDeleted(List<Map<Integer, Character>> specificCharDeleted) {
+		this.specificCharDeleted = specificCharDeleted;
+	}
+
+	public List<Word> getPurifiedWords() {
+		return purifiedWords;
+	}
+
+	public void setPurifiedWords(List<Word> purifiedWords) {
+		this.purifiedWords = purifiedWords;
 	}
 
 	@Override
