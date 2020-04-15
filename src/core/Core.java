@@ -9,6 +9,9 @@ import core.grammar.Language;
 import core.grammar.LanguageFactory;
 import core.grammar.Sentence;
 import core.grammar.UnknowLanguageException;
+import core.log.LevelLog;
+import core.log.LevelLogFactory;
+import core.log.UnknowLevelLogException;
 import core.read.Finder;
 import core.read.Reader;
 import core.write.Creater;
@@ -22,6 +25,7 @@ import core.write.Creater;
  */
 public class Core {
 
+	public static LevelLog level = LevelLog.QUIET; //Niveau par défaut
 	private LanguageFactory lf;
 	private Creater c;
 	private Reader r;
@@ -29,6 +33,17 @@ public class Core {
 	private Language lang;
 
 	public Core(String pathDirectory, String language) throws UnknowLanguageException {
+		lf = new LanguageFactory();
+		c = new Creater();
+		r = new Reader();
+		f = new Finder(pathDirectory);
+		lang = lf.createLanguage(language);
+		c.makeSave(pathDirectory); //TODO log sauvegarde effectué du répertoire d'entrée
+		//TODO custom name save
+	}
+	
+	public Core(String pathDirectory, String language, String levelLog) throws UnknowLanguageException, UnknowLevelLogException {
+		level = LevelLogFactory.createLevelLog(levelLog);
 		lf = new LanguageFactory();
 		c = new Creater();
 		r = new Reader();

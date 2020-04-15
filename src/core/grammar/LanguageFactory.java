@@ -27,7 +27,7 @@ public class LanguageFactory {
 		if (s.equalsIgnoreCase("FR")) {
 			return new French();
 		} else {
-			throw new UnknowLanguageException("This language is not supported or do not exist !");
+			throw new UnknowLanguageException("\""+s+"\": Ce language n'est pas supporté ou n'existe pas !");
 		}
 	}
 }
