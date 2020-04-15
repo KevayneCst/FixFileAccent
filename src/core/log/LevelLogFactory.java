@@ -2,6 +2,9 @@ package core.log;
 
 public class LevelLogFactory {
 
+	private LevelLogFactory() {
+	}
+	
 	public static LevelLog createLevelLog(String s) throws UnknowLevelLogException {
 		if (s.equalsIgnoreCase("debug")) {
 			return LevelLog.DEBUG;

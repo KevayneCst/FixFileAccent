@@ -18,6 +18,9 @@ import core.Core;
  */
 public class Log {
 
+	private Log() {
+	}
+	
 	private static File logFile = new File("./log.txt");
 
 	/**
@@ -47,8 +50,7 @@ public class Log {
 				}
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Erreur lors de la lecture du fichier de log");
 			}
 		}
 	}

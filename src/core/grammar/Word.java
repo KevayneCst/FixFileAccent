@@ -1,7 +1,6 @@
 package core.grammar;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -51,17 +50,16 @@ public class Word {
 	 * -indice [1] une map contenant l'indice et le caractère supprimé (qui n'est pas une lettre)
 	 */
 	public Object[] purifyWord() {
-		Object obj[] = new Object[2];
+		Object[] obj = new Object[2];
 		Map<Integer,Character> deletedCharacters = new TreeMap<>();
-		String regexOnlyLetters = "[a-zA-Z]+";
-		String regexOnlyDigits = "[0-9]+";
-		String regexNoLettersAndDigit = "[^A-Za-z0-9]+";
-		String regexLettersSubstractLetters = "[a-zA-Z]+[-][a-zA-Z]+";
-		String regexLettersApostrLetters = "[a-zA-Z]+['][a-zA-Z]+";
-		String regexLettersAccentLetters = "[a-zA-Z]*[\\p{L}*]*[a-zA-Z]*";
-		String regexSpecificChar = "[[,]*|[;]*|[:]*|[']*|[’]*|[\\.]*|[\\\\]*|[:]*|[.]*|[#]*|[$]*|[-]*|[\"]*|[/]*|[!]*|[?]*|[+]*|[{]*|[}]*|[~]*|[@]*|[\\[]*|[\\]]*|[{]*|[}]*|[(]*|[)]*|[&]*|[0-9]*]+";
 		
-		//TODO classe de regex
+		String regexOnlyLetters = Regex.REGEX_ONLY_LETTERS;
+		String regexOnlyDigits = Regex.REGEX_ONLY_DIGITS;
+		String regexNoLettersAndDigit = Regex.REGEX_NO_LETTERS_AND_DIGITS;
+		String regexLettersSubstractLetters = Regex.REGEX_LETTERS_DASH_LETTERS;
+		String regexLettersApostrLetters = Regex.REGEX_LETTERS_APOSTROPHE_LETTERS;
+		String regexLettersAccentLetters = Regex.REGEX_LETTERS_ACCENT_LETTERS;
+		String regexSpecificChar = Regex.REGEX_SPECIFIC_CHAR;
 		
 		boolean forced = false;
 		if (theWord.contains(Word.UNKNOWCHAR+"")) {

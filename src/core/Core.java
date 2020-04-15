@@ -61,7 +61,6 @@ public class Core {
 		List<String> listPath = f.getPathFiles();
 		Map<String, List<Sentence>> firstReading = new HashMap<>();
 		Map<String, List<Sentence>> afterCorrection = new HashMap<>();
-		List<String> filesWhoNeededCorrection = new ArrayList<>();
 
 		// Step 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers
 		for (String s : listPath) {
@@ -72,27 +71,16 @@ public class Core {
 		for (Map.Entry<String, List<Sentence>> hm : firstReading.entrySet()) {
 			for (Sentence st : hm.getValue()) {
 				if (st.needCorrection()) {
-					filesWhoNeededCorrection.add(hm.getKey());
 					putIntoMap(afterCorrection, hm.getKey(), st.rebuildSentence(lang.correctSentence(st))); //TODO log la ligne corrigé et le nom du fichier associé (+n° ligne si possible)
 				} else {
 					putIntoMap(afterCorrection,hm.getKey(),st);
 				}
 			}
 		}
-
-		for (Map.Entry<String, List<Sentence>> hm : afterCorrection.entrySet()) {
-			if (filesWhoNeededCorrection.contains(hm.getKey())) {
-				for (Sentence st : hm.getValue()) {
-					System.out.println(st.getTheLine());
-				}
-			}
-
-		}
-
+		
 		// Step 3: Réécriture sur tous les fichiers qui ont eu besoin de corretion
-		for (String pathFile : filesWhoNeededCorrection) {
-
+		for (Map.Entry<String, List<Sentence>> hm : afterCorrection.entrySet()) {
+			c.writeFile(hm.getKey(), hm.getValue());
 		}
-
 	}
 }

@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import core.log.Log;
+import core.log.TypeLog;
+
 /**
  * Classe utilitaire permettant de trouver l'ensemble des fichiers en
  * <code>.java</code> d'un répertoire de travail. <br>
@@ -24,6 +27,7 @@ public class Finder {
 		this.pathFiles = new ArrayList<>();
 		File mainDir = new File(projectDirectory);
 		File[] files = mainDir.listFiles();
+		Log.printLog("Recherche des fichiers .java dans le répertoire \""+projectDirectory+"\"", TypeLog.DEBUGGING);
 		findFiles(files);
 	}
 

@@ -3,7 +3,6 @@ package core.grammar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 
 /**
  * Classe permettant de faire différentes opération sur un chaîne de caractère
