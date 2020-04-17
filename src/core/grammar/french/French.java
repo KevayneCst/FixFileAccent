@@ -6,6 +6,8 @@ import java.util.List;
 import core.grammar.Language;
 import core.grammar.Sentence;
 import core.grammar.Word;
+import core.log.Log;
+import core.log.TypeLog;
 
 /**
  * Classe concrète étendant <code>Language</code>, définissant les caractères possédant des accents, et déduis les
@@ -22,8 +24,7 @@ public class French extends Language {
 
 	@Override
 	public List<Word> correctSentence(Sentence toCorrect) {
-		
-		//TODO remplacer le paramètre sentence par une liste de mot directement
+		Log.printLog("Correction de la phrase suivante: \""+toCorrect.getTheLine(), TypeLog.DEBUGGING);
 		List<Word> listWord = toCorrect.getPurifiedWords();
 		List<Word> correctedWords = new ArrayList<>();
 		for (int i = 0; i < listWord.size(); i++) {
@@ -69,6 +70,7 @@ public class French extends Language {
 	public Word matchWordWithDictionnary(Word w) {
 		List<Integer> unknowsChar = w.findUnknowChar();
 		if (unknowsChar.isEmpty()) {
+			Log.printLog("\""+w.getTheWord()+"\" n'a pas besoin d'être corrigé", TypeLog.DEBUGGING);
 			return w;
 		} else {
 			List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
@@ -78,10 +80,11 @@ public class French extends Language {
 					tmp.setCharAt(i, wd.getTheWord().charAt(i));
 				}
 				if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
+					Log.printLog("Correspondance trouvé pour \""+w.getTheWord()+"\" => \""+wd.getTheWord()+"\"", TypeLog.DEBUGGING);
 					return wd;
 				}
 			}
-			//TODO log erreur mot non trouvé, inconnu etc
+			Log.printLog("Impossible de trouver une correspondance dans le dictionnaire pour \""+w.getTheWord()+"\"", TypeLog.WARNING);
 			return w;
 		}
 	}

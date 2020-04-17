@@ -46,7 +46,7 @@ public class Sentence {
 
 	public List<Word> spaceSplitSentence() {
 		List<Word> list = new ArrayList<>();
-		String[] wordsSplit = theLine.split("[[ ]*]+");
+		String[] wordsSplit = theLine.split(Regex.REGEX_SPACE);
 		for (int i = 0; i < wordsSplit.length; i++) {
 			list.add(new Word(wordsSplit[i]));
 		}

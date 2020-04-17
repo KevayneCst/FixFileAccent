@@ -11,6 +11,8 @@ import core.grammar.Sentence;
 import core.grammar.UnknowLanguageException;
 import core.log.LevelLog;
 import core.log.LevelLogFactory;
+import core.log.Log;
+import core.log.TypeLog;
 import core.log.UnknowLevelLogException;
 import core.read.Finder;
 import core.read.Reader;
@@ -63,22 +65,29 @@ public class Core {
 		Map<String, List<Sentence>> afterCorrection = new HashMap<>();
 
 		// Step 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers
+		Log.printLog("Étape 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers", TypeLog.INFO);
 		for (String s : listPath) {
 			firstReading.put(s, r.readFile(s));
 		}
 
 		// Step 2: Corriger toutes les lignes qui ont besoin d'être corrigé pour tous les fichiers
+		Log.printLog("Étape 2: Corriger toutes les lignes qui ont besoin d'être corrigé pour tous les fichiers", TypeLog.INFO);
 		for (Map.Entry<String, List<Sentence>> hm : firstReading.entrySet()) {
+			int ligne = 1;
 			for (Sentence st : hm.getValue()) {
 				if (st.needCorrection()) {
-					putIntoMap(afterCorrection, hm.getKey(), st.rebuildSentence(lang.correctSentence(st))); //TODO log la ligne corrigé et le nom du fichier associé (+n° ligne si possible)
+					Log.printLog("Ligne "+ligne+", la phrase \""+st.getTheLine()+"\" a besoin d'être corrigée", TypeLog.DEBUGGING);
+					putIntoMap(afterCorrection, hm.getKey(), st.rebuildSentence(lang.correctSentence(st)));
 				} else {
+					Log.printLog("Ligne "+ligne+", la phrase \""+st.getTheLine()+"\" n'a pas eu besoin d'être corrigée", TypeLog.DEBUGGING);
 					putIntoMap(afterCorrection,hm.getKey(),st);
 				}
+				ligne++;
 			}
 		}
 		
 		// Step 3: Réécriture sur tous les fichiers qui ont eu besoin de corretion
+		Log.printLog("Étape 3: Réécriture sur tous les fichiers qui ont eu besoin de corretion", TypeLog.INFO);
 		for (Map.Entry<String, List<Sentence>> hm : afterCorrection.entrySet()) {
 			c.writeFile(hm.getKey(), hm.getValue());
 		}

@@ -15,6 +15,7 @@ class TestSentence {
 	String str5 = "Compte tenu de la dégradation des moeurs de ces derniers temps, nous sommes contraints d’uniformiser l'ensemble des problématiques que nous connaissons, à long terme.";
 	String str6 = "Nonobstant l'austérité conjoncturelle, il ne faut pas s'interdire d’expérimenter la totalité des ouvertures s'offrant à nous, pour le futur.";
 	String str7 = "N?Pl;d!oà.Az'#ae&rax$pmd= polçf;kLa:/smp dzs";
+	String str8 = "Ce n'est pas très légal";
 	
 	Language lang = new French();
 
@@ -25,6 +26,7 @@ class TestSentence {
 	Sentence s5 = new Sentence(str5);
 	Sentence s6 = new Sentence(str6);
 	Sentence s7 = new Sentence(str7);
+	Sentence s8 = new Sentence(str8);
 
 	@Test
 	void testInit() {
@@ -35,6 +37,14 @@ class TestSentence {
 		assertEquals(s5.getTheLine(), str5);
 		assertEquals(s6.getTheLine(), str6);
 		assertEquals(s7.getTheLine(), str7);
+		assertEquals(s8.getTheLine(), str8);
+	}
+	
+	@Test
+	void testInit2() { //Vérification de la purification des mots
+		assertEquals("NPldoàAzaeraxpmd",s7.getPurifiedWords().get(0).getTheWord()); 
+		assertEquals("polçfkLasmp",s7.getPurifiedWords().get(1).getTheWord());
+		assertEquals("dzs",s7.getPurifiedWords().get(2).getTheWord());
 	}
 	
 	@Test

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import core.grammar.Dictionnary;
 import core.grammar.Word;
+import core.log.Log;
+import core.log.TypeLog;
 
 /**
  * Classe concrète étendant <code>Dictionnary</code>, elle indique notamment
@@ -26,6 +28,7 @@ public class FrenchDictionnary extends Dictionnary {
 
 	@Override
 	public void fillDictionnary() {
+		long startTime = System.currentTimeMillis();
 		File fichier = new File(PATHFILEDICTIONNARY);
 		BufferedReader br = null;
 		try {
@@ -39,8 +42,9 @@ public class FrenchDictionnary extends Dictionnary {
 				}
 			}
 			br.close();
+			Log.printLog("Lecture du dictionnaire \"" + PATHFILEDICTIONNARY + "\" en "+(System.currentTimeMillis()-startTime)+" ms", TypeLog.DEBUGGING);
 		} catch (Exception e) {
-			System.out.println("Erreur lors de la lecture du fichier: \"" + PATHFILEDICTIONNARY + "\"");
+			Log.printLog("Erreur lors de la lecture du fichier: \"" + PATHFILEDICTIONNARY + "\"", TypeLog.CRITICAL);
 		}
 	}
 }

@@ -45,7 +45,7 @@ public class Word {
 	/**
 	 * Purifie l'attribut de la classe <code>(String) theWord</code> en enlevant tous les caractères n'étant pas une lettre.
 	 * @param w
-	 * @return une tableau de taille 2 avec :<br>
+	 * @return un tableau de taille 2 avec :<br>
 	 * -indice [0] le mot purifié<br>
 	 * -indice [1] une map contenant l'indice et le caractère supprimé (qui n'est pas une lettre)
 	 */
