@@ -63,7 +63,7 @@ public class Creater {
 		try {
 			FileWriter myWriter = new FileWriter(pathFile);
 			for (Sentence line : list) {
-				myWriter.write(line.getTheLine()+"\n");
+				myWriter.write(line.getTheLine() + "\n");
 			}
 			myWriter.close();
 		} catch (IOException e) {

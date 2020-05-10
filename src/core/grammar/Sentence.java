@@ -32,18 +32,24 @@ public class Sentence {
 		}
 	}
 
-	public String getTheLine() {
-		return theLine;
-	}
-
-	public List<Word> getWords() {
-		return words;
-	}
-
+	/**
+	 * La phrase contient-elle des caractères inconnus ?
+	 * 
+	 * @return <code>True</code> oui<br>
+	 *         <code>False</code> non
+	 */
 	public boolean needCorrection() {
 		return theLine.contains(Word.UNKNOWCHAR + "");
 	}
 
+	/**
+	 * Divise la phrase avec le séparateur "espace" pour donner une liste de
+	 * mots.<br>
+	 * Exemple: la phrase "bonjour je suis une phrase" donnera une liste de 5 mots,
+	 * "bonjour", "je", "suis", "une", "phrase"
+	 * 
+	 * @return la liste des mots composant la phrase
+	 */
 	public List<Word> spaceSplitSentence() {
 		List<Word> list = new ArrayList<>();
 		String[] wordsSplit = theLine.split(Regex.REGEX_SPACE);
@@ -64,7 +70,7 @@ public class Sentence {
 		StringBuilder sb = new StringBuilder();
 		int lastIndex = purifiedWords.size() - 1;
 		for (int i = 0; i < purifiedAndCorrectedWords.size(); i++) {
-			Word w = rebuildWord(i,purifiedAndCorrectedWords);
+			Word w = rebuildWord(i, purifiedAndCorrectedWords);
 			if (i == lastIndex) {
 				sb.append(w.getTheWord());
 			} else {
@@ -74,7 +80,17 @@ public class Sentence {
 		return new Sentence(sb.toString());
 	}
 
-	public Word rebuildWord(int index,List<Word> purifiedAndCorrectedWords) {
+	/**
+	 * Replace les caractères spéciaux manquants d'un mot à l'emplacement où ils
+	 * étaient avant la purification du mot (le fait de supprimer les caractères
+	 * spéciaux et de ne laisser que des lettres pour former un vrai mot exploitable
+	 * 
+	 * @param index                     indice du mot à reformer
+	 * @param purifiedAndCorrectedWords la liste des mots purifés
+	 * @return le mot à son état d'origine + la correction des accents manquants
+	 *         s'il y en avait
+	 */
+	public Word rebuildWord(int index, List<Word> purifiedAndCorrectedWords) {
 		StringBuilder sb = new StringBuilder(purifiedAndCorrectedWords.get(index).getTheWord());
 		for (Map.Entry<Integer, Character> map : specificCharDeleted.get(index).entrySet()) {
 			sb.insert(map.getKey(), map.getValue() + "");
@@ -82,28 +98,20 @@ public class Sentence {
 		return new Word(sb.toString());
 	}
 
-	public void setTheLine(String theLine) {
-		this.theLine = theLine;
+	public String getTheLine() {
+		return theLine;
 	}
 
-	public void setWords(List<Word> words) {
-		this.words = words;
+	public List<Word> getWords() {
+		return words;
 	}
 
 	public List<Map<Integer, Character>> getSpecificCharDeleted() {
 		return specificCharDeleted;
 	}
 
-	public void setSpecificCharDeleted(List<Map<Integer, Character>> specificCharDeleted) {
-		this.specificCharDeleted = specificCharDeleted;
-	}
-
 	public List<Word> getPurifiedWords() {
 		return purifiedWords;
-	}
-
-	public void setPurifiedWords(List<Word> purifiedWords) {
-		this.purifiedWords = purifiedWords;
 	}
 
 	@Override

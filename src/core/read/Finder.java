@@ -27,7 +27,7 @@ public class Finder {
 		this.pathFiles = new ArrayList<>();
 		File mainDir = new File(projectDirectory);
 		File[] files = mainDir.listFiles();
-		Log.printLog("Recherche des fichiers .java dans le répertoire \""+projectDirectory+"\"", TypeLog.DEBUGGING);
+		Log.printLog("Recherche des fichiers .java dans le répertoire \"" + projectDirectory + "\"", TypeLog.DEBUGGING);
 		findFiles(files);
 	}
 

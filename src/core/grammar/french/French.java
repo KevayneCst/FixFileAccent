@@ -10,8 +10,9 @@ import core.log.Log;
 import core.log.TypeLog;
 
 /**
- * Classe concrète étendant <code>Language</code>, définissant les caractères possédant des accents, et déduis les
- * accents manquants grâce à son dictionnaire.
+ * Classe concrète étendant <code>Language</code>, définissant les caractères
+ * possédant des accents, et déduis les accents manquants grâce à son
+ * dictionnaire.
  * 
  * @author ck802131
  *
@@ -24,7 +25,7 @@ public class French extends Language {
 
 	@Override
 	public List<Word> correctSentence(Sentence toCorrect) {
-		Log.printLog("Correction de la phrase suivante: \""+toCorrect.getTheLine(), TypeLog.DEBUGGING);
+		Log.printLog("Correction de la phrase suivante: \"" + toCorrect.getTheLine(), TypeLog.DEBUGGING);
 		List<Word> listWord = toCorrect.getPurifiedWords();
 		List<Word> correctedWords = new ArrayList<>();
 		for (int i = 0; i < listWord.size(); i++) {
@@ -70,7 +71,7 @@ public class French extends Language {
 	public Word matchWordWithDictionnary(Word w) {
 		List<Integer> unknowsChar = w.findUnknowChar();
 		if (unknowsChar.isEmpty()) {
-			Log.printLog("\""+w.getTheWord()+"\" n'a pas besoin d'être corrigé", TypeLog.DEBUGGING);
+			Log.printLog("\"" + w.getTheWord() + "\" n'a pas besoin d'être corrigé", TypeLog.DEBUGGING);
 			return w;
 		} else {
 			List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
@@ -80,11 +81,14 @@ public class French extends Language {
 					tmp.setCharAt(i, wd.getTheWord().charAt(i));
 				}
 				if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
-					Log.printLog("Correspondance trouvé pour \""+w.getTheWord()+"\" => \""+wd.getTheWord()+"\"", TypeLog.DEBUGGING);
+					Log.printLog("Correspondance trouvé pour \"" + w.getTheWord() + "\" => \"" + wd.getTheWord() + "\"",
+							TypeLog.DEBUGGING);
 					return wd;
 				}
 			}
-			Log.printLog("Impossible de trouver une correspondance dans le dictionnaire pour \""+w.getTheWord()+"\"", TypeLog.WARNING);
+			Log.printLog(
+					"Impossible de trouver une correspondance dans le dictionnaire pour \"" + w.getTheWord() + "\"",
+					TypeLog.WARNING);
 			return w;
 		}
 	}

@@ -42,7 +42,8 @@ public class FrenchDictionnary extends Dictionnary {
 				}
 			}
 			br.close();
-			Log.printLog("Lecture du dictionnaire \"" + PATHFILEDICTIONNARY + "\" en "+(System.currentTimeMillis()-startTime)+" ms", TypeLog.DEBUGGING);
+			Log.printLog("Lecture du dictionnaire \"" + PATHFILEDICTIONNARY + "\" en "
+					+ (System.currentTimeMillis() - startTime) + " ms", TypeLog.DEBUGGING);
 		} catch (Exception e) {
 			Log.printLog("Erreur lors de la lecture du fichier: \"" + PATHFILEDICTIONNARY + "\"", TypeLog.CRITICAL);
 		}

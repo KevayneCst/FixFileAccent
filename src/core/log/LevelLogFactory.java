@@ -4,7 +4,7 @@ public class LevelLogFactory {
 
 	private LevelLogFactory() {
 	}
-	
+
 	public static LevelLog createLevelLog(String s) throws UnknowLevelLogException {
 		if (s.equalsIgnoreCase("debug")) {
 			return LevelLog.DEBUG;
@@ -13,7 +13,7 @@ public class LevelLogFactory {
 		} else if (s.equalsIgnoreCase("quiet")) {
 			return LevelLog.QUIET;
 		} else {
-			throw new UnknowLevelLogException("\""+s+"\": Ce niveau de log n'existe pas !");
+			throw new UnknowLevelLogException("\"" + s + "\": Ce niveau de log n'existe pas !");
 		}
 	}
 }

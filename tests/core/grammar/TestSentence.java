@@ -16,7 +16,12 @@ class TestSentence {
 	String str6 = "Nonobstant l'austérité conjoncturelle, il ne faut pas s'interdire d’expérimenter la totalité des ouvertures s'offrant à nous, pour le futur.";
 	String str7 = "N?Pl;d!oà.Az'#ae&rax$pmd= polçf;kLa:/smp dzs";
 	String str8 = "Ce n'est pas très légal";
-	
+
+	String fullCorrection1 = "Il existe, diff�rents num�ros de t�l�phone!";
+	String fullCorrection2 = "Le syst�me n'est pas termin�.";
+	String fullCorrection3 = "if (varié1 && varié2) { return journ�e=4 } else { return soirée=8 }";
+	String fullCorrection4 = "System.out.printl(\"Le thème sera fix� le lendemain matin, vers 8heures, avec peut-�tre 10-15minutes de retard\");";
+
 	Language lang = new French();
 
 	Sentence s1 = new Sentence(str1);
@@ -27,6 +32,11 @@ class TestSentence {
 	Sentence s6 = new Sentence(str6);
 	Sentence s7 = new Sentence(str7);
 	Sentence s8 = new Sentence(str8);
+
+	Sentence fc1 = new Sentence(fullCorrection1);
+	Sentence fc2 = new Sentence(fullCorrection2);
+	Sentence fc3 = new Sentence(fullCorrection3);
+	Sentence fc4 = new Sentence(fullCorrection4);
 
 	@Test
 	void testInit() {
@@ -39,22 +49,34 @@ class TestSentence {
 		assertEquals(s7.getTheLine(), str7);
 		assertEquals(s8.getTheLine(), str8);
 	}
-	
+
 	@Test
-	void testInit2() { //Vérification de la purification des mots
-		assertEquals("NPldoàAzaeraxpmd",s7.getPurifiedWords().get(0).getTheWord()); 
-		assertEquals("polçfkLasmp",s7.getPurifiedWords().get(1).getTheWord());
-		assertEquals("dzs",s7.getPurifiedWords().get(2).getTheWord());
+	void testInit2() { // Vérification de la purification des mots
+		assertEquals("NPldoàAzaeraxpmd", s7.getPurifiedWords().get(0).getTheWord());
+		assertEquals("polçfkLasmp", s7.getPurifiedWords().get(1).getTheWord());
+		assertEquals("dzs", s7.getPurifiedWords().get(2).getTheWord());
 	}
-	
+
 	@Test
 	void testSpaceSplitSentence() {
-		assertEquals(27,s1.spaceSplitSentence().size());
-		assertEquals(26,s2.spaceSplitSentence().size());
-		assertEquals(23,s3.spaceSplitSentence().size());
-		assertEquals(31,s4.spaceSplitSentence().size());
-		assertEquals(24,s5.spaceSplitSentence().size());
-		assertEquals(19,s6.spaceSplitSentence().size());
-		assertEquals(3,s7.spaceSplitSentence().size());
+		assertEquals(27, s1.spaceSplitSentence().size());
+		assertEquals(26, s2.spaceSplitSentence().size());
+		assertEquals(23, s3.spaceSplitSentence().size());
+		assertEquals(31, s4.spaceSplitSentence().size());
+		assertEquals(24, s5.spaceSplitSentence().size());
+		assertEquals(19, s6.spaceSplitSentence().size());
+		assertEquals(3, s7.spaceSplitSentence().size());
+	}
+
+	@Test
+	void testCorrectSentence() {
+		assertEquals("Il existe, différents numéros de téléphone!",
+				fc1.rebuildSentence(lang.correctSentence(fc1)).getTheLine());
+		assertEquals("Le système n'est pas terminé.", fc2.rebuildSentence(lang.correctSentence(fc2)).getTheLine());
+		assertEquals("if (varié1 && varié2) { return journée=4 } else { return soirée=8 }",
+				fc3.rebuildSentence(lang.correctSentence(fc3)).getTheLine());
+		assertEquals(
+				"System.out.printl(\"Le thème sera fixé le lendemain matin, vers 8heures, avec peut-être 10-15minutes de retard\");",
+				fc4.rebuildSentence(lang.correctSentence(fc4)).getTheLine());
 	}
 }

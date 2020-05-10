@@ -16,12 +16,12 @@ public class Launcher {
 			System.out.println("Lancement en cours...");
 			Core c = new Core(args[0], args[1]);
 			c.start();
-			System.out.println("Travail terminé en "+(System.currentTimeMillis()-startTime)+" ms");
+			System.out.println("Travail terminé en " + (System.currentTimeMillis() - startTime)/(double)1000 + " s");
 		} else if (args.length == 3) {
 			System.out.println("Lancement en cours...");
 			Core c = new Core(args[0], args[1], args[2]);
 			c.start();
-			System.out.println("Travail terminé en "+(System.currentTimeMillis()-startTime)+" ms");
+			System.out.println("Travail terminé en " + (System.currentTimeMillis() - startTime)/(double)1000 + " s");
 		} else {
 			System.err.println("Usage: Launcher [pathSrcDirectory] [correctionLanguage] [[OPTIONAL]levelLog]");
 			System.out.println("Languages supportés: \"FR\"");
