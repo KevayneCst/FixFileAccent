@@ -25,11 +25,26 @@ public class French extends Language {
 
 	@Override
 	public List<Word> correctSentence(Sentence toCorrect) {
-		Log.printLog("Correction de la phrase suivante: \"" + toCorrect.getTheLine(), TypeLog.DEBUGGING);
+		int countUnknowChar = toCorrect.countUnknowChar();
+		if (countUnknowChar == 1) {
+			Log.printLog("Correction de la phrase suivante[" + countUnknowChar + " caractère inconnu]: \""
+					+ toCorrect.getTheLine(), TypeLog.DEBUGGING);
+		} else {
+			Log.printLog("Correction de la phrase suivante[" + countUnknowChar + " caractères inconnus]: \""
+					+ toCorrect.getTheLine(), TypeLog.DEBUGGING);
+		}
 		List<Word> listWord = toCorrect.getPurifiedWords();
 		List<Word> correctedWords = new ArrayList<>();
 		for (int i = 0; i < listWord.size(); i++) {
-			correctedWords.add(matchWordWithDictionnary(listWord.get(i)));
+			if (countUnknowChar == 0) {
+				correctedWords.add(listWord.get(i));
+			} else {
+				Word correctedWord = matchWordWithDictionnary(listWord.get(i));
+				boolean isWordCorrected = correctedWord.equals(listWord.get(i));
+				correctedWords.add(correctedWord);
+				if (isWordCorrected)
+					countUnknowChar--;
+			}
 		}
 		return correctedWords;
 	}
@@ -75,15 +90,19 @@ public class French extends Language {
 			return w;
 		} else {
 			List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
-			for (Word wd : potentialMatches) {
-				StringBuilder tmp = new StringBuilder(w.getTheWord());
-				for (int i : unknowsChar) {
-					tmp.setCharAt(i, wd.getTheWord().charAt(i));
-				}
-				if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
-					Log.printLog("Correspondance trouvé pour \"" + w.getTheWord() + "\" => \"" + wd.getTheWord() + "\"",
-							TypeLog.DEBUGGING);
-					return wd;
+			Log.printLog("Mots potentiels pour \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
+			if (potentialMatches != null) {
+				for (Word wd : potentialMatches) {
+					StringBuilder tmp = new StringBuilder(w.getTheWord());
+					for (int i : unknowsChar) {
+						tmp.setCharAt(i, wd.getTheWord().charAt(i));
+					}
+					if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
+						Log.printLog(
+								"Correspondance trouvé pour \"" + w.getTheWord() + "\" => \"" + wd.getTheWord() + "\"",
+								TypeLog.DEBUGGING);
+						return wd;
+					}
 				}
 			}
 			Log.printLog(

@@ -41,6 +41,22 @@ public class Sentence {
 	public boolean needCorrection() {
 		return theLine.contains(Word.UNKNOWCHAR + "");
 	}
+	
+	/**
+	 * Compte le nombre de caractère inconnus
+	 * 
+	 * @return <code>int</code>
+	 */
+	public int countUnknowChar() {
+		if (!needCorrection()) return 0;
+		int count=0;
+		for (int i=0; i<theLine.length(); i++) {
+			if (theLine.charAt(i) == Word.UNKNOWCHAR) {
+				count++;
+			}
+		}
+		return count;
+	}
 
 	/**
 	 * Divise la phrase avec le séparateur "espace" pour donner une liste de
@@ -83,7 +99,7 @@ public class Sentence {
 	/**
 	 * Replace les caractères spéciaux manquants d'un mot à l'emplacement où ils
 	 * étaient avant la purification du mot (le fait de supprimer les caractères
-	 * spéciaux et de ne laisser que des lettres pour former un vrai mot exploitable
+	 * spéciaux et de ne laisser que des lettres pour former un vrai mot exploitable)
 	 * 
 	 * @param index                     indice du mot à reformer
 	 * @param purifiedAndCorrectedWords la liste des mots purifés
