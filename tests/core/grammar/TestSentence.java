@@ -52,6 +52,7 @@ class TestSentence {
 
 	@Test
 	void testInit2() { // Vérification de la purification des mots
+		assertEquals(3, s7.getPurifiedWords().size());
 		assertEquals("NPldoàAzaeraxpmd", s7.getPurifiedWords().get(0).getTheWord());
 		assertEquals("polçfkLasmp", s7.getPurifiedWords().get(1).getTheWord());
 		assertEquals("dzs", s7.getPurifiedWords().get(2).getTheWord());

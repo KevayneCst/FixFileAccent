@@ -20,7 +20,7 @@ class TestFrench {
 	String uk7 = "l'�cran";
 	String uk8 = "l'identit�";
 	String uk9 = "s'�carter";
-	String nonValidUnknow = "l�";
+	String uk10 = "l�";
 
 	@Test
 	void testWord() {
@@ -38,7 +38,7 @@ class TestFrench {
 		assertEquals("l'écran", f.matchWordWithDictionnary(new Word(uk7)).getTheWord());
 		assertEquals("l'identité", f.matchWordWithDictionnary(new Word(uk8)).getTheWord());
 		assertEquals("s'écarter", f.matchWordWithDictionnary(new Word(uk9)).getTheWord());
-		assertEquals("l�", f.matchWordWithDictionnary(new Word(nonValidUnknow)).getTheWord());
+		assertEquals("là", f.matchWordWithDictionnary(new Word(uk10)).getTheWord());
 	}
 
 }
