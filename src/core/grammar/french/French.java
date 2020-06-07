@@ -40,7 +40,7 @@ public class French extends Language {
 				correctedWords.add(listWord.get(i));
 			} else {
 				Word correctedWord = matchWordWithDictionnary(listWord.get(i));
-				boolean isWordCorrected = correctedWord.equals(listWord.get(i));
+				boolean isWordCorrected = !correctedWord.equals(listWord.get(i));
 				correctedWords.add(correctedWord);
 				if (isWordCorrected)
 					countUnknowChar--;
