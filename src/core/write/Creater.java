@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 import core.grammar.Sentence;
+import core.log.Log;
+import core.log.TypeLog;
 
 /**
  * Classe utilitaire ayant pour but principal de créer des copies
@@ -55,7 +57,7 @@ public class Creater {
 		if (newDir.mkdir()) {
 			copyFolder(new File(pathSrcDirectory).toPath(), newDir.toPath());
 		} else {
-			System.out.println("ERREUR CREATION SAUVEGARDE");
+			Log.printLog("Erreur lors de la création de la sauvegarde", TypeLog.CRITICAL);
 		}
 	}
 
@@ -67,7 +69,7 @@ public class Creater {
 			}
 			myWriter.close();
 		} catch (IOException e) {
-			System.out.println("Erreur lors de l'écriture du fichier: \"" + pathFile + "\"");
+			Log.printLog("Erreur lors de l'écriture du fichier: \"" + pathFile + "\"", TypeLog.CRITICAL);
 		}
 	}
 }
