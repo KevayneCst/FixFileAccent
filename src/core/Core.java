@@ -35,25 +35,24 @@ public class Core {
 	private Language lang;
 
 	public Core(String pathDirectory, String language) throws UnknowLanguageException {
-		lf = new LanguageFactory();
-		c = new Creater();
-		r = new Reader();
-		f = new Finder(pathDirectory);
-		lang = lf.createLanguage(language);
-		c.makeSave(pathDirectory); // TODO log sauvegarde effectué du répertoire d'entrée
+		init(pathDirectory, language);
 		// TODO custom name save
 	}
 
 	public Core(String pathDirectory, String language, String levelLog)
 			throws UnknowLanguageException, UnknowLevelLogException {
 		level = LevelLogFactory.createLevelLog(levelLog);
+		init(pathDirectory, language);
+		// TODO custom name save
+	}
+	
+	private void init(String pathDirectory, String language) throws UnknowLanguageException {
 		lf = new LanguageFactory();
 		c = new Creater();
 		r = new Reader();
 		f = new Finder(pathDirectory);
 		lang = lf.createLanguage(language);
 		c.makeSave(pathDirectory); // TODO log sauvegarde effectué du répertoire d'entrée
-		// TODO custom name save
 	}
 
 	private void putIntoMap(Map<String, List<Sentence>> map, String key, Sentence toAdd) {
