@@ -91,7 +91,7 @@ public class Core {
 
 		if (Config.getInstance().isApplyCorrection()) {
 			// Step 3: Réécriture sur tous les fichiers qui ont eu besoin de corretion
-			Log.printLog("Étape 3: Réécriture sur tous les fichiers qui ont eu besoin de corretion", TypeLog.INFO);
+			Log.printLog("Étape 3: Réécriture sur tous les fichiers qui ont eu besoin de correction", TypeLog.INFO);
 			for (Map.Entry<String, List<Sentence>> hm : afterCorrection.entrySet()) {
 				c.writeFile(hm.getKey(), hm.getValue());
 			}
