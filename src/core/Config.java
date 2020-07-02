@@ -8,8 +8,6 @@ import java.util.Properties;
 import core.grammar.Language;
 import core.grammar.LanguageFactory;
 import core.grammar.UnknowLanguageException;
-import core.grammar.french.French;
-import core.grammar.french.FrenchDictionnary;
 import core.log.LevelLog;
 import core.log.LevelLogFactory;
 import core.log.Log;
@@ -67,11 +65,11 @@ public class Config {
 		LanguageFactory lf = new LanguageFactory();
 		return lf.createLanguage(language);
 	}
-	
+
 	public LevelLog getLevelLog() throws UnknowLevelLogException {
 		return LevelLogFactory.createLevelLog(levelLog);
 	}
-	
+
 	public boolean isApplyCorrection() {
 		return Boolean.valueOf(applyCorrection);
 	}
