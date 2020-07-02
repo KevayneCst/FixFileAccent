@@ -36,7 +36,6 @@ public class Core {
 		f = new Finder(pathDirectory);
 		lang = Config.getInstance().getLanguage();
 		c.makeSave(pathDirectory); // TODO log sauvegarde effectué du répertoire d'entrée
-		// TODO custom name save
 	}
 
 	private void putIntoMap(Map<String, List<Sentence>> map, String key, Sentence toAdd) {
@@ -48,14 +47,11 @@ public class Core {
 		Map<String, List<Sentence>> firstReading = new HashMap<>();
 		Map<String, List<Sentence>> afterCorrection = new HashMap<>();
 
-		// Step 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers
 		Log.printLog("Étape 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers", TypeLog.INFO);
 		for (String s : listPath) {
 			firstReading.put(s, r.readFile(s));
 		}
 
-		// Step 2: Corriger toutes les lignes qui ont besoin d'être corrigé pour tous
-		// les fichiers
 		Log.printLog("Étape 2: Corriger toutes les lignes qui ont besoin d'être corrigé pour tous les fichiers",
 				TypeLog.INFO);
 		for (Map.Entry<String, List<Sentence>> hm : firstReading.entrySet()) {
@@ -76,7 +72,6 @@ public class Core {
 		}
 
 		if (Config.getInstance().isApplyCorrection()) {
-			// Step 3: Réécriture sur tous les fichiers qui ont eu besoin de corretion
 			Log.printLog("Étape 3: Réécriture sur tous les fichiers qui ont eu besoin de correction", TypeLog.INFO);
 			for (Map.Entry<String, List<Sentence>> hm : afterCorrection.entrySet()) {
 				c.writeFile(hm.getKey(), hm.getValue());
