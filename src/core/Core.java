@@ -27,8 +27,7 @@ import core.write.Creater;
  */
 public class Core {
 
-	public static LevelLog level = LevelLog.QUIET; // Niveau par défaut
-	private LanguageFactory lf;
+	public static LevelLog level = Config.getInstance().getLevelLog(); // Niveau par défaut
 	private Creater c;
 	private Reader r;
 	private Finder f;
@@ -47,11 +46,10 @@ public class Core {
 	}
 	
 	private void init(String pathDirectory, String language) throws UnknowLanguageException {
-		lf = new LanguageFactory();
 		c = new Creater();
 		r = new Reader();
 		f = new Finder(pathDirectory);
-		lang = lf.createLanguage(language);
+		lang = Config.getInstance().getLanguage();
 		c.makeSave(pathDirectory); // TODO log sauvegarde effectué du répertoire d'entrée
 	}
 
@@ -91,10 +89,12 @@ public class Core {
 			}
 		}
 
-		// Step 3: Réécriture sur tous les fichiers qui ont eu besoin de corretion
-		Log.printLog("Étape 3: Réécriture sur tous les fichiers qui ont eu besoin de corretion", TypeLog.INFO);
-		for (Map.Entry<String, List<Sentence>> hm : afterCorrection.entrySet()) {
-			c.writeFile(hm.getKey(), hm.getValue());
+		if (Config.getInstance().isApplyCorrection()) {
+			// Step 3: Réécriture sur tous les fichiers qui ont eu besoin de corretion
+			Log.printLog("Étape 3: Réécriture sur tous les fichiers qui ont eu besoin de corretion", TypeLog.INFO);
+			for (Map.Entry<String, List<Sentence>> hm : afterCorrection.entrySet()) {
+				c.writeFile(hm.getKey(), hm.getValue());
+			}
 		}
 	}
 }
