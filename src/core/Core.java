@@ -6,14 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import core.grammar.Language;
-import core.grammar.LanguageFactory;
 import core.grammar.Sentence;
 import core.grammar.UnknowLanguageException;
 import core.log.LevelLog;
-import core.log.LevelLogFactory;
 import core.log.Log;
 import core.log.TypeLog;
-import core.log.UnknowLevelLogException;
 import core.read.Finder;
 import core.read.Reader;
 import core.write.Creater;
@@ -27,30 +24,19 @@ import core.write.Creater;
  */
 public class Core {
 
-	public static LevelLog level = Config.getInstance().getLevelLog(); // Niveau par défaut
+	public static final LevelLog level = Config.getInstance().getLevelLog();
 	private Creater c;
 	private Reader r;
 	private Finder f;
 	private Language lang;
 
-	public Core(String pathDirectory, String language) throws UnknowLanguageException {
-		init(pathDirectory, language);
-		// TODO custom name save
-	}
-
-	public Core(String pathDirectory, String language, String levelLog)
-			throws UnknowLanguageException, UnknowLevelLogException {
-		level = LevelLogFactory.createLevelLog(levelLog);
-		init(pathDirectory, language);
-		// TODO custom name save
-	}
-	
-	private void init(String pathDirectory, String language) throws UnknowLanguageException {
+	public Core(String pathDirectory) throws UnknowLanguageException {
 		c = new Creater();
 		r = new Reader();
 		f = new Finder(pathDirectory);
 		lang = Config.getInstance().getLanguage();
 		c.makeSave(pathDirectory); // TODO log sauvegarde effectué du répertoire d'entrée
+		// TODO custom name save
 	}
 
 	private void putIntoMap(Map<String, List<Sentence>> map, String key, Sentence toAdd) {
