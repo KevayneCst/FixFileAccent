@@ -52,9 +52,14 @@ public class Config {
 	}
 
 	private void getProperties() {
-		this.language = props.getProperty("language", "FR");
-		this.levelLog = props.getProperty("levelLog", "QUIET");
-		this.applyCorrection = props.getProperty("applyCorrection", "TRUE");
+		this.language = getProperty("language", "FR");
+		this.levelLog = getProperty("levelLog", "QUIET");
+		this.applyCorrection = getProperty("applyCorrection", "TRUE");
+	}
+	
+	private String getProperty(String key, String defaultValue) {
+		String value = props.getProperty(key, defaultValue);
+		return value.isBlank()?defaultValue:value;
 	}
 
 	public static Config getInstance() {
