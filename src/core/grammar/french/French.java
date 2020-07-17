@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import core.grammar.Language;
+import core.grammar.Regex;
 import core.grammar.Sentence;
 import core.grammar.Word;
 import core.log.Log;
@@ -97,7 +98,11 @@ public class French extends Language {
 				for (Word wd : potentialMatches) {
 					StringBuilder tmp = new StringBuilder(w.getTheWord());
 					for (int i : unknowsChar) {
-						tmp.setCharAt(i, wd.getTheWord().charAt(i));
+						char currentPotentialMatchChar = wd.getTheWord().charAt(i);
+						if ((currentPotentialMatchChar + "").matches(Regex.REGEX_ONLY_LETTERS)) {
+							break;
+						}
+						tmp.setCharAt(i, currentPotentialMatchChar);
 					}
 					if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
 						Log.printLog(
