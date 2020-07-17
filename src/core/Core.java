@@ -30,7 +30,7 @@ public class Core {
 	private Finder f;
 	private Language lang;
 
-	public Core(String pathDirectory) throws UnknowLanguageException {
+	public Core(String pathDirectory) {
 		c = new Creater();
 		r = new Reader();
 		f = new Finder(pathDirectory);
@@ -43,39 +43,60 @@ public class Core {
 	}
 
 	public void start() {
-		List<String> listPath = f.getPathFiles();
-		Map<String, List<Sentence>> firstReading = new HashMap<>();
-		Map<String, List<Sentence>> afterCorrection = new HashMap<>();
+		Config.getInstance().showProperties();
+		
+		Map<String, List<Sentence>> fileSentences = new HashMap<>();
+		Map<String, List<Sentence>> fileSentencesCorrected = new HashMap<>();
 
-		Log.printLog("Étape 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers", TypeLog.INFO);
-		for (String s : listPath) {
-			firstReading.put(s, r.readFile(s));
-		}
+		fileSentences = readAndStoreLines();
 
-		Log.printLog("Étape 2: Corriger toutes les lignes qui ont besoin d'être corrigé pour tous les fichiers",
-				TypeLog.INFO);
-		for (Map.Entry<String, List<Sentence>> hm : firstReading.entrySet()) {
-			int ligne = 1;
-			Log.printLog("============ Traitement du fichier: "+hm.getKey()+" ============", TypeLog.DEBUGGING);
-			for (Sentence st : hm.getValue()) {
-				if (st.needCorrection()) {
-					Log.printLog("Ligne " + ligne + ", la phrase \"" + st.getTheLine() + "\" a besoin d'être corrigée",
-							TypeLog.DEBUGGING);
-					putIntoMap(afterCorrection, hm.getKey(), st.rebuildSentence(lang.correctSentence(st)));
-				} else {
-					Log.printLog("Ligne " + ligne + ", la phrase \"" + st.getTheLine()
-							+ "\" n'a pas eu besoin d'être corrigée", TypeLog.DEBUGGING);
-					putIntoMap(afterCorrection, hm.getKey(), st);
-				}
-				ligne++;
-			}
-		}
+		fileSentencesCorrected = correctFiles(fileSentences);
 
 		if (Config.getInstance().isApplyCorrection()) {
-			Log.printLog("Étape 3: Réécriture sur tous les fichiers qui ont eu besoin de correction", TypeLog.INFO);
-			for (Map.Entry<String, List<Sentence>> hm : afterCorrection.entrySet()) {
-				c.writeFile(hm.getKey(), hm.getValue());
+			writeCorrectionOnFiles(fileSentencesCorrected);
+		}
+	}
+
+	private Map<String, List<Sentence>> readAndStoreLines() {
+		List<String> listPathFiles = f.getPathFiles();
+		Map<String, List<Sentence>> fileSentences = new HashMap<>();
+		Log.printLog("Étape 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers", TypeLog.INFO);
+		for (String s : listPathFiles) {
+			fileSentences.put(s, r.readFile(s));
+		}
+		
+		return fileSentences;
+	}
+
+	private Map<String, List<Sentence>> correctFiles(Map<String, List<Sentence>> fileSentences) {
+		Map<String, List<Sentence>> fileSentencesCorrected = new HashMap<>();
+		Log.printLog("Étape 2: Corriger toutes les lignes qui ont besoin d'être corrigé pour tous les fichiers",
+				TypeLog.INFO);
+		for (Map.Entry<String, List<Sentence>> hm : fileSentences.entrySet()) {
+			int numLigne = 1;
+			Log.printLog("============ Traitement du fichier: " + hm.getKey() + " ============", TypeLog.DEBUGGING);
+			for (Sentence sentence : hm.getValue()) {
+				if (sentence.needCorrection()) {
+					Log.printLog("Ligne " + numLigne + ", la phrase \"" + sentence.getTheLine()
+							+ "\" a besoin d'être corrigée", TypeLog.DEBUGGING);
+					putIntoMap(fileSentencesCorrected, hm.getKey(),
+							sentence.rebuildSentence(lang.correctSentence(sentence)));
+				} else {
+					Log.printLog("Ligne " + numLigne + ", la phrase \"" + sentence.getTheLine()
+							+ "\" n'a pas eu besoin d'être corrigée", TypeLog.DEBUGGING);
+					putIntoMap(fileSentencesCorrected, hm.getKey(), sentence);
+				}
+				numLigne++;
 			}
+		}
+		
+		return fileSentencesCorrected;
+	}
+
+	private void writeCorrectionOnFiles(Map<String, List<Sentence>> fileSentencesCorrected) {
+		Log.printLog("Étape 3: Réécriture sur tous les fichiers qui ont eu besoin de correction", TypeLog.INFO);
+		for (Map.Entry<String, List<Sentence>> hm : fileSentencesCorrected.entrySet()) {
+			c.writeFile(hm.getKey(), hm.getValue());
 		}
 	}
 }

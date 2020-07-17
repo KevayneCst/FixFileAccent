@@ -1,8 +1,5 @@
 package core;
 
-import core.grammar.UnknowLanguageException;
-import core.log.UnknowLevelLogException;
-
 /**
  * Classe de lancement.
  * 
@@ -10,9 +7,9 @@ import core.log.UnknowLevelLogException;
  *
  */
 public class Launcher {
-	public static void main(String[] args) throws UnknowLanguageException, UnknowLevelLogException {
+	public static void main(String[] args) {
 		long startTime = System.currentTimeMillis();
-		if (args.length == 2) {
+		if (args.length == 1) {
 			System.out.println("Lancement en cours...");
 			Core c = new Core(args[0]);
 			c.start();

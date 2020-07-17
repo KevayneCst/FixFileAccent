@@ -42,55 +42,6 @@ public class Word {
 		return list;
 	}
 
-	/**
-	 * Purifie l'attribut de la classe <code>(String) theWord</code> en enlevant
-	 * tous les caractères n'étant pas une lettre.
-	 * 
-	 * @param w
-	 * @return un tableau de taille 2 avec :<br>
-	 *         -indice [0] le mot purifié<br>
-	 *         -indice [1] une map contenant l'indice et le caractère supprimé (qui
-	 *         n'est pas une lettre)
-	 */
-	public Object[] purifyWord() {
-		Object[] obj = new Object[2];
-		Map<Integer, Character> deletedCharacters = new TreeMap<>();
-
-		String regexOnlyLetters = Regex.REGEX_ONLY_LETTERS;
-		String regexOnlyDigits = Regex.REGEX_ONLY_DIGITS;
-		String regexNoLettersAndDigit = Regex.REGEX_NO_LETTERS_AND_DIGITS;
-		String regexLettersSubstractLetters = Regex.REGEX_LETTERS_DASH_LETTERS;
-		String regexLettersApostrLetters = Regex.REGEX_LETTERS_APOSTROPHE_LETTERS;
-		String regexLettersAccentLetters = Regex.REGEX_LETTERS_ACCENT_LETTERS;
-		String regexSpecificChar = Regex.REGEX_SPECIFIC_CHAR;
-
-		boolean forced = false;
-		if (theWord.contains(Word.UNKNOWCHAR + "")) {
-			String tmp = theWord.replaceAll(Word.UNKNOWCHAR + "", "e");
-			if (tmp.matches(regexOnlyLetters) || tmp.matches(regexNoLettersAndDigit)
-					|| tmp.matches(regexLettersSubstractLetters) || tmp.matches(regexLettersApostrLetters)
-					|| tmp.matches(regexLettersAccentLetters)) {
-				forced = true;
-			}
-		}
-
-		if ((theWord.matches(regexOnlyLetters) || theWord.matches(regexNoLettersAndDigit)
-				|| theWord.matches(regexOnlyDigits) || forced)) {
-			obj[0] = theWord;
-			obj[1] = deletedCharacters;
-		} else {
-			for (int i = 0; i < theWord.length(); i++) {
-				int k = i + 1;
-				if (theWord.substring(i, k).matches(regexSpecificChar)) {
-					deletedCharacters.put(i, theWord.charAt(i));
-				}
-			}
-			obj[0] = theWord.replaceAll(regexSpecificChar, "");
-			obj[1] = deletedCharacters;
-		}
-		return obj;
-	}
-
 	public String getTheWord() {
 		return theWord;
 	}
@@ -98,5 +49,17 @@ public class Word {
 	@Override
 	public String toString() {
 		return "Word [word=" + theWord + "]";
+	}
+	
+	public String debugString() {
+		return "["+ theWord +"]";
+	}
+	
+	public static String debugStringList(List<Word> listWord) {
+		StringBuilder sb = new StringBuilder();
+		for (Word w : listWord) {
+			sb.append(w.debugString() + " ");
+		}
+		return sb.toString();
 	}
 }

@@ -57,14 +57,21 @@ public class Config {
 		this.levelLog = getProperty("levelLog", "QUIET");
 		this.applyCorrection = getProperty("applyCorrection", "TRUE");
 	}
-	
+
 	private String getProperty(String key, String defaultValue) {
 		String value = props.getProperty(key, defaultValue);
-		return value.isBlank()?defaultValue:value;
+		return value.isBlank() ? defaultValue : value;
 	}
 
 	public static Config getInstance() {
 		return instance;
+	}
+
+	public void showProperties() {
+		Log.printLog("====== Paramètres de configuration ======", TypeLog.DEBUGGING);
+		Log.printLog(String.format("Langage utilisé    %s %s", ":", language), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Niveau de log      %s %s", ":", levelLog), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Correction activée %s %s", ":", applyCorrection), TypeLog.DEBUGGING);
 	}
 
 	public Language getLanguage() {
@@ -78,7 +85,7 @@ public class Config {
 		return l;
 	}
 
-	public LevelLog getLevelLog(){
+	public LevelLog getLevelLog() {
 		try {
 			return LevelLogFactory.createLevelLog(levelLog);
 		} catch (UnknowLevelLogException e) {

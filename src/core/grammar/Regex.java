@@ -16,9 +16,8 @@ public class Regex {
 	public static final String REGEX_LETTERS_DASH_LETTERS = "[a-zA-Z]+[-][a-zA-Z]+";
 	public static final String REGEX_LETTERS_APOSTROPHE_LETTERS = "[a-zA-Z]+['][a-zA-Z]+";
 	public static final String REGEX_LETTERS_ACCENT_LETTERS = "[a-zA-Z]*[\\p{L}*]*[a-zA-Z]*";
-	public static final String REGEX_SPECIFIC_CHAR = "[[,]*|[;]*|[:]*|[']*|[’]*|[\\.]*|[\\\\]*|[:]*|[=]*|[.]*|[#]*|[$]*|[-]*|[\"]*|[/]*|[!]*|[?]*|[+]*|[{]*|[}]*|[~]*|[@]*|[\\[]*|[\\]]*|[{]*|[}]*|[(]*|[)]*|[&]*|[0-9]*]+";
-
+	public static final String REGEX_PUNCTUATION = "\\p{Punct}";
+	
 	private Regex() {
 	}
-
 }

@@ -33,7 +33,7 @@ public class French extends Language {
 			Log.printLog("Correction de la phrase suivante[" + countUnknowChar + " caractères inconnus]: \""
 					+ toCorrect.getTheLine(), TypeLog.DEBUGGING);
 		}
-		List<Word> listWord = toCorrect.getPurifiedWords();
+		List<Word> listWord = toCorrect.getWords();
 		List<Word> correctedWords = new ArrayList<>();
 		for (int i = 0; i < listWord.size(); i++) {
 			if (countUnknowChar == 0) {
@@ -45,6 +45,7 @@ public class French extends Language {
 				if (isWordCorrected)
 					countUnknowChar--;
 			}
+			Log.printLog("Mots corrigés:" + Word.debugStringList(correctedWords), TypeLog.DEBUGGING);
 		}
 		return correctedWords;
 	}
@@ -90,8 +91,9 @@ public class French extends Language {
 			return w;
 		} else {
 			List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
-			Log.printLog("Mots potentiels pour \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
+			Log.printLog("Correction du mot \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
 			if (potentialMatches != null) {
+				Log.printLog(potentialMatches.size() + " mots candidats pour la correction", TypeLog.DEBUGGING);
 				for (Word wd : potentialMatches) {
 					StringBuilder tmp = new StringBuilder(w.getTheWord());
 					for (int i : unknowsChar) {
