@@ -2,8 +2,6 @@ package core.grammar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Classe définissant un mot, elle permet notamment de vérifier si ce mot
@@ -45,13 +43,31 @@ public class Word {
 	public String getTheWord() {
 		return theWord;
 	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((theWord == null) ? 0 : theWord.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Word)) {
+			return false;
+		} else {
+			Word w = (Word) o;
+			return w.theWord.equals(this.theWord);
+		}
+	}
 
 	@Override
 	public String toString() {
 		return "Word [word=" + theWord + "]";
 	}
 	
-	public String debugString() {
+	private String debugString() {
 		return "["+ theWord +"]";
 	}
 	
