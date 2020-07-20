@@ -1,5 +1,8 @@
 package core;
 
+import core.log.Log;
+import core.log.TypeLog;
+
 /**
  * Classe de lancement.
  * 
@@ -13,7 +16,7 @@ public class Launcher {
 			System.out.println("Lancement en cours...");
 			Core c = new Core(args[0]);
 			c.start();
-			System.out.println("Travail terminé en " + (System.currentTimeMillis() - startTime) / (double) 1000 + " s");
+			Log.printLog("Travail terminé en " + (System.currentTimeMillis() - startTime) / (double) 1000 + " s", TypeLog.INFO);
 		} else {
 			System.err.println("Usage: Launcher [pathSrcDirectory]");
 			System.out.println("\nVoir le README.md pour toute information complémentaire.");

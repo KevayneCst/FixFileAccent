@@ -43,11 +43,11 @@ public class Creater {
 					}
 					Files.copy(s, d);
 				} catch (Exception e) {
-					System.out.println("Erreur lors du resolve");
+					Log.printLog("Erreur lors de la résolution des chemins pour la sauvegarde", TypeLog.CRITICAL);
 				}
 			});
 		} catch (Exception ex) {
-			System.out.println("Erreur lors du walk");
+			Log.printLog("Erreur lors de la copie du/des dossier(s)", TypeLog.CRITICAL);
 		}
 	}
 
@@ -56,6 +56,7 @@ public class Creater {
 		File newDir = new File(PATH_SAVE + customDate.format(new Date()));
 		if (newDir.mkdir()) {
 			copyFolder(new File(pathSrcDirectory).toPath(), newDir.toPath());
+			Log.printLog("Sauvegarde effectuée avec succès", TypeLog.INFO);
 		} else {
 			Log.printLog("Erreur lors de la création de la sauvegarde", TypeLog.CRITICAL);
 		}

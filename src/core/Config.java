@@ -31,6 +31,8 @@ public class Config {
 	private String language;
 	private String levelLog;
 	private String applyCorrection;
+	private String confirmFiles;
+	private String confirmKey;
 
 	private Config() {
 		this.configFile = new File("./config.properties");
@@ -56,6 +58,8 @@ public class Config {
 		this.language = getProperty("language", "FR");
 		this.levelLog = getProperty("levelLog", "QUIET");
 		this.applyCorrection = getProperty("applyCorrection", "TRUE");
+		this.confirmFiles = getProperty("confirmFiles", "TRUE");
+		this.confirmKey = getProperty("confirmKey", "CONFIRM");
 	}
 
 	private String getProperty(String key, String defaultValue) {
@@ -69,9 +73,11 @@ public class Config {
 
 	public void showProperties() {
 		Log.printLog("====== Paramètres de configuration ======", TypeLog.DEBUGGING);
-		Log.printLog(String.format("Langage utilisé    %s %s", ":", language), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Niveau de log      %s %s", ":", levelLog), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Correction activée %s %s", ":", applyCorrection), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Langage utilisé      %s %s", ":", language), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Niveau de log        %s %s", ":", levelLog), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Correction activée   %s %s", ":", applyCorrection), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Confirmation activée %s %s", ":", confirmFiles), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Mot de confirmation  %s %s", ":", confirmKey), TypeLog.DEBUGGING);
 	}
 
 	public Language getLanguage() {
@@ -95,5 +101,13 @@ public class Config {
 
 	public boolean isApplyCorrection() {
 		return Boolean.valueOf(applyCorrection);
+	}
+	
+	public boolean isConfirmFiles() {
+		return Boolean.valueOf(confirmFiles);
+	}
+	
+	public String getConfirmationKey() {
+		return confirmKey;
 	}
 }

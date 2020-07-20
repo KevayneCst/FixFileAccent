@@ -1,5 +1,8 @@
 package core;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +10,6 @@ import java.util.Map;
 
 import core.grammar.Language;
 import core.grammar.Sentence;
-import core.grammar.UnknowLanguageException;
 import core.log.LevelLog;
 import core.log.Log;
 import core.log.TypeLog;
@@ -44,27 +46,63 @@ public class Core {
 
 	public void start() {
 		Config.getInstance().showProperties();
-		
+
+		List<String> listPathFiles = f.getPathFiles();
 		Map<String, List<Sentence>> fileSentences = new HashMap<>();
 		Map<String, List<Sentence>> fileSentencesCorrected = new HashMap<>();
 
-		fileSentences = readAndStoreLines();
+		if (Config.getInstance().isConfirmFiles()) {
+			showFiles(listPathFiles);
+			waitConfirmation();
+		}
+
+		fileSentences = readAndStoreLines(listPathFiles);
 
 		fileSentencesCorrected = correctFiles(fileSentences);
 
 		if (Config.getInstance().isApplyCorrection()) {
 			writeCorrectionOnFiles(fileSentencesCorrected);
+		} else {
+			Log.printLog("Fin de la simulation", TypeLog.INFO);
+		}
+	}
+	
+	private void showFiles(List<String> listPathFiles) {
+		Log.printLog("Les fichiers suivants vont être corrigés", TypeLog.INFO);
+		int i = 1;
+		for (String s : listPathFiles) {
+			Log.printLog("Fichier n°"+i+ ":"+s,TypeLog.INFO);
+			i++;
 		}
 	}
 
-	private Map<String, List<Sentence>> readAndStoreLines() {
-		List<String> listPathFiles = f.getPathFiles();
+	private void waitConfirmation() {
+		boolean confirmationGiven = false;
+		Log.printLog("Veuillez saisir le mot "+Config.getInstance().getConfirmationKey()+ " pour commencer la correction", TypeLog.INFO);
+		while (!confirmationGiven) {
+			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+			try {
+				System.out.print("$>");
+				String readedString = bufferRead.readLine();
+				if (readedString.equalsIgnoreCase(Config.getInstance().getConfirmationKey())) {
+					confirmationGiven = true;
+					Log.printLog("Mot clé correct, démarrage de la correction...", TypeLog.INFO);
+				} else {
+					Log.printLog("Mot clé incorrect: "+readedString+", veuillez réessayer", TypeLog.INFO);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private Map<String, List<Sentence>> readAndStoreLines(List<String> listPathFiles) {
 		Map<String, List<Sentence>> fileSentences = new HashMap<>();
 		Log.printLog("Étape 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers", TypeLog.INFO);
 		for (String s : listPathFiles) {
 			fileSentences.put(s, r.readFile(s));
 		}
-		
+
 		return fileSentences;
 	}
 
@@ -89,7 +127,7 @@ public class Core {
 				numLigne++;
 			}
 		}
-		
+
 		return fileSentencesCorrected;
 	}
 
