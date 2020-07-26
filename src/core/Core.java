@@ -15,6 +15,7 @@ import core.log.Log;
 import core.log.TypeLog;
 import core.read.Finder;
 import core.read.Reader;
+import core.tools.Utilities;
 import core.write.Creater;
 
 /**
@@ -52,8 +53,8 @@ public class Core {
 		Map<String, List<Sentence>> fileSentencesCorrected = new HashMap<>();
 
 		if (Config.getInstance().isConfirmFiles()) {
-			showFiles(listPathFiles);
-			waitConfirmation();
+			Utilities.showFiles(listPathFiles);
+			Utilities.waitConfirmation();
 		}
 
 		fileSentences = readAndStoreLines(listPathFiles);
@@ -64,35 +65,6 @@ public class Core {
 			writeCorrectionOnFiles(fileSentencesCorrected);
 		} else {
 			Log.printLog("Fin de la simulation", TypeLog.INFO);
-		}
-	}
-	
-	private void showFiles(List<String> listPathFiles) {
-		Log.printLog("Les fichiers suivants vont être corrigés", TypeLog.INFO);
-		int i = 1;
-		for (String s : listPathFiles) {
-			Log.printLog("Fichier n°"+i+ ":"+s,TypeLog.INFO);
-			i++;
-		}
-	}
-
-	private void waitConfirmation() {
-		boolean confirmationGiven = false;
-		Log.printLog("Veuillez saisir le mot "+Config.getInstance().getConfirmationKey()+ " pour commencer la correction", TypeLog.INFO);
-		while (!confirmationGiven) {
-			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-			try {
-				System.out.print("$>");
-				String readedString = bufferRead.readLine();
-				if (readedString.equalsIgnoreCase(Config.getInstance().getConfirmationKey())) {
-					confirmationGiven = true;
-					Log.printLog("Mot clé correct, démarrage de la correction...", TypeLog.INFO);
-				} else {
-					Log.printLog("Mot clé incorrect: "+readedString+", veuillez réessayer", TypeLog.INFO);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 

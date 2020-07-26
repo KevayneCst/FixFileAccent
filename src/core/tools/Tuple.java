@@ -1,4 +1,4 @@
-package core;
+package core.tools;
 
 public class Tuple<A, B> {
 

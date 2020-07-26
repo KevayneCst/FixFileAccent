@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import core.Config;
-import core.Tuple;
 import core.grammar.french.French;
 import core.log.Log;
 import core.log.TypeLog;
+import core.tools.Tuple;
 
 /**
  * Classe permettant de faire différentes opération sur un chaîne de caractère
