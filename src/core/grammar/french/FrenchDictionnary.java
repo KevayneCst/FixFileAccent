@@ -38,7 +38,9 @@ public class FrenchDictionnary extends Dictionnary {
 				String before = line;
 				line = line.trim();
 				if (!line.isEmpty()) {
-					super.getDico().computeIfAbsent(before.length(), k -> new ArrayList<>()).add(new Word(before));
+					Word newEntry = new Word(before);
+					super.getRawDico().add(newEntry);
+					super.getDico().computeIfAbsent(before.length(), k -> new ArrayList<>()).add(newEntry);
 				}
 			}
 			br.close();
