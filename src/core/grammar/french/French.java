@@ -29,10 +29,10 @@ public class French extends Language {
 		int countUnknowChar = toCorrect.countUnknowChar();
 		if (countUnknowChar == 1) {
 			Log.printLog("Correction de la phrase suivante[" + countUnknowChar + " caractère inconnu]: \""
-					+ toCorrect.getTheLine(), TypeLog.DEBUGGING);
+					+ toCorrect.getTheLine() + "\"", TypeLog.DEBUGGING);
 		} else {
 			Log.printLog("Correction de la phrase suivante[" + countUnknowChar + " caractères inconnus]: \""
-					+ toCorrect.getTheLine(), TypeLog.DEBUGGING);
+					+ toCorrect.getTheLine() + "\"", TypeLog.DEBUGGING);
 		}
 		List<Word> listWord = toCorrect.getWords();
 		List<Word> correctedWords = new ArrayList<>();
@@ -86,29 +86,39 @@ public class French extends Language {
 	 */
 	@Override
 	public Word matchWordWithDictionnary(Word w) {
-		List<Integer> unknowsChar = w.findUnknowChar();
-		if (unknowsChar.isEmpty()) {
+		List<Integer> unknowsCharIndexes = w.findUnknowChar();
+		if (unknowsCharIndexes.isEmpty()) {
 			Log.printLog("\"" + w.getTheWord() + "\" n'a pas besoin d'être corrigé", TypeLog.DEBUGGING);
 			return w;
 		} else {
 			List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
+			List<Character> unknowsChars = new ArrayList<>();
 			Log.printLog("Correction du mot \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
 			if (potentialMatches != null) {
 				Log.printLog(potentialMatches.size() + " mots candidats pour la correction", TypeLog.DEBUGGING);
 				for (Word wd : potentialMatches) {
 					StringBuilder tmp = new StringBuilder(w.getTheWord());
-					for (int i : unknowsChar) {
+					for (int i : unknowsCharIndexes) {
 						char currentPotentialMatchChar = wd.getTheWord().charAt(i);
 						if ((currentPotentialMatchChar + "").matches(Regex.REGEX_ONLY_LETTERS)) {
 							break;
 						}
 						tmp.setCharAt(i, currentPotentialMatchChar);
+						unknowsChars.add(currentPotentialMatchChar);
 					}
-					if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
+					if (tmp.toString().equalsIgnoreCase(wd.getTheWord()) && !tmp.toString().equals("âtre")) {
+						StringBuilder sb = new StringBuilder(w.getTheWord());
+						int indexListChars = 0;
+						for (Integer i : unknowsCharIndexes) {
+							sb.setCharAt(i, unknowsChars.get(indexListChars));
+							indexListChars++;
+						}
 						Log.printLog(
 								"Correspondance trouvé pour \"" + w.getTheWord() + "\" => \"" + wd.getTheWord() + "\"",
 								TypeLog.DEBUGGING);
-						return wd;
+						return new Word(sb.toString());
+					} else {
+						unknowsChars.clear();
 					}
 				}
 			}
