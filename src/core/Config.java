@@ -33,6 +33,7 @@ public class Config {
 	private String applyCorrection;
 	private String confirmFiles;
 	private String confirmKey;
+	private String confirmWord;
 
 	private Config() {
 		this.configFile = new File("./config.properties");
@@ -60,6 +61,7 @@ public class Config {
 		this.applyCorrection = getProperty("applyCorrection", "TRUE");
 		this.confirmFiles = getProperty("confirmFiles", "TRUE");
 		this.confirmKey = getProperty("confirmKey", "CONFIRM");
+		this.confirmWord = getProperty("confirmWord", "TRUE");
 	}
 
 	private String getProperty(String key, String defaultValue) {
@@ -78,6 +80,7 @@ public class Config {
 		Log.printLog(String.format("Correction activée   %s %s", ":", applyCorrection), TypeLog.DEBUGGING);
 		Log.printLog(String.format("Confirmation activée %s %s", ":", confirmFiles), TypeLog.DEBUGGING);
 		Log.printLog(String.format("Mot de confirmation  %s %s", ":", confirmKey), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Choix du mot corrigé %s %s", ":", confirmWord), TypeLog.DEBUGGING);
 	}
 
 	public Language getLanguage() {
@@ -109,5 +112,9 @@ public class Config {
 	
 	public String getConfirmationKey() {
 		return confirmKey;
+	}
+	
+	public boolean isConfirmWord() {
+		return Boolean.valueOf(confirmWord);
 	}
 }
