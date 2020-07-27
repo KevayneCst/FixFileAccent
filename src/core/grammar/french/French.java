@@ -3,6 +3,7 @@ package core.grammar.french;
 import java.util.ArrayList;
 import java.util.List;
 
+import core.Config;
 import core.grammar.Language;
 import core.grammar.Regex;
 import core.grammar.Sentence;
@@ -94,6 +95,7 @@ public class French extends Language {
 		} else {
 			List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
 			List<Character> unknowsChars = new ArrayList<>();
+			List<Word> rightMatches = new ArrayList<>();
 			Log.printLog("Correction du mot \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
 			if (potentialMatches != null) {
 				Log.printLog(potentialMatches.size() + " mots candidats pour la correction", TypeLog.DEBUGGING);
@@ -107,20 +109,29 @@ public class French extends Language {
 						tmp.setCharAt(i, currentPotentialMatchChar);
 						unknowsChars.add(currentPotentialMatchChar);
 					}
-					if (tmp.toString().equalsIgnoreCase(wd.getTheWord()) && !tmp.toString().equals("âtre")) {
+					if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
 						StringBuilder sb = new StringBuilder(w.getTheWord());
 						int indexListChars = 0;
 						for (Integer i : unknowsCharIndexes) {
 							sb.setCharAt(i, unknowsChars.get(indexListChars));
 							indexListChars++;
 						}
+						Word correctedWord = new Word(sb.toString());
 						Log.printLog(
-								"Correspondance trouvé pour \"" + w.getTheWord() + "\" => \"" + wd.getTheWord() + "\"",
+								"Correspondance trouvé pour \"" + w.getTheWord() + "\" => \"" + correctedWord.getTheWord() + "\"",
 								TypeLog.DEBUGGING);
-						return new Word(sb.toString());
+						if (Config.getInstance().isConfirmWord()) {
+							rightMatches.add(correctedWord);
+							unknowsChars.clear();
+						} else {
+							return correctedWord;
+						}
 					} else {
 						unknowsChars.clear();
 					}
+				}
+				if (!rightMatches.isEmpty()) {
+					return rightMatches.size() == 1 ? rightMatches.get(0) : Utilities.waitConfirmationWord(w, rightMatches);
 				}
 			}
 			Log.printLog(
