@@ -19,26 +19,26 @@ public class Utilities {
 	}
 	
 	public static void showFiles(List<String> listPathFiles) {
-		Log.printLog("Les fichiers suivants vont être corrigés", TypeLog.INFO);
+		Log.printLog("Les fichiers suivants vont être corrigés", TypeLog.ESSENTIAL);
 		int i = 1;
 		for (String s : listPathFiles) {
-			Log.printLog("Fichier n°"+i+ ":"+s,TypeLog.INFO);
+			Log.printLog("Fichier n°"+i+ ":"+s,TypeLog.ESSENTIAL);
 			i++;
 		}
 	}
 
 	public static void waitConfirmationKey() {
 		boolean confirmationGiven = false;
-		Log.printLog("Veuillez saisir le mot "+Config.getInstance().getConfirmationKey()+ " pour commencer la correction", TypeLog.INFO);
+		Log.printLog("Veuillez saisir le mot "+Config.getInstance().getConfirmationKey()+ " pour commencer la correction", TypeLog.ESSENTIAL);
 		while (!confirmationGiven) {
 			try {
 				System.out.print(PROMPT);
 				String readedString = INPUT_READER.readLine();
 				if (readedString.equalsIgnoreCase(Config.getInstance().getConfirmationKey())) {
 					confirmationGiven = true;
-					Log.printLog("Mot clé correct, démarrage de la correction...", TypeLog.INFO);
+					Log.printLog("Mot clé correct, démarrage de la correction...", TypeLog.ESSENTIAL);
 				} else {
-					Log.printLog("Mot clé incorrect: "+readedString+", veuillez réessayer", TypeLog.INFO);
+					Log.printLog("Mot clé incorrect: "+readedString+", veuillez réessayer", TypeLog.ESSENTIAL);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
