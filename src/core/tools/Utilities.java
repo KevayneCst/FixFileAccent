@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import core.Config;
+import core.grammar.Word;
 import core.log.Log;
 import core.log.TypeLog;
 
@@ -41,5 +42,14 @@ public class Utilities {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static String debugStringList(List<Word> listWord) {
+		StringBuilder sb = new StringBuilder();
+		for (Word w : listWord) {
+			String currentWord = "["+w.getTheWord()+"]";
+			sb.append(currentWord + " ");
+		}
+		return sb.toString();
 	}
 }

@@ -12,6 +12,7 @@ import core.grammar.french.French;
 import core.log.Log;
 import core.log.TypeLog;
 import core.tools.Tuple;
+import core.tools.Utilities;
 
 /**
  * Classe permettant de faire différentes opération sur un chaîne de caractère
@@ -156,7 +157,7 @@ public class Sentence {
 	 */
 	public Sentence rebuildSentence(List<Word> purifiedAndCorrectedWords) {
 		Log.printLog("Reconstruction de la phrase avec les mots purifiés suivants :"
-				+ Word.debugStringList(purifiedAndCorrectedWords), TypeLog.DEBUGGING);
+				+ Utilities.debugStringList(purifiedAndCorrectedWords), TypeLog.DEBUGGING);
 		StringBuilder sb = new StringBuilder();
 		int lastIndex = words.size() - 1;
 		boolean lastWasWithSpace = true;

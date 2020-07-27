@@ -9,6 +9,7 @@ import core.grammar.Sentence;
 import core.grammar.Word;
 import core.log.Log;
 import core.log.TypeLog;
+import core.tools.Utilities;
 
 /**
  * Classe concrète étendant <code>Language</code>, définissant les caractères
@@ -46,7 +47,7 @@ public class French extends Language {
 				if (isWordCorrected)
 					countUnknowChar--;
 			}
-			Log.printLog("Mots corrigés:" + Word.debugStringList(correctedWords), TypeLog.DEBUGGING);
+			Log.printLog("Mots corrigés:" + Utilities.debugStringList(correctedWords), TypeLog.DEBUGGING);
 		}
 		return correctedWords;
 	}

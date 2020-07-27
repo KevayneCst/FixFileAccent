@@ -66,16 +66,4 @@ public class Word {
 	public String toString() {
 		return "Word [word=" + theWord + "]";
 	}
-	
-	private String debugString() {
-		return "["+ theWord +"]";
-	}
-	
-	public static String debugStringList(List<Word> listWord) {
-		StringBuilder sb = new StringBuilder();
-		for (Word w : listWord) {
-			sb.append(w.debugString() + " ");
-		}
-		return sb.toString();
-	}
 }
