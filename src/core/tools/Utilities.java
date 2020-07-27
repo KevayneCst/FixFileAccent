@@ -13,6 +13,7 @@ import core.log.TypeLog;
 public class Utilities {
 
 	private static final String PROMPT = "$>";
+	private static final BufferedReader INPUT_READER = new BufferedReader(new InputStreamReader(System.in));
 	
 	private Utilities() {
 	}
@@ -30,10 +31,9 @@ public class Utilities {
 		boolean confirmationGiven = false;
 		Log.printLog("Veuillez saisir le mot "+Config.getInstance().getConfirmationKey()+ " pour commencer la correction", TypeLog.INFO);
 		while (!confirmationGiven) {
-			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 			try {
 				System.out.print(PROMPT);
-				String readedString = bufferRead.readLine();
+				String readedString = INPUT_READER.readLine();
 				if (readedString.equalsIgnoreCase(Config.getInstance().getConfirmationKey())) {
 					confirmationGiven = true;
 					Log.printLog("Mot clé correct, démarrage de la correction...", TypeLog.INFO);
