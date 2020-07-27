@@ -12,6 +12,8 @@ import core.log.TypeLog;
 
 public class Utilities {
 
+	private static final String PROMPT = "$>";
+	
 	private Utilities() {
 	}
 	
@@ -30,7 +32,7 @@ public class Utilities {
 		while (!confirmationGiven) {
 			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 			try {
-				System.out.print("$>");
+				System.out.print(PROMPT);
 				String readedString = bufferRead.readLine();
 				if (readedString.equalsIgnoreCase(Config.getInstance().getConfirmationKey())) {
 					confirmationGiven = true;
