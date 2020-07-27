@@ -32,7 +32,7 @@ public class Log {
 	 * @param tl      L
 	 */
 	public static void printLog(String message, TypeLog tl) {
-		if (Core.level.getLevel() != LevelLog.QUIET.getLevel() || tl.isPriorityTypeLog()) {
+		if (!Core.level.equals(LevelLog.QUIET) || tl.isPriorityTypeLog()) {
 			try {
 				Date today = new Date();
 				SimpleDateFormat formater = new SimpleDateFormat("'['yyyy-MM-dd | HH:mm:ss:SSSS']'");
@@ -49,7 +49,7 @@ public class Log {
 					System.out.println(finalMessage);
 					Thread.sleep(SLEEPING_TIME);
 					System.exit(1);
-				} else if (tl.equals(TypeLog.ESSENTIAL) || (tl.equals(TypeLog.DEBUGGING) && Core.level.equals(LevelLog.DEBUG)) || !Core.level.equals(LevelLog.QUIET)) {
+				} else if (tl.equals(TypeLog.ESSENTIAL) || (tl.equals(TypeLog.DEBUGGING) && Core.level.equals(LevelLog.DEBUG))) {
 					System.out.println(finalMessage);
 					if (tl.isErrorTypeLog()) {
 						writeOnErrorLog(finalMessage);
