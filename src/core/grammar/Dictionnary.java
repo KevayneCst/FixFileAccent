@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import core.grammar.french.FrenchDictionnary;
-
 /**
  * Classe abstraite dont le but est d'être dérivée par de nouvelles classes
  * définissant de nouveau dictionnaires dans différentes langues utilisant des
