@@ -54,7 +54,7 @@ public class Core {
 
 		if (Config.getInstance().isConfirmFiles()) {
 			Utilities.showFiles(listPathFiles);
-			Utilities.waitConfirmation();
+			Utilities.waitConfirmationKey();
 		}
 
 		fileSentences = readAndStoreLines(listPathFiles);

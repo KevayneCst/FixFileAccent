@@ -26,7 +26,7 @@ public class Utilities {
 		}
 	}
 
-	public static void waitConfirmation() {
+	public static void waitConfirmationKey() {
 		boolean confirmationGiven = false;
 		Log.printLog("Veuillez saisir le mot "+Config.getInstance().getConfirmationKey()+ " pour commencer la correction", TypeLog.INFO);
 		while (!confirmationGiven) {
