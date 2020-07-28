@@ -49,19 +49,20 @@ public class Log {
 					System.out.println(finalMessage);
 					Thread.sleep(SLEEPING_TIME);
 					System.exit(1);
-				} else if (tl.equals(TypeLog.ESSENTIAL) || (tl.equals(TypeLog.DEBUGGING) && Core.level.equals(LevelLog.DEBUG))) {
+				} else if (tl.isErrorTypeLog()) {
+					System.err.println(finalMessage);
+					writeOnErrorLog(finalMessage);
+				} else if (tl.equals(TypeLog.ESSENTIAL) || tl.equals(TypeLog.INFO)
+						|| (tl.equals(TypeLog.DEBUGGING) && Core.level.equals(LevelLog.DEBUG))) {
 					System.out.println(finalMessage);
-					if (tl.isErrorTypeLog()) {
-						writeOnErrorLog(finalMessage);
-					}
-				} 
+				}
 			} catch (InterruptedException e) {
 				System.out.println("Erreur d'interruption lors du sommeil du programme, aucune action n'est requise");
 				Thread.currentThread().interrupt();
 			}
 		}
 	}
-	
+
 	private static void writeOnNormalLog(String message) {
 		PrintWriter pw;
 		try {
@@ -75,7 +76,7 @@ public class Log {
 							+ LOG_FILE.getAbsolutePath() + "\"");
 		}
 	}
-	
+
 	private static void writeOnErrorLog(String message) {
 		PrintWriter pw;
 		try {
