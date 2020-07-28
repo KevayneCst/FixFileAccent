@@ -93,51 +93,59 @@ public class French extends Language {
 			Log.printLog("\"" + w.getTheWord() + "\" n'a pas besoin d'être corrigé", TypeLog.DEBUGGING);
 			return w;
 		} else {
-			List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
-			List<Character> unknowsChars = new ArrayList<>();
-			List<Word> rightMatches = new ArrayList<>();
-			Log.printLog("Correction du mot \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
-			if (potentialMatches != null) {
-				Log.printLog(potentialMatches.size() + " mots candidats pour la correction", TypeLog.DEBUGGING);
-				for (Word wd : potentialMatches) {
-					StringBuilder tmp = new StringBuilder(w.getTheWord());
-					for (int i : unknowsCharIndexes) {
-						char currentPotentialMatchChar = wd.getTheWord().charAt(i);
-						if ((currentPotentialMatchChar + "").matches(Regex.REGEX_ONLY_LETTERS)) {
-							break;
+			Word potentialSavedWord = super.checkIfWordAlreadyCorrected(w);
+			if (potentialSavedWord.equals(w)) {
+				List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
+				List<Character> unknowsChars = new ArrayList<>();
+				List<Word> rightMatches = new ArrayList<>();
+				Log.printLog("Correction du mot \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
+				if (potentialMatches != null) {
+					Log.printLog(potentialMatches.size() + " mots candidats pour la correction", TypeLog.DEBUGGING);
+					for (Word wd : potentialMatches) {
+						StringBuilder tmp = new StringBuilder(w.getTheWord());
+						for (int i : unknowsCharIndexes) {
+							char currentPotentialMatchChar = wd.getTheWord().charAt(i);
+							if ((currentPotentialMatchChar + "").matches(Regex.REGEX_ONLY_LETTERS)) {
+								break;
+							}
+							tmp.setCharAt(i, currentPotentialMatchChar);
+							unknowsChars.add(currentPotentialMatchChar);
 						}
-						tmp.setCharAt(i, currentPotentialMatchChar);
-						unknowsChars.add(currentPotentialMatchChar);
-					}
-					if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
-						StringBuilder sb = new StringBuilder(w.getTheWord());
-						int indexListChars = 0;
-						for (Integer i : unknowsCharIndexes) {
-							sb.setCharAt(i, unknowsChars.get(indexListChars));
-							indexListChars++;
-						}
-						Word correctedWord = new Word(sb.toString());
-						Log.printLog(
-								"Correspondance trouvé pour \"" + w.getTheWord() + "\" => \"" + correctedWord.getTheWord() + "\"",
-								TypeLog.DEBUGGING);
-						if (Config.getInstance().isConfirmWord()) {
-							rightMatches.add(correctedWord);
-							unknowsChars.clear();
+						if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
+							StringBuilder sb = new StringBuilder(w.getTheWord());
+							int indexListChars = 0;
+							for (Integer i : unknowsCharIndexes) {
+								sb.setCharAt(i, unknowsChars.get(indexListChars));
+								indexListChars++;
+							}
+							Word correctedWord = new Word(sb.toString());
+							Log.printLog(
+									"Correspondance trouvé pour \"" + w.getTheWord() + "\" => \"" + correctedWord.getTheWord() + "\"",
+									TypeLog.DEBUGGING);
+							if (Config.getInstance().isConfirmWord()) {
+								rightMatches.add(correctedWord);
+								unknowsChars.clear();
+							} else {
+								super.getSavedCorrections().put(w, correctedWord);
+								return correctedWord;
+							}
 						} else {
-							return correctedWord;
+							unknowsChars.clear();
 						}
-					} else {
-						unknowsChars.clear();
+					}
+					if (!rightMatches.isEmpty()) {
+						Word choosenWord = rightMatches.size() == 1 ? rightMatches.get(0) : Utilities.waitConfirmationWord(w, rightMatches);
+						super.getSavedCorrections().put(w, choosenWord);
+						return choosenWord;
 					}
 				}
-				if (!rightMatches.isEmpty()) {
-					return rightMatches.size() == 1 ? rightMatches.get(0) : Utilities.waitConfirmationWord(w, rightMatches);
-				}
+				Log.printLog(
+						"Impossible de trouver une correspondance dans le dictionnaire pour \"" + w.getTheWord() + "\"",
+						TypeLog.WARNING);
+				return w;
+			} else {
+				return potentialSavedWord;
 			}
-			Log.printLog(
-					"Impossible de trouver une correspondance dans le dictionnaire pour \"" + w.getTheWord() + "\"",
-					TypeLog.WARNING);
-			return w;
 		}
 	}
 }
