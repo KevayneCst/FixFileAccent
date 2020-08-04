@@ -25,6 +25,8 @@ class TestSentence {
 	String str15 = "!?ùEgalit�!\\n\\n\");";
 	String str16 = "\\\\Je suis un commentaire de code. Je contiens un accent � corriger, peut-�tre plus?Quoiqu'il en soit, il faut �tre: prudent, curieux, s�rieux.";
 	String str17 = "if ((variable1 && variable2) || (oula || ohoh)) { System.out.println(\"�tat de variable1:\"+variable1+\"\\n état de variable2:\"+variable2+\"\\n �tat de oula:\"+oula+\"\\n état de ohoh:\"+ohoh); }";
+	String str18 = "*Il manquait le fait d'ajouter dans la port�e la case d'une";
+	String str19 = "* pi�ce d'une autre couleur si la case n'�tait pas libre";
 
 	Language lang = new French();
 
@@ -45,6 +47,8 @@ class TestSentence {
 	Sentence s15 = new Sentence(str15);
 	Sentence s16 = new Sentence(str16);
 	Sentence s17 = new Sentence(str17);
+	Sentence s18 = new Sentence(str18);
+	Sentence s19 = new Sentence(str19);
 
 	@Test
 	void testCorrectSentence() {
@@ -65,11 +69,20 @@ class TestSentence {
 		assertEquals(
 				"System.out.println(\"Le thème sera fixé le lendemain matin, vers 8heures, avec peut-être 10-15minutes de retard\");",
 				s12.rebuildSentence(lang.correctSentence(s12)).getTheLine());
-		assertEquals("System.out.println(\"Bonjour\\nJe pense que ça ne va bien aller\\t. Après, je peux me tromper et je l'espère fortement !!!Mais bon, c'est pas évident d'en être sûr!\");",
+		assertEquals(
+				"System.out.println(\"Bonjour\\nJe pense que ça ne va bien aller\\t. Après, je peux me tromper et je l'espère fortement !!!Mais bon, c'est pas évident d'en être sûr!\");",
 				s13.rebuildSentence(lang.correctSentence(s13)).getTheLine());
 		assertEquals("Egalit�!\\n\\n\");", s14.rebuildSentence(lang.correctSentence(s14)).getTheLine());
-		assertEquals("!?ùEgalit�!\\n\\n\");",s15.rebuildSentence(lang.correctSentence(s15)).getTheLine());
-		assertEquals("\\\\Je suis un commentaire de code. Je contiens un accent à corriger, peut-être plus?Quoiqu'il en soit, il faut être: prudent, curieux, sérieux.",s16.rebuildSentence(lang.correctSentence(s16)).getTheLine());
-		assertEquals("if ((variable1 && variable2) || (oula || ohoh)) { System.out.println(\"état de variable1:\"+variable1+\"\\n état de variable2:\"+variable2+\"\\n état de oula:\"+oula+\"\\n état de ohoh:\"+ohoh); }",s17.rebuildSentence(lang.correctSentence(s17)).getTheLine());
+		assertEquals("!?ùEgalit�!\\n\\n\");", s15.rebuildSentence(lang.correctSentence(s15)).getTheLine());
+		assertEquals(
+				"\\\\Je suis un commentaire de code. Je contiens un accent à corriger, peut-être plus?Quoiqu'il en soit, il faut être: prudent, curieux, sérieux.",
+				s16.rebuildSentence(lang.correctSentence(s16)).getTheLine());
+		assertEquals(
+				"if ((variable1 && variable2) || (oula || ohoh)) { System.out.println(\"état de variable1:\"+variable1+\"\\n état de variable2:\"+variable2+\"\\n état de oula:\"+oula+\"\\n état de ohoh:\"+ohoh); }",
+				s17.rebuildSentence(lang.correctSentence(s17)).getTheLine());
+		assertEquals("*Il manquait le fait d'ajouter dans la portée la case d'une",
+				s18.rebuildSentence(lang.correctSentence(s18)).getTheLine());
+		assertEquals("* pièce d'une autre couleur si la case n'était pas libre",
+				s19.rebuildSentence(lang.correctSentence(s19)).getTheLine());
 	}
 }

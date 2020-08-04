@@ -11,7 +11,7 @@ public class Regex {
 
 	public static final String REGEX_ONLY_LETTERS = "[a-zA-Z]+";
 	public static final String REGEX_ONLY_DIGITS = "[0-9]+";
-	public static final String REGEX_SPACE = "[[ ]*]+";
+	public static final String REGEX_SPACE = "[[ ]]+";
 	public static final String REGEX_NO_LETTERS_AND_DIGITS = "[^A-Za-z0-9]+";
 	public static final String REGEX_LETTERS_DASH_LETTERS = "[a-zA-Z]+[-][a-zA-Z]+";
 	public static final String REGEX_LETTERS_APOSTROPHE_LETTERS = "[a-zA-Z]+['][a-zA-Z]+";
