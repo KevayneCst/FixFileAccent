@@ -68,14 +68,14 @@ public class Sentence {
 		for (String currentString : spaceSplit) {
 			if (!currentString.contains(Word.UNKNOWCHAR + "")) {
 				list.add(new Word(currentString));
-				specificCharDeleted.add(new HashMap<Integer, Character>());
+				specificCharDeleted.add(new HashMap<>());
 				rebuildWithSpace.add(true);
 			} else {
 				String tmp = currentString.replaceAll(Word.UNKNOWCHAR + "", "e");
 				if (tmp.matches(Regex.REGEX_LETTERS_APOSTROPHE_LETTERS) || tmp.matches(Regex.REGEX_LETTERS_DASH_LETTERS)
 						|| tmp.matches(Regex.REGEX_ONLY_LETTERS)) {
 					list.add(new Word(currentString));
-					specificCharDeleted.add(new HashMap<Integer, Character>());
+					specificCharDeleted.add(new HashMap<>());
 					rebuildWithSpace.add(true);
 				} else {
 					Map<Integer, Character> map = mapOfPuncChar(currentString);
