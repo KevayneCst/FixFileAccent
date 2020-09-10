@@ -141,30 +141,6 @@ class TestWord {
 	}
 
 	@Test
-	void testEqualsReflexive() {
-		assertTrue(w1.equals(w1));
-		assertTrue(w2.equals(w2));
-		assertTrue(w3.equals(w3));
-		assertTrue(w4.equals(w4));
-		assertTrue(w5.equals(w5));
-		assertTrue(w6.equals(w6));
-		assertTrue(w7.equals(w7));
-		assertTrue(w8.equals(w8));
-		assertTrue(w9.equals(w9));
-		assertTrue(w10.equals(w10));
-		assertTrue(w11.equals(w11));
-		assertTrue(w12.equals(w12));
-		assertTrue(w13.equals(w13));
-		assertTrue(w14.equals(w14));
-		assertTrue(w15.equals(w15));
-		assertTrue(w16.equals(w16));
-		assertTrue(w17.equals(w17));
-		assertTrue(w18.equals(w18));
-		assertTrue(w19.equals(w19));
-		assertTrue(w20.equals(w20));
-	}
-
-	@Test
 	void testEqualsSymmetric() {
 		assertTrue(w1.equals(w1bis));
 		assertTrue(w1bis.equals(w1));
