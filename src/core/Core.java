@@ -46,17 +46,13 @@ public class Core {
 		Config.getInstance().showProperties();
 
 		List<String> listPathFiles = f.getPathFiles();
-		Map<String, List<Sentence>> fileSentences = new HashMap<>();
-		Map<String, List<Sentence>> fileSentencesCorrected = new HashMap<>();
+		Map<String, List<Sentence>> fileSentences = readAndStoreLines(listPathFiles);
+		Map<String, List<Sentence>> fileSentencesCorrected = correctFiles(fileSentences);
 
 		if (Config.getInstance().isConfirmFiles()) {
 			Utilities.showFiles(listPathFiles);
 			Utilities.waitConfirmationKey();
 		}
-
-		fileSentences = readAndStoreLines(listPathFiles);
-
-		fileSentencesCorrected = correctFiles(fileSentences);
 
 		if (Config.getInstance().isApplyCorrection()) {
 			writeCorrectionOnFiles(fileSentencesCorrected);
