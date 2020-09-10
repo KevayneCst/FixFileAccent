@@ -163,7 +163,7 @@ public class Sentence {
 			if (i == lastIndex) {
 				sb.append(w.getTheWord());
 			} else {
-				if (rebuildWithSpace.get(i)) {
+				if (rebuildWithSpace.get(i).booleanValue()) {
 					if (lastWasWithSpace) {
 						sb.append(w.getTheWord() + " ");
 					} else {
