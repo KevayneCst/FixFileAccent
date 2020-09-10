@@ -30,9 +30,7 @@ public class FrenchDictionnary extends Dictionnary {
 	public void fillDictionnary() {
 		long startTime = System.currentTimeMillis();
 		File fichier = new File(PATHFILEDICTIONNARY);
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new FileReader(fichier));
+		try (BufferedReader br = new BufferedReader(new FileReader(fichier))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				String before = line;
@@ -43,7 +41,6 @@ public class FrenchDictionnary extends Dictionnary {
 					super.getDico().computeIfAbsent(before.length(), k -> new ArrayList<>()).add(newEntry);
 				}
 			}
-			br.close();
 			Log.printLog("Lecture du dictionnaire \"" + PATHFILEDICTIONNARY + "\" en "
 					+ (System.currentTimeMillis() - startTime) + " ms", TypeLog.DEBUGGING);
 		} catch (Exception e) {

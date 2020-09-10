@@ -24,14 +24,11 @@ public class Reader {
 	public List<Sentence> readFile(String pathFile) {
 		List<Sentence> list = new ArrayList<>();
 		File fichier = new File(pathFile);
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new FileReader(fichier));
+		try (BufferedReader br = new BufferedReader(new FileReader(fichier))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				list.add(new Sentence(line));
 			}
-			br.close();
 		} catch (Exception e) {
 			System.out.println("Erreur lors de la lecture du fichier: \"" + pathFile + "\":");
 			e.printStackTrace();

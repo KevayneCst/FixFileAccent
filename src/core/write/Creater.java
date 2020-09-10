@@ -63,12 +63,10 @@ public class Creater {
 	}
 
 	public void writeFile(String pathFile, List<Sentence> list) {
-		try {
-			FileWriter myWriter = new FileWriter(pathFile);
+		try (FileWriter myWriter = new FileWriter(pathFile)) {
 			for (Sentence line : list) {
 				myWriter.write(line.getTheLine() + "\n");
 			}
-			myWriter.close();
 		} catch (IOException e) {
 			Log.printLog("Erreur lors de l'écriture du fichier: \"" + pathFile + "\"", TypeLog.CRITICAL);
 		}
