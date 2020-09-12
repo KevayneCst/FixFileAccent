@@ -35,7 +35,7 @@ public class Core {
 		r = new Reader();
 		f = new Finder(pathDirectory);
 		lang = Config.getInstance().getLanguage();
-		c.makeSave(pathDirectory); // TODO log sauvegarde effectué du répertoire d'entrée
+		c.makeSave(pathDirectory);
 	}
 
 	private void putIntoMap(Map<String, List<Sentence>> map, String key, Sentence toAdd) {
