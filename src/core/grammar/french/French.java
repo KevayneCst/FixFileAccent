@@ -95,57 +95,94 @@ public class French extends Language {
 		} else {
 			Word potentialSavedWord = super.checkIfWordAlreadyCorrected(w);
 			if (potentialSavedWord.equals(w)) {
-				List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
-				List<Character> unknowsChars = new ArrayList<>();
-				List<Word> rightMatches = new ArrayList<>();
-				Log.printLog("Correction du mot \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
-				if (potentialMatches != null) {
-					Log.printLog(potentialMatches.size() + " mots candidats pour la correction", TypeLog.DEBUGGING);
-					for (Word wd : potentialMatches) {
-						StringBuilder tmp = new StringBuilder(w.getTheWord());
-						for (int i : unknowsCharIndexes) {
-							char currentPotentialMatchChar = wd.getTheWord().charAt(i);
-							if ((currentPotentialMatchChar + "").matches(Regex.REGEX_ONLY_LETTERS)) {
-								break;
-							}
-							tmp.setCharAt(i, currentPotentialMatchChar);
-							unknowsChars.add(currentPotentialMatchChar);
-						}
-						if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
-							StringBuilder sb = new StringBuilder(w.getTheWord());
-							int indexListChars = 0;
-							for (Integer i : unknowsCharIndexes) {
-								sb.setCharAt(i, unknowsChars.get(indexListChars));
-								indexListChars++;
-							}
-							Word correctedWord = new Word(sb.toString());
-							Log.printLog(
-									"Correspondance trouvé pour \"" + w.getTheWord() + "\" => \"" + correctedWord.getTheWord() + "\"",
-									TypeLog.DEBUGGING);
-							if (Config.getInstance().isConfirmWord()) {
-								rightMatches.add(correctedWord);
-								unknowsChars.clear();
-							} else {
-								super.getSavedCorrections().put(w, correctedWord);
-								return correctedWord;
-							}
-						} else {
-							unknowsChars.clear();
-						}
-					}
-					if (!rightMatches.isEmpty()) {
-						Word choosenWord = rightMatches.size() == 1 ? rightMatches.get(0) : Utilities.waitConfirmationWord(w, rightMatches);
-						super.getSavedCorrections().put(w, choosenWord);
-						return choosenWord;
-					}
-				}
-				Log.printLog(
-						"Impossible de trouver une correspondance dans le dictionnaire pour \"" + w.getTheWord() + "\"",
-						TypeLog.WARNING);
-				return w;
+				return tryCorrection(w, unknowsCharIndexes);
 			} else {
 				return potentialSavedWord;
 			}
 		}
+	}
+
+	/**
+	 * Fonction qui va tenter de corriger <code>w</code> en recherchant les mots
+	 * candidats pour une correction, et qui pour chacun d'eux va vérifier s'ils le
+	 * sont vraiment dans <code>computePotentialMatches</code>.
+	 * 
+	 * @param w                  Le mot corrompu à corriger
+	 * @param unknowsCharIndexes Liste d'indice du/des caractère(s) corrompu(s) de
+	 *                           <code>w</code>
+	 * @return <code>Word</code>
+	 */
+	private Word tryCorrection(Word w, List<Integer> unknowsCharIndexes) {
+		List<Word> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
+		List<Word> rightMatches = new ArrayList<>();
+		Log.printLog("Correction du mot \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
+		if (potentialMatches != null) {
+			Log.printLog(potentialMatches.size() + " mots candidats pour la correction", TypeLog.DEBUGGING);
+			Word result = computePotentialMatches(w, unknowsCharIndexes, potentialMatches, rightMatches);
+			if (result != null) {
+				return result;
+			} else {
+				if (!rightMatches.isEmpty()) {
+					Word choosenWord = rightMatches.size() == 1 ? rightMatches.get(0)
+							: Utilities.waitConfirmationWord(w, rightMatches);
+					super.getSavedCorrections().put(w, choosenWord);
+					return choosenWord;
+				}
+			}
+		}
+		Log.printLog("Impossible de trouver une correspondance dans le dictionnaire pour \"" + w.getTheWord() + "\"",
+				TypeLog.WARNING);
+		return w;
+	}
+
+	/**
+	 * Fonction qui va vérifier pour chacun des mots de
+	 * <code>potentialMatches</code> s'il s'agit du mot corrompu à corriger
+	 * <code>w</code>.<br>
+	 * Si l'option <code>isConfirmWord</code> dans le fichier de configuration est
+	 * activé, va renvoyer le premier résultat positif (un type <code>Word</code>),
+	 * sinon va chercher tous les résultats positifs, les stocker dans
+	 * <code>rightMatches</code> et renvoyer <code>null</code>.
+	 * 
+	 * @param w                  Le mot corrompu à corriger
+	 * @param unknowsCharIndexes Liste d'indice du/des caractère(s) corrompu(s) de
+	 *                           <code>w</code>
+	 * @param potentialMatches   Liste de mots candidats à la correction de
+	 *                           <code>w</code>
+	 * @param rightMatches       Liste des mots qui sont égaux à <code>w</code>
+	 * @return <code>Word</code> OU <code>null</code>
+	 */
+	private Word computePotentialMatches(Word w, List<Integer> unknowsCharIndexes, List<Word> potentialMatches,
+			List<Word> rightMatches) {
+		for (Word wd : potentialMatches) {
+			List<Character> unknowsChars = new ArrayList<>();
+			StringBuilder tmp = new StringBuilder(w.getTheWord());
+			for (int i : unknowsCharIndexes) {
+				char currentPotentialMatchChar = wd.getTheWord().charAt(i);
+				if ((currentPotentialMatchChar + "").matches(Regex.REGEX_ONLY_LETTERS)) {
+					break;
+				}
+				tmp.setCharAt(i, currentPotentialMatchChar);
+				unknowsChars.add(currentPotentialMatchChar);
+			}
+			if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
+				StringBuilder sb = new StringBuilder(w.getTheWord());
+				int indexListChars = 0;
+				for (Integer i : unknowsCharIndexes) {
+					sb.setCharAt(i, unknowsChars.get(indexListChars));
+					indexListChars++;
+				}
+				Word correctedWord = new Word(sb.toString());
+				Log.printLog("Correspondance trouvé pour \"" + w.getTheWord() + "\" => \"" + correctedWord.getTheWord()
+						+ "\"", TypeLog.DEBUGGING);
+				if (Config.getInstance().isConfirmWord()) {
+					rightMatches.add(correctedWord);
+				} else {
+					super.getSavedCorrections().put(w, correctedWord);
+					return correctedWord;
+				}
+			}
+		}
+		return null;
 	}
 }
