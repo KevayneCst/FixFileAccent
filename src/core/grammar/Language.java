@@ -25,7 +25,15 @@ public abstract class Language {
 	public abstract List<Word> correctSentence(Sentence toCorrect);
 
 	public abstract Word matchWordWithDictionnary(Word w);
-	
+
+	/**
+	 * Vérifie que le mot passé en paramètre <code>w</code> n'ait pas déjà été
+	 * corrigé. S'il l'a déjà été, alors la fonction renverra le mot corrigé, sinon
+	 * elle renverra <code>w</code>.
+	 * 
+	 * @param w Le mot corrompu dont on veut savoir s'il a déjà été corrigé
+	 * @return <code>Version corrigé de w</code> OU <code>w</code>
+	 */
 	public Word checkIfWordAlreadyCorrected(Word w) {
 		return savedCorrections.containsKey(w) ? savedCorrections.get(w) : w;
 	}

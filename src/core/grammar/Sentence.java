@@ -134,6 +134,18 @@ public class Sentence {
 		return new Tuple<>(list, listOfMap);
 	}
 
+	/**
+	 * Fonction qui va à partir de la chaîne passée en paramètre <code>s</code>,
+	 * trouver tous les caractères de ponctuation et ranger ces caractères selon
+	 * leurs indices de positionnement dans la chaîne.<br>
+	 * <br>
+	 * 
+	 * Exemple : <code>mapOfPuncChar("allo ?! allez-y...")</code> donnera
+	 * <code>{5=?, 6=!, 13=-, 15=., 16=., 17=.}<code>
+	 * 
+	 * @param s La chaîne à analyser
+	 * @return
+	 */
 	private Map<Integer, Character> mapOfPuncChar(String s) {
 		Map<Integer, Character> map = new TreeMap<>();
 		for (int i = 0; i < s.length(); i++) {

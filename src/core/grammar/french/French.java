@@ -83,8 +83,8 @@ public class French extends Language {
 	 * DONC le mot qu'on cherchait était "créer".
 	 * 
 	 * 
-	 * @param w Le mot inconnu
-	 * @return
+	 * @param w Le mot corrompu et inconnu à corriger
+	 * @return <code>Word</code>
 	 */
 	@Override
 	public Word matchWordWithDictionnary(Word w) {
