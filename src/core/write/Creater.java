@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 import core.grammar.Sentence;
 import core.log.Log;
@@ -32,8 +33,8 @@ public class Creater {
 	}
 
 	private void copyFolder(Path src, Path dest) {
-		try {
-			Files.walk(src).forEach(s -> {
+		try (Stream<Path> stream = Files.walk(src)) {
+			stream.forEach(s -> {
 				try {
 					Path d = dest.resolve(src.relativize(s));
 					if (s.toFile().isDirectory()) {
