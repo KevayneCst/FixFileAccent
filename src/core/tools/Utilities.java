@@ -72,7 +72,7 @@ public class Utilities {
 	/**
 	 * Méthode qui va demander à l'utilisateur (si dans
 	 * <code>config.properties</code>, <code>confirmWord = true</code>) de choisir
-	 * parmis tout les mots de la liste <code>wordsToDisplay</code>, lequel
+	 * parmis tous les mots de la liste <code>wordsToDisplay</code>, lequel
 	 * correspond le mieux à une correction de <code>toCorrect</code>.<br>
 	 * <br>
 	 * 
