@@ -32,7 +32,7 @@ public class Sentence {
 		this.specificCharDeleted = new ArrayList<>();
 		this.rebuildWithSpace = new ArrayList<>();
 		this.words = splitSentence();
-		
+
 	}
 
 	/**
@@ -79,8 +79,7 @@ public class Sentence {
 					rebuildWithSpace.add(true);
 				} else {
 					Map<Integer, Character> map = mapOfPuncChar(currentString);
-					Tuple<List<Word>, List<Map<Integer, Character>>> tuple = splitPuncWordMap(map,
-							currentString);
+					Tuple<List<Word>, List<Map<Integer, Character>>> tuple = splitPuncWordMap(map, currentString);
 					list.addAll(tuple.getA());
 					specificCharDeleted.addAll(tuple.getB());
 				}

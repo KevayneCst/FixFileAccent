@@ -41,7 +41,7 @@ public abstract class Language {
 	public Dictionnary getDictionnary() {
 		return dictionnary;
 	}
-	
+
 	public Map<Word, Word> getSavedCorrections() {
 		return savedCorrections;
 	}

@@ -57,7 +57,7 @@ public class Creater {
 		File newDir = new File(PATH_SAVE + customDate.format(new Date()));
 		if (newDir.mkdir()) {
 			copyFolder(new File(pathSrcDirectory).toPath(), newDir.toPath());
-			Log.printLog("Sauvegarde effectuée avec succès, nom: \""+newDir.toPath(), TypeLog.INFO);
+			Log.printLog("Sauvegarde effectuée avec succès, nom: \"" + newDir.toPath(), TypeLog.INFO);
 		} else {
 			Log.printLog("Erreur lors de la création de la sauvegarde", TypeLog.CRITICAL);
 		}
