@@ -140,7 +140,7 @@ public class French extends Language {
 	 * <code>potentialMatches</code> s'il s'agit du mot corrompu à corriger
 	 * <code>w</code>.<br>
 	 * Si l'option <code>isConfirmWord</code> dans le fichier de configuration est
-	 * activé, va renvoyer le premier résultat positif (un type <code>Word</code>),
+	 * désactivé, va renvoyer le premier résultat positif (un type <code>Word</code>),
 	 * sinon va chercher tous les résultats positifs, les stocker dans
 	 * <code>rightMatches</code> et renvoyer <code>null</code>.
 	 * 
