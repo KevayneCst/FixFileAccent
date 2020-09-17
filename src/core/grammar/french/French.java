@@ -125,7 +125,7 @@ public class French extends Language {
 				if (!rightMatches.isEmpty()) {
 					Word choosenWord = rightMatches.size() == 1 ? rightMatches.get(0)
 							: Utilities.waitConfirmationWord(w, rightMatches);
-					super.getSavedCorrections().put(w, choosenWord);
+					saveCorrection(w, choosenWord);
 					return choosenWord;
 				}
 			}
@@ -140,9 +140,9 @@ public class French extends Language {
 	 * <code>potentialMatches</code> s'il s'agit du mot corrompu à corriger
 	 * <code>w</code>.<br>
 	 * Si l'option <code>isConfirmWord</code> dans le fichier de configuration est
-	 * désactivé, va renvoyer le premier résultat positif (un type <code>Word</code>),
-	 * sinon va chercher tous les résultats positifs, les stocker dans
-	 * <code>rightMatches</code> et renvoyer <code>null</code>.
+	 * désactivé, va renvoyer le premier résultat positif (un type
+	 * <code>Word</code>), sinon va chercher tous les résultats positifs, les
+	 * stocker dans <code>rightMatches</code> et renvoyer <code>null</code>.
 	 * 
 	 * @param w                  Le mot corrompu à corriger
 	 * @param unknowsCharIndexes Liste d'indice du/des caractère(s) corrompu(s) de
@@ -178,11 +178,26 @@ public class French extends Language {
 				if (Config.getInstance().isConfirmWord()) {
 					rightMatches.add(correctedWord);
 				} else {
-					super.getSavedCorrections().put(w, correctedWord);
+					saveCorrection(w, correctedWord);
 					return correctedWord;
 				}
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Méthode qui va, si dans <code>config.properties</code>, l'attribut
+	 * <code>rememberChoice=TRUE</code>, sauvegarder la correction trouvé par
+	 * l'algorithme ou par l'utilisateur dans le cas où
+	 * <code>confirmWord=TRUE</code>.
+	 * 
+	 * @param unknow    le mot corrompu
+	 * @param corrected la correction pour <code>unknow</code>
+	 */
+	private void saveCorrection(Word unknow, Word corrected) {
+		if (Config.getInstance().isRememberChoice()) {
+			super.getSavedCorrections().put(unknow, corrected);
+		}
 	}
 }

@@ -34,6 +34,7 @@ public class Config {
 	private String confirmFiles;
 	private String confirmKey;
 	private String confirmWord;
+	private String rememberChoice;
 
 	private Config() {
 		this.configFile = new File("./config.properties");
@@ -62,6 +63,7 @@ public class Config {
 		this.confirmFiles = getProperty("confirmFiles", "TRUE");
 		this.confirmKey = getProperty("confirmKey", "CONFIRM");
 		this.confirmWord = getProperty("confirmWord", "TRUE");
+		this.rememberChoice = getProperty("rememberChoice", "TRUE");
 	}
 
 	private String getProperty(String key, String defaultValue) {
@@ -75,12 +77,13 @@ public class Config {
 
 	public void showProperties() {
 		Log.printLog("====== Paramètres de configuration ======", TypeLog.DEBUGGING);
-		Log.printLog(String.format("Langage utilisé      %s %s", ":", language), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Niveau de log        %s %s", ":", levelLog), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Correction activée   %s %s", ":", applyCorrection), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Confirmation activée %s %s", ":", confirmFiles), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Mot de confirmation  %s %s", ":", confirmKey), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Choix du mot corrigé %s %s", ":", confirmWord), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Langage utilisé          %s %s", ":", language), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Niveau de log            %s %s", ":", levelLog), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Correction activée       %s %s", ":", applyCorrection), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Confirmation activée     %s %s", ":", confirmFiles), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Mot de confirmation      %s %s", ":", confirmKey), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Choix du mot corrigé     %s %s", ":", confirmWord), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Rappel du choix effectué %s %s", ":", confirmWord), TypeLog.DEBUGGING);
 	}
 
 	public Language getLanguage() {
@@ -116,5 +119,9 @@ public class Config {
 	
 	public boolean isConfirmWord() {
 		return Boolean.valueOf(confirmWord);
+	}
+	
+	public boolean isRememberChoice() {
+		return Boolean.valueOf(rememberChoice);
 	}
 }
