@@ -82,8 +82,7 @@ public class Core {
 				if (sentence.needCorrection()) {
 					Log.printLog("Ligne " + numLigne + ", la phrase \"" + sentence.getTheLine()
 							+ "\" a besoin d'être corrigée", TypeLog.DEBUGGING);
-					putIntoMap(fileSentencesCorrected, hm.getKey(),
-							sentence.rebuildSentence(lang.correctSentence(sentence)));
+					putIntoMap(fileSentencesCorrected, hm.getKey(), lang.correctSentence(sentence));
 				} else {
 					Log.printLog("Ligne " + numLigne + ", la phrase \"" + sentence.getTheLine()
 							+ "\" n'a pas eu besoin d'être corrigée", TypeLog.DEBUGGING);

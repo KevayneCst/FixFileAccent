@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe définissant un mot, elle permet notamment de vérifier si ce mot
- * contient des accents corrompu, et surtout de savoir où sont-ils dans le mot.
+ * Classe définissant un mot contenant un ou plusieurs caractères corrompus,
+ * elle permet de savoir où ils sont dans le mot.
  * 
  * @author Kévin Constantin
  *
@@ -19,9 +19,19 @@ public class Word {
 	}
 
 	private String theWord;
+	private int indexBeginInSentence;
+	private int indexEndInSentence;
 
 	public Word(String s) {
 		this.theWord = s;
+		this.indexBeginInSentence = -1;
+		this.indexEndInSentence = -1;
+	}
+
+	public Word(String s, int indexBeginInSentence, int indexEndInSentence) {
+		this.theWord = s;
+		this.indexBeginInSentence = indexBeginInSentence;
+		this.indexEndInSentence = indexEndInSentence;
 	}
 
 	/**
@@ -43,7 +53,15 @@ public class Word {
 	public String getTheWord() {
 		return theWord;
 	}
-	
+
+	public int getIndexBeginInSentence() {
+		return indexBeginInSentence;
+	}
+
+	public int getIndexEndInSentence() {
+		return indexEndInSentence;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -54,12 +72,16 @@ public class Word {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof Word)) {
-			return false;
-		} else {
-			Word w = (Word) o;
-			return w.theWord.equals(this.theWord);
+		if (o instanceof Word) {
+			Word other = (Word) o;
+			if (other.indexBeginInSentence == -1 && this.indexBeginInSentence == -1) {
+				return other.indexEndInSentence == -1 && this.indexEndInSentence == -1;
+			} else {
+				return other.theWord.equals(this.theWord) && other.indexBeginInSentence == this.indexBeginInSentence
+						&& other.indexEndInSentence == this.indexEndInSentence;
+			}
 		}
+		return false;
 	}
 
 	@Override

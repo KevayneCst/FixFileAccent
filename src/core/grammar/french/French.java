@@ -27,7 +27,7 @@ public class French extends Language {
 	}
 
 	@Override
-	public List<Word> correctSentence(Sentence toCorrect) {
+	public Sentence correctSentence(Sentence toCorrect) {
 		int countUnknowChar = toCorrect.countUnknowChar();
 		if (countUnknowChar == 1) {
 			Log.printLog("Correction de la phrase suivante[" + countUnknowChar + " caractère inconnu]: \""
@@ -36,7 +36,7 @@ public class French extends Language {
 			Log.printLog("Correction de la phrase suivante[" + countUnknowChar + " caractères inconnus]: \""
 					+ toCorrect.getTheLine() + "\"", TypeLog.DEBUGGING);
 		}
-		List<Word> listWord = toCorrect.getWords();
+		List<Word> listWord = toCorrect.extractCorruptedWords();
 		List<Word> correctedWords = new ArrayList<>();
 		for (int i = 0; i < listWord.size(); i++) {
 			if (countUnknowChar == 0) {
@@ -45,12 +45,15 @@ public class French extends Language {
 				Word correctedWord = matchWordWithDictionnary(listWord.get(i));
 				boolean isWordCorrected = !correctedWord.equals(listWord.get(i));
 				correctedWords.add(correctedWord);
-				if (isWordCorrected)
+				if (isWordCorrected) {
 					countUnknowChar--;
+				}
 			}
 			Log.printLog("Mots corrigés:" + Utilities.debugStringList(correctedWords), TypeLog.DEBUGGING);
 		}
-		return correctedWords;
+
+		toCorrect.replaceWords(correctedWords);
+		return toCorrect;
 	}
 
 	/**
@@ -172,7 +175,7 @@ public class French extends Language {
 					sb.setCharAt(i, unknowsChars.get(indexListChars));
 					indexListChars++;
 				}
-				Word correctedWord = new Word(sb.toString());
+				Word correctedWord = new Word(sb.toString(), w.getIndexBeginInSentence(), w.getIndexEndInSentence());
 				Log.printLog("Correspondance trouvé pour \"" + w.getTheWord() + "\" => \"" + correctedWord.getTheWord()
 						+ "\"", TypeLog.DEBUGGING);
 				if (Config.getInstance().isConfirmWord()) {

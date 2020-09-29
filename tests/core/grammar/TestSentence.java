@@ -27,6 +27,7 @@ class TestSentence {
 	String str17 = "if ((variable1 && variable2) || (oula || ohoh)) { System.out.println(\"�tat de variable1:\"+variable1+\"\\n état de variable2:\"+variable2+\"\\n �tat de oula:\"+oula+\"\\n état de ohoh:\"+ohoh); }";
 	String str18 = "*Il manquait le fait d'ajouter dans la port�e la case d'une";
 	String str19 = "* pi�ce d'une autre couleur si la case n'�tait pas libre";
+	String str20 = "Il n'y a que deux options possibles aujourd'hui. N'�tant disponible que pour l'un, il faudra renoncer à l'autre.";
 
 	Language lang = new French();
 
@@ -49,40 +50,43 @@ class TestSentence {
 	Sentence s17 = new Sentence(str17);
 	Sentence s18 = new Sentence(str18);
 	Sentence s19 = new Sentence(str19);
+	Sentence s20 = new Sentence(str20);
 
 	@Test
 	void testCorrectSentence() {
 		assertEquals(
 				"Tant que durera la crise observée, je n'exclus pas de considérer la plus grande partie des hypothèses du passé, parce que la nature a horreur du vide.",
-				s1.rebuildSentence(lang.correctSentence(s1)).getTheLine());
+				lang.correctSentence(s1).getTheLine());
 		assertEquals(
 				"Compte tenu de la dégradation des moeurs que nous constatons, je suggère fortement de se souvenir systématiquement les choix draconiennes, toutes choses étant égales par ailleurs.",
-				s2.rebuildSentence(lang.correctSentence(s2)).getTheLine());
+				lang.correctSentence(s2).getTheLine());
 		assertEquals(
 				"Si vous voulez mon avis concernant la morosité induite, il est très important d’analyser les principales voies envisageables, parce qu'il est temps d'agir.",
-				s3.rebuildSentence(lang.correctSentence(s3)).getTheLine());
-		assertEquals("Il existe, différents numéros de téléphone!",
-				s9.rebuildSentence(lang.correctSentence(s9)).getTheLine());
-		assertEquals("Le système n'est pas terminé.", s10.rebuildSentence(lang.correctSentence(s10)).getTheLine());
+				lang.correctSentence(s3).getTheLine());
+		assertEquals("Il existe, différents numéros de téléphone!", lang.correctSentence(s9).getTheLine());
+		assertEquals("Le système n'est pas terminé.", lang.correctSentence(s10).getTheLine());
 		assertEquals("if (varié1 && varié2) { return journée=4 } else { return soirée=8 }",
-				s11.rebuildSentence(lang.correctSentence(s11)).getTheLine());
+				lang.correctSentence(s11).getTheLine());
 		assertEquals(
 				"System.out.println(\"Le thème sera fixé le lendemain matin, vers 8heures, avec peut-être 10-15minutes de retard\");",
-				s12.rebuildSentence(lang.correctSentence(s12)).getTheLine());
+				lang.correctSentence(s12).getTheLine());
 		assertEquals(
 				"System.out.println(\"Bonjour\\nJe pense que ça ne va bien aller\\t. Après, je peux me tromper et je l'espère fortement !!!Mais bon, c'est pas évident d'en être sûr!\");",
-				s13.rebuildSentence(lang.correctSentence(s13)).getTheLine());
-		assertEquals("Egalit�!\\n\\n\");", s14.rebuildSentence(lang.correctSentence(s14)).getTheLine());
-		assertEquals("!?ùEgalit�!\\n\\n\");", s15.rebuildSentence(lang.correctSentence(s15)).getTheLine());
+				lang.correctSentence(s13).getTheLine());
+		assertEquals("Egalit�!\\n\\n\");", lang.correctSentence(s14).getTheLine());
+		assertEquals("!?ùEgalit�!\\n\\n\");", lang.correctSentence(s15).getTheLine());
 		assertEquals(
 				"\\\\Je suis un commentaire de code. Je contiens un accent à corriger, peut-être plus?Quoiqu'il en soit, il faut être: prudent, curieux, sérieux.",
-				s16.rebuildSentence(lang.correctSentence(s16)).getTheLine());
+				lang.correctSentence(s16).getTheLine());
 		assertEquals(
 				"if ((variable1 && variable2) || (oula || ohoh)) { System.out.println(\"état de variable1:\"+variable1+\"\\n état de variable2:\"+variable2+\"\\n état de oula:\"+oula+\"\\n état de ohoh:\"+ohoh); }",
-				s17.rebuildSentence(lang.correctSentence(s17)).getTheLine());
+				lang.correctSentence(s17).getTheLine());
 		assertEquals("*Il manquait le fait d'ajouter dans la portée la case d'une",
-				s18.rebuildSentence(lang.correctSentence(s18)).getTheLine());
+				lang.correctSentence(s18).getTheLine());
 		assertEquals("* pièce d'une autre couleur si la case n'était pas libre",
-				s19.rebuildSentence(lang.correctSentence(s19)).getTheLine());
+				lang.correctSentence(s19).getTheLine());
+		assertEquals(
+				"Il n'y a que deux options possibles aujourd'hui. N'étant disponible que pour l'un, il faudra renoncer à l'autre.",
+				lang.correctSentence(s20).getTheLine());
 	}
 }

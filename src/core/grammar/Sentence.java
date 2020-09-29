@@ -2,14 +2,13 @@ package core.grammar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.Set;
 
 import core.log.Log;
 import core.log.TypeLog;
-import core.tools.Tuple;
-import core.tools.Utilities;
 
 /**
  * Classe permettant de faire différentes opération sur un chaîne de caractère
@@ -23,16 +22,120 @@ import core.tools.Utilities;
 public class Sentence {
 
 	private String theLine;
-	private List<Word> words;
-	private List<Map<Integer, Character>> specificCharDeleted;
-	private List<Boolean> rebuildWithSpace;
 
 	public Sentence(String s) {
 		this.theLine = s;
-		this.specificCharDeleted = new ArrayList<>();
-		this.rebuildWithSpace = new ArrayList<>();
-		this.words = splitSentence();
+	}
 
+	/**
+	 * Remplace par l'ensemble des mots de la liste dans <code>theLine</code>
+	 * 
+	 * @see replaceWord(Word w)
+	 * @param listOfWords
+	 */
+	public void replaceWords(List<Word> listOfWords) {
+		for (Word w : listOfWords) {
+			replaceWord(w);
+		}
+	}
+
+	/**
+	 * Remplace par le mot <code>w</code> dans <code>theLine</code>, de l'indice
+	 * <code>w.getIndexBeginInSentence()</code> à
+	 * <code>w.getIndexEndInSentence()</code>, en remplaçant par
+	 * <code>w.getTheWords()</code>.
+	 * 
+	 * @param w
+	 */
+	private void replaceWord(Word w) {
+		StringBuilder sb = new StringBuilder(theLine);
+		sb.replace(w.getIndexBeginInSentence(), w.getIndexEndInSentence(), w.getTheWord());
+		theLine = sb.toString();
+	}
+
+	/**
+	 * A partir de <code>theLine</code>, va renvoyer la liste des mots qui sont
+	 * corrompus en extryant précisémment le mot sans déborder sur d'autre mots.
+	 * 
+	 * @return
+	 */
+	public List<Word> extractCorruptedWords() {
+		Set<Word> corruptedWords = new HashSet<>();
+		List<Integer> corruptedCharIndexe = findUnknowChar();
+
+		for (Integer i : corruptedCharIndexe) {
+			Word w = extractWord(i);
+			if (w == null) {
+				Log.printLog("Erreur inattendue lors de l'extraction, ne devrait jamais arriver...", TypeLog.CRITICAL);
+			} else {
+				corruptedWords.add(w);
+			}
+		}
+		List<Word> convertedSet = new ArrayList<>();
+		convertedSet.addAll(corruptedWords);
+		return convertedSet;
+	}
+
+	/**
+	 * Fonction qui va rechercher et extraire, à partir d'un indice de caractère
+	 * corrompu, le mot dans lequel se trouve se caractère corrompu.
+	 * 
+	 * @param indexOfCorruptedChars
+	 * @return
+	 */
+	private Word extractWord(int indexOfCorruptedChars) {
+		int lengthTheLine = theLine.length();
+		int lastIndexLeftSide = indexOfCorruptedChars - 1;
+		int beginIndexRightSide = indexOfCorruptedChars + 1;
+
+		int indexToCutBegin;
+		int indexToCutEnd;
+
+		if (Regex.isPuncOrSpace(theLine, indexOfCorruptedChars)) {
+			return null;
+		}
+
+		if (lastIndexLeftSide < 0) {
+			indexToCutBegin = indexOfCorruptedChars;
+		} else {
+			indexToCutBegin = countLeftSide(indexOfCorruptedChars);
+		}
+
+		if (beginIndexRightSide >= lengthTheLine) {
+			indexToCutEnd = indexOfCorruptedChars;
+		} else {
+			indexToCutEnd = beginIndexRightSide + countRightSide(beginIndexRightSide, lengthTheLine);
+		}
+		String extracted = theLine.substring(indexToCutBegin, indexToCutEnd);
+		return new Word(extracted, indexToCutBegin, indexToCutEnd);
+	}
+
+	private int countLeftSide(int indexOfCorruptedChars) {
+		int indexToCutBegin;
+		StringBuilder sb = new StringBuilder(theLine.substring(0, indexOfCorruptedChars)).reverse();
+		int count = 0;
+		int lengthSb = sb.length();
+		for (int i = 0; i < lengthSb; i++) {
+			if (Regex.isPuncOrSpace(sb.toString(), i)) {
+				break;
+			}
+			count++;
+		}
+		indexToCutBegin = lengthSb - count;
+		return indexToCutBegin;
+	}
+
+	private int countRightSide(int begin, int end) {
+		StringBuilder sb = new StringBuilder(theLine.substring(begin, end));
+		int count = 0;
+		int lengthSb = sb.length();
+		for (int i = 0; i < lengthSb; i++) {
+			if (Regex.isPuncOrSpace(sb.toString(), i)) {
+				break;
+			}
+			count++;
+		}
+		return count;
 	}
 
 	/**
@@ -46,7 +149,7 @@ public class Sentence {
 	}
 
 	/**
-	 * Compte le nombre de caractère inconnus
+	 * Compte le nombre de caractère inconnus dans la phrase
 	 * 
 	 * @return <code>int</code>
 	 */
@@ -62,174 +165,45 @@ public class Sentence {
 		return count;
 	}
 
-	public List<Word> splitSentence() {
-		List<Word> list = new ArrayList<>();
-		String[] spaceSplit = theLine.split(Regex.REGEX_SPACE);
-		for (String currentString : spaceSplit) {
-			if (!currentString.contains(Word.UNKNOWCHAR + "")) {
-				list.add(new Word(currentString));
-				specificCharDeleted.add(new HashMap<>());
-				rebuildWithSpace.add(true);
-			} else {
-				String tmp = currentString.replaceAll(Word.UNKNOWCHAR + "", "e");
-				if (tmp.matches(Regex.REGEX_LETTERS_APOSTROPHE_LETTERS) || tmp.matches(Regex.REGEX_LETTERS_DASH_LETTERS)
-						|| tmp.matches(Regex.REGEX_ONLY_LETTERS)) {
-					list.add(new Word(currentString));
-					specificCharDeleted.add(new HashMap<>());
-					rebuildWithSpace.add(true);
-				} else {
-					Map<Integer, Character> map = mapOfPuncChar(currentString);
-					Tuple<List<Word>, List<Map<Integer, Character>>> tuple = splitPuncWordMap(map, currentString);
-					list.addAll(tuple.getA());
-					specificCharDeleted.addAll(tuple.getB());
-				}
+	/**
+	 * Trouve les caractères correspondant à un symbole inconnu, et range dans une
+	 * liste d'indice du caractère inconnu
+	 * 
+	 * @return la liste d'indices de caractères inconnus
+	 */
+	public List<Integer> findUnknowChar() {
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i < theLine.length(); i++) {
+			if (theLine.charAt(i) == Word.UNKNOWCHAR) {
+				list.add(i);
 			}
 		}
 		return list;
-	}
-
-	private Tuple<List<Word>, List<Map<Integer, Character>>> splitPuncWordMap(
-			Map<Integer, Character> mapDeletedPuncWord, String firstSpaceSplitedString) {
-		List<Word> list = new ArrayList<>();
-		List<Map<Integer, Character>> listOfMap = new ArrayList<>();
-		String noPuncChar = firstSpaceSplitedString.replaceAll(Regex.REGEX_PUNCTUATION, " ");
-		String[] spaceSplitNoPuncChar = noPuncChar.trim().split(Regex.REGEX_SPACE);
-
-		for (int i = 0; i < spaceSplitNoPuncChar.length; i++) {
-			Map<Integer, Character> currentMapOfPuncCharacter = new TreeMap<>();
-			List<Integer> toDelete = new ArrayList<>();
-			int beforeIndex = 0;
-			int afterIndex = spaceSplitNoPuncChar[i].length();
-			int previousMapIndex = -1;
-
-			for (Map.Entry<Integer, Character> mapEntry : mapDeletedPuncWord.entrySet()) {
-				if (previousMapIndex == -1 || previousMapIndex + 1 == mapEntry.getKey()
-						|| (previousMapIndex + 1 + spaceSplitNoPuncChar[i].length() == mapEntry.getKey()
-								&& spaceSplitNoPuncChar[i].length() > 1)) {
-					previousMapIndex = mapEntry.getKey();
-					if (mapEntry.getKey() >= spaceSplitNoPuncChar[i].length()) {
-						if (beforeIndex == 0) {
-							currentMapOfPuncCharacter.put(afterIndex, mapEntry.getValue());
-						} else {
-							currentMapOfPuncCharacter.put(beforeIndex + afterIndex, mapEntry.getValue());
-						}
-						afterIndex++;
-					} else {
-						currentMapOfPuncCharacter.put(beforeIndex, mapEntry.getValue());
-						beforeIndex++;
-					}
-					toDelete.add(mapEntry.getKey());
-				} else {
-					break;
-				}
-			}
-			for (Integer in : toDelete) {
-				mapDeletedPuncWord.remove(in);
-			}
-			list.add(new Word(spaceSplitNoPuncChar[i]));
-			listOfMap.add(currentMapOfPuncCharacter);
-			rebuildWithSpace.add(false);
-		}
-		return new Tuple<>(list, listOfMap);
-	}
-
-	/**
-	 * Fonction qui va à partir de la chaîne passée en paramètre <code>s</code>,
-	 * trouver tous les caractères de ponctuation et ranger ces caractères selon
-	 * leurs indices de positionnement dans la chaîne.<br>
-	 * <br>
-	 * 
-	 * Exemple : <code>mapOfPuncChar("allo ?! allez-y...")</code> donnera
-	 * <code>{5=?, 6=!, 13=-, 15=., 16=., 17=.}<code>
-	 * 
-	 * @param s La chaîne à analyser
-	 * @return
-	 */
-	private Map<Integer, Character> mapOfPuncChar(String s) {
-		Map<Integer, Character> map = new TreeMap<>();
-		for (int i = 0; i < s.length(); i++) {
-			int k = i + 1;
-			if (s.substring(i, k).matches(Regex.REGEX_PUNCTUATION)) {
-				map.put(i, s.charAt(i));
-			}
-		}
-		return map;
-	}
-
-	/**
-	 * Regénère la phrase à partir des mots corrigés et purifiés pour replacer les
-	 * caractères spéciaux là où ils étaient dans le mot et donc dans la phrase
-	 * 
-	 * @param purifiedAndCorrectedWords
-	 * @return
-	 */
-	public Sentence rebuildSentence(List<Word> purifiedAndCorrectedWords) {
-		Log.printLog("Reconstruction de la phrase avec les mots purifiés suivants :"
-				+ Utilities.debugStringList(purifiedAndCorrectedWords), TypeLog.DEBUGGING);
-		StringBuilder sb = new StringBuilder();
-		int lastIndex = words.size() - 1;
-		boolean lastWasWithSpace = true;
-		for (int i = 0; i < purifiedAndCorrectedWords.size(); i++) {
-			Word w = rebuildWord(i, purifiedAndCorrectedWords);
-			if (i == lastIndex) {
-				sb.append(w.getTheWord());
-			} else {
-				if (rebuildWithSpace.get(i).booleanValue()) {
-					if (lastWasWithSpace) {
-						sb.append(w.getTheWord() + " ");
-					} else {
-						sb.append(" " + w.getTheWord() + " ");
-					}
-					lastWasWithSpace = true;
-				} else {
-					sb.append(w.getTheWord());
-					lastWasWithSpace = false;
-				}
-			}
-			Log.printLog("Étape n°" + (i + 1) + " de la reconstruction de la phrase :" + sb.toString(),
-					TypeLog.DEBUGGING);
-		}
-		Log.printLog("Phrase reconstruite :" + sb.toString(), TypeLog.DEBUGGING);
-		return new Sentence(sb.toString());
-	}
-
-	/**
-	 * Replace les caractères spéciaux manquants d'un mot à l'emplacement où ils
-	 * étaient avant la purification du mot (le fait de supprimer les caractères
-	 * spéciaux et de ne laisser que des lettres pour former un vrai mot
-	 * exploitable)
-	 * 
-	 * @param index                     indice du mot à reformer
-	 * @param purifiedAndCorrectedWords la liste des mots purifés
-	 * @return le mot à son état d'origine + la correction des accents manquants
-	 *         s'il y en avait
-	 */
-	public Word rebuildWord(int index, List<Word> purifiedAndCorrectedWords) {
-		StringBuilder sb = new StringBuilder(purifiedAndCorrectedWords.get(index).getTheWord());
-		Log.printLog("Mot purifié avant reconstruction :" + sb.toString(), TypeLog.DEBUGGING);
-		int count = 1;
-		for (Map.Entry<Integer, Character> map : specificCharDeleted.get(index).entrySet()) {
-			sb.insert(map.getKey(), map.getValue() + "");
-			Log.printLog("Étape n°" + (count++) + " de reconstruction du mot :" + sb.toString(), TypeLog.DEBUGGING);
-		}
-		Log.printLog("Mot reconstruit :" + sb.toString(), TypeLog.DEBUGGING);
-		return new Word(sb.toString());
 	}
 
 	public String getTheLine() {
 		return theLine;
 	}
 
-	public List<Word> getWords() {
-		return words;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((theLine == null) ? 0 : theLine.hashCode());
+		return result;
 	}
 
-	public List<Map<Integer, Character>> getSpecificCharDeleted() {
-		return specificCharDeleted;
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Sentence) {
+			Sentence other = (Sentence) obj;
+			return other.theLine.equals(this.theLine);
+		}
+		return false;
 	}
 
 	@Override
 	public String toString() {
-		return "Sentence [" + theLine + ", words=" + words + "]";
+		return "Sentence [" + theLine + "]";
 	}
 }

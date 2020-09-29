@@ -22,7 +22,7 @@ public abstract class Language {
 		savedCorrections = new HashMap<>();
 	}
 
-	public abstract List<Word> correctSentence(Sentence toCorrect);
+	public abstract Sentence correctSentence(Sentence toCorrect);
 
 	public abstract Word matchWordWithDictionnary(Word w);
 
