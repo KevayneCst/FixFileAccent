@@ -8,6 +8,7 @@ import java.util.List;
 import core.Config;
 import core.grammar.Regex;
 import core.grammar.Word;
+import core.grammar.WordCorrupted;
 import core.log.Log;
 import core.log.TypeLog;
 
@@ -59,7 +60,7 @@ public class Utilities {
 				String readedString = INPUT_READER.readLine();
 				if (readedString.equalsIgnoreCase(Config.getInstance().getConfirmationKey())) {
 					confirmationGiven = true;
-					Log.printLog("Mot clé correct, démarrage de la correction...", TypeLog.ESSENTIAL);
+					Log.printLog("Mot clé correct, mise en application de la correction...", TypeLog.ESSENTIAL);
 				} else {
 					Log.printLog("Mot clé incorrect: " + readedString + ", veuillez réessayer", TypeLog.ESSENTIAL);
 				}
@@ -90,13 +91,13 @@ public class Utilities {
 	 *                       <code>toCorrect</code>
 	 * @return <code>Word</code>
 	 */
-	public static Word waitConfirmationWord(Word toCorrect, List<Word> wordsToDisplay) {
+	public static WordCorrupted waitConfirmationWord(Word toCorrect, List<WordCorrupted> wordsToDisplay) {
 		Log.printLog("Veuillez saisir le numéro correspondant au mot voulu pour la correction de \""
 				+ toCorrect.getTheWord() + "\"", TypeLog.ESSENTIAL);
 		while (true) {
 			try {
 				int index = 1;
-				for (Word w : wordsToDisplay) {
+				for (WordCorrupted w : wordsToDisplay) {
 					Log.printLog(index + ":\"" + w.getTheWord() + "\"", TypeLog.ESSENTIAL);
 					index++;
 				}
@@ -121,7 +122,7 @@ public class Utilities {
 		}
 	}
 
-	public static String debugStringList(List<Word> listWord) {
+	public static String debugStringList(List<WordCorrupted> listWord) {
 		StringBuilder sb = new StringBuilder();
 		for (Word w : listWord) {
 			String currentWord = "[" + w.getTheWord() + "]";

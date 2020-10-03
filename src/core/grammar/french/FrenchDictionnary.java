@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import core.grammar.Dictionnary;
 import core.grammar.Word;
+import core.grammar.WordDictionnary;
 import core.log.Log;
 import core.log.TypeLog;
 
@@ -36,7 +37,7 @@ public class FrenchDictionnary extends Dictionnary {
 				String before = line;
 				line = line.trim();
 				if (!line.isEmpty()) {
-					Word newEntry = new Word(before);
+					WordDictionnary newEntry = new WordDictionnary(before);
 					super.getRawDico().add(newEntry);
 					super.getDico().computeIfAbsent(before.length(), k -> new ArrayList<>()).add(newEntry);
 				}

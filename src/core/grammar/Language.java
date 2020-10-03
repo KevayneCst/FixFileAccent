@@ -15,7 +15,7 @@ import java.util.Map;
 public abstract class Language {
 
 	private Dictionnary dictionnary;
-	private Map<Word, Word> savedCorrections;
+	private Map<WordCorrupted, WordDictionnary> savedCorrections;
 
 	public Language(Dictionnary d) {
 		dictionnary = d;
@@ -24,7 +24,7 @@ public abstract class Language {
 
 	public abstract Sentence correctSentence(Sentence toCorrect);
 
-	public abstract Word matchWordWithDictionnary(Word w);
+	public abstract WordCorrupted matchWordWithDictionnary(WordCorrupted w);
 
 	/**
 	 * Vérifie que le mot passé en paramètre <code>w</code> n'ait pas déjà été
@@ -32,17 +32,35 @@ public abstract class Language {
 	 * elle renverra <code>w</code>.
 	 * 
 	 * @param w Le mot corrompu dont on veut savoir s'il a déjà été corrigé
-	 * @return <code>Version corrigé de w</code> OU <code>w</code>
+	 * @return Version corrigée de <code>(WordDictionnary)w</code> OU non corrigée <code>(WordCorrupted)w</code>
 	 */
-	public Word checkIfWordAlreadyCorrected(Word w) {
-		return savedCorrections.containsKey(w) ? savedCorrections.get(w) : w;
+	public Word checkIfWordAlreadyCorrected(WordCorrupted w) {
+		return customContainsKey(w) ? customGet(w) : w;
+	}
+	
+	private boolean customContainsKey(WordCorrupted w) {
+		for (Map.Entry<WordCorrupted, WordDictionnary> map : savedCorrections.entrySet()) {
+			if (map.getKey().getTheWord().equals(w.getTheWord())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private WordDictionnary customGet(WordCorrupted w) {
+		for (Map.Entry<WordCorrupted, WordDictionnary> map : savedCorrections.entrySet()) {
+			if (map.getKey().getTheWord().equals(w.getTheWord())) {
+				return map.getValue();
+			}
+		}
+		return null; 
 	}
 
 	public Dictionnary getDictionnary() {
 		return dictionnary;
 	}
 
-	public Map<Word, Word> getSavedCorrections() {
+	public Map<WordCorrupted, WordDictionnary> getSavedCorrections() {
 		return savedCorrections;
 	}
 }

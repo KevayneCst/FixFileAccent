@@ -16,8 +16,8 @@ import java.util.Random;
  */
 public abstract class Dictionnary {
 
-	private List<Word> rawDico;
-	private Map<Integer, List<Word>> dico;
+	private List<WordDictionnary> rawDico;
+	private Map<Integer, List<WordDictionnary>> dico;
 	private Random r;
 
 	public Dictionnary() {
@@ -29,15 +29,21 @@ public abstract class Dictionnary {
 
 	public abstract void fillDictionnary();
 	
-	public Word getRandomWord() {
+	public WordDictionnary getRandomWord() {
 		return rawDico.get(r.nextInt(rawDico.size()));
 	}
 	
-	public List<Word> getRawDico() {
+	public WordDictionnary findWord(String wordToFind) {
+		List<WordDictionnary> list = dico.get(wordToFind.length());
+		int indexWord = list.indexOf(new WordDictionnary(wordToFind));
+		return indexWord == -1 ? null : list.get(indexWord);
+	}
+	
+	public List<WordDictionnary> getRawDico() {
 		return rawDico;
 	}
 
-	public Map<Integer, List<Word>> getDico() {
+	public Map<Integer, List<WordDictionnary>> getDico() {
 		return dico;
 	}
 

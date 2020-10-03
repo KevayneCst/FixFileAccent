@@ -1,10 +1,8 @@
 package core.grammar;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import core.log.Log;
@@ -28,13 +26,13 @@ public class Sentence {
 	}
 
 	/**
-	 * Remplace par l'ensemble des mots de la liste dans <code>theLine</code>
+	 * Remplace par l'ensemble des mots de la liste dans <code>theLine</code>.
 	 * 
 	 * @see replaceWord(Word w)
 	 * @param listOfWords
 	 */
-	public void replaceWords(List<Word> listOfWords) {
-		for (Word w : listOfWords) {
+	public void replaceWords(List<WordCorrupted> listOfWords) {
+		for (WordCorrupted w : listOfWords) {
 			replaceWord(w);
 		}
 	}
@@ -47,7 +45,7 @@ public class Sentence {
 	 * 
 	 * @param w
 	 */
-	private void replaceWord(Word w) {
+	private void replaceWord(WordCorrupted w) {
 		StringBuilder sb = new StringBuilder(theLine);
 		sb.replace(w.getIndexBeginInSentence(), w.getIndexEndInSentence(), w.getTheWord());
 		theLine = sb.toString();
@@ -59,19 +57,19 @@ public class Sentence {
 	 * 
 	 * @return
 	 */
-	public List<Word> extractCorruptedWords() {
-		Set<Word> corruptedWords = new HashSet<>();
+	public List<WordCorrupted> extractCorruptedWords() {
+		Set<WordCorrupted> corruptedWords = new LinkedHashSet<>();
 		List<Integer> corruptedCharIndexe = findUnknowChar();
 
 		for (Integer i : corruptedCharIndexe) {
-			Word w = extractWord(i);
+			WordCorrupted w = extractWord(i);
 			if (w == null) {
 				Log.printLog("Erreur inattendue lors de l'extraction, ne devrait jamais arriver...", TypeLog.CRITICAL);
 			} else {
 				corruptedWords.add(w);
 			}
 		}
-		List<Word> convertedSet = new ArrayList<>();
+		List<WordCorrupted> convertedSet = new ArrayList<>();
 		convertedSet.addAll(corruptedWords);
 		return convertedSet;
 	}
@@ -83,7 +81,7 @@ public class Sentence {
 	 * @param indexOfCorruptedChars
 	 * @return
 	 */
-	private Word extractWord(int indexOfCorruptedChars) {
+	private WordCorrupted extractWord(int indexOfCorruptedChars) {
 		int lengthTheLine = theLine.length();
 		int lastIndexLeftSide = indexOfCorruptedChars - 1;
 		int beginIndexRightSide = indexOfCorruptedChars + 1;
@@ -107,7 +105,7 @@ public class Sentence {
 			indexToCutEnd = beginIndexRightSide + countRightSide(beginIndexRightSide, lengthTheLine);
 		}
 		String extracted = theLine.substring(indexToCutBegin, indexToCutEnd);
-		return new Word(extracted, indexToCutBegin, indexToCutEnd);
+		return new WordCorrupted(extracted, indexToCutBegin, indexToCutEnd);
 	}
 
 	private int countLeftSide(int indexOfCorruptedChars) {

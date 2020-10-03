@@ -28,6 +28,9 @@ class TestSentence {
 	String str18 = "*Il manquait le fait d'ajouter dans la port�e la case d'une";
 	String str19 = "* pi�ce d'une autre couleur si la case n'�tait pas libre";
 	String str20 = "Il n'y a que deux options possibles aujourd'hui. N'�tant disponible que pour l'un, il faudra renoncer à l'autre.";
+	String str21 = "							//Si la pi�ce situ� � sa gauche a avanc� de 2 cases juste avant (on le voit avec aiJeAvanceeDeDeux)\" a besoin d'être corrigée";
+	String str22 = "	 * 		La port�e contient un tableau de Case o� la Piece peut se deplacer.";
+	String str23 = "		 * M�thode �crite par Julie et K�vin";
 
 	Language lang = new French();
 
@@ -51,6 +54,9 @@ class TestSentence {
 	Sentence s18 = new Sentence(str18);
 	Sentence s19 = new Sentence(str19);
 	Sentence s20 = new Sentence(str20);
+	Sentence s21 = new Sentence(str21);
+	Sentence s22 = new Sentence(str22);
+	Sentence s23 = new Sentence(str23);
 
 	@Test
 	void testCorrectSentence() {
@@ -88,5 +94,11 @@ class TestSentence {
 		assertEquals(
 				"Il n'y a que deux options possibles aujourd'hui. N'étant disponible que pour l'un, il faudra renoncer à l'autre.",
 				lang.correctSentence(s20).getTheLine());
+		assertEquals(
+				"							//Si la pièce situé à sa gauche a avancé de 2 cases juste avant (on le voit avec aiJeAvanceeDeDeux)\" a besoin d'être corrigée",
+				lang.correctSentence(s21).getTheLine());
+		assertEquals("	 * 		La portée contient un tableau de Case où la Piece peut se deplacer.",
+				lang.correctSentence(s22).getTheLine());
+		assertEquals("		 * Méthode écrite par Julie et K�vin",lang.correctSentence(s23).getTheLine());
 	}
 }
