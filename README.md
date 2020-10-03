@@ -16,8 +16,8 @@ Globalement, voici le fonctionnement, étapes par étapes (sans rentrer trop dan
 
 2- Le programme pour chaque fichier .java, va lire chacune des lignes du fichier et va les stocker sous forme de chaînes de caractères (on aura vérifié au préalable que le fichier en question contient au moins un "�").
 
-3- Pour chaque ligne de chaque fichier, le programme découper ces lignes en mots.
+3- Pour chaque ligne de chaque fichier, le programme recherche les mots contenant les caractères corrompus, et va les extraire de la ligne (voir la méthode [extractCorruptedWords](https://github.com/KevayneCst/FixFileAccent/blob/e6e8d697fbba0fb2d5bc20f830bf953be452db86/src/core/grammar/Sentence.java#L60) pour voir l'algorithme qui permet d'extraire le mot).
 
-4- Pour chacun de ces mots, le programme va, si le mot contient un "�", corriger le mot corrompu (voir la méthode [matchWordWithDictionnary](https://github.com/KevayneCst/FixFileAccent/blob/master/src/core/grammar/french/French.java) pour l'algorithme qui permet de corriger les mots corrompus à partir du dictionnaire)
+4- Pour chacun de ces mots, le programme va, corriger le mot corrompu (voir la méthode [matchWordWithDictionnary](https://github.com/KevayneCst/FixFileAccent/blob/master/src/core/grammar/french/French.java) pour l'algorithme qui permet de corriger les mots corrompus à partir du dictionnaire).
 
 5- Enfin, chaque fichier où l'on a eu besoin de faire une modification, on va réecrire ces fichiers en remplaçant les mots corrompus par les mots corrigés.
