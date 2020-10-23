@@ -44,11 +44,9 @@ public class Config {
 	}
 
 	private void loadProperties() {
-		try {
-			FileReader reader = new FileReader(configFile);
+		try(FileReader reader = new FileReader(configFile)) {
 			props.load(reader);
 			getProperties();
-			reader.close();
 		} catch (IOException e) {
 			Log.printLog(
 					"Erreur lors de la lecture du fichier de configuration, vérifiez l'existance du fichier à l'emplacement suivant:\""
