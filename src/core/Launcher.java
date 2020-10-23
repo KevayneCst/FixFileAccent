@@ -18,7 +18,7 @@ public class Launcher {
 			c.start();
 			Log.printLog("Travail terminé en " + (System.currentTimeMillis() - startTime) / (double) 1000 + " s", TypeLog.INFO);
 		} else {
-			System.err.println("Usage: Launcher [pathSrcDirectory]");
+			System.err.println("Utilisation : java -jar FixFileAccent.jar [pathSrcDirectory]");
 			System.out.println("\nVoir le README.md pour toute information complémentaire.");
 		}
 	}
