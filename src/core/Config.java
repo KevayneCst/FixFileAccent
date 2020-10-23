@@ -14,6 +14,7 @@ import core.log.LevelLogFactory;
 import core.log.Log;
 import core.log.TypeLog;
 import core.log.UnknowLevelLogException;
+import core.tools.Utilities;
 
 /**
  * Classe Singleton, contient l'ensemble des informations stockés dans le
@@ -84,6 +85,7 @@ public class Config {
 		Log.printLog(String.format("Mot de confirmation      %s %s", ":", confirmKey), TypeLog.DEBUGGING);
 		Log.printLog(String.format("Choix du mot corrigé     %s %s", ":", confirmWord), TypeLog.DEBUGGING);
 		Log.printLog(String.format("Rappel du choix effectué %s %s", ":", confirmWord), TypeLog.DEBUGGING);
+		Utilities.waitEntry();
 	}
 
 	public Language getLanguage() {

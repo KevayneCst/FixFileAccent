@@ -41,6 +41,20 @@ public class Utilities {
 			i++;
 		}
 	}
+	
+	public static void waitEntry() {
+		Log.printLog("Appuyez sur la touche \"ENTRÉE\" pour continuer...", TypeLog.ESSENTIAL);
+		while (true) {
+			System.out.print(PROMPT);
+			try {
+				if (INPUT_READER.readLine().isBlank()) {
+					return;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	/**
 	 * Méthode qui va demander de saisir le mot de confirmation (trouvable et
