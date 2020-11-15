@@ -64,9 +64,7 @@ public class Core {
 	private Map<String, List<Sentence>> readAndStoreLines(List<String> listPathFiles) {
 		Map<String, List<Sentence>> fileSentences = new HashMap<>();
 		Log.printLog("Étape 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers", TypeLog.INFO);
-		for (String s : listPathFiles) {
-			fileSentences.put(s, r.readFile(s));
-		}
+		listPathFiles.forEach(path -> fileSentences.put(path, r.readFile(path)));
 
 		return fileSentences;
 	}
@@ -91,14 +89,11 @@ public class Core {
 				numLigne++;
 			}
 		}
-
 		return fileSentencesCorrected;
 	}
 
 	private void writeCorrectionOnFiles(Map<String, List<Sentence>> fileSentencesCorrected) {
 		Log.printLog("Étape 3: Réécriture sur tous les fichiers qui ont eu besoin de correction", TypeLog.INFO);
-		for (Map.Entry<String, List<Sentence>> hm : fileSentencesCorrected.entrySet()) {
-			c.writeFile(hm.getKey(), hm.getValue());
-		}
+		fileSentencesCorrected.forEach((k, v) -> c.writeFile(k, v));
 	}
 }

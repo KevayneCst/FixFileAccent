@@ -61,14 +61,15 @@ public class Sentence {
 		Set<WordCorrupted> corruptedWords = new LinkedHashSet<>();
 		List<Integer> corruptedCharIndexe = findUnknowChar();
 
-		for (Integer i : corruptedCharIndexe) {
-			WordCorrupted w = extractWord(i);
+		corruptedCharIndexe.forEach(index -> {
+			WordCorrupted w = extractWord(index);
 			if (w == null) {
 				Log.printLog("Erreur inattendue lors de l'extraction, ne devrait jamais arriver...", TypeLog.CRITICAL);
 			} else {
 				corruptedWords.add(w);
 			}
-		}
+		});
+
 		List<WordCorrupted> convertedSet = new ArrayList<>();
 		convertedSet.addAll(corruptedWords);
 		return convertedSet;
