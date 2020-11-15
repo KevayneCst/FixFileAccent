@@ -62,8 +62,9 @@ public class Core {
 	}
 
 	private Map<String, List<Sentence>> readAndStoreLines(List<String> listPathFiles) {
-		Map<String, List<Sentence>> fileSentences = new HashMap<>();
 		Log.printLog("Étape 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers", TypeLog.INFO);
+
+		Map<String, List<Sentence>> fileSentences = new HashMap<>();
 		listPathFiles.forEach(path -> fileSentences.put(path, r.readFile(path)));
 
 		return fileSentences;

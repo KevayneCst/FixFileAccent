@@ -120,9 +120,10 @@ public class French extends Language {
 	 * @return <code>Word</code>
 	 */
 	private WordCorrupted tryCorrection(WordCorrupted w, List<Integer> unknowsCharIndexes) {
+		Log.printLog("Correction du mot \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
 		List<WordDictionnary> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
 		List<WordCorrupted> rightMatches = new ArrayList<>();
-		Log.printLog("Correction du mot \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
+		
 		if (potentialMatches != null) {
 			Log.printLog(potentialMatches.size() + " mots candidats pour la correction", TypeLog.DEBUGGING);
 			WordCorrupted result = computePotentialMatches(w, unknowsCharIndexes, potentialMatches, rightMatches);
