@@ -34,7 +34,8 @@ public class WordCorrupted extends Word {
 	 */
 	public List<Integer> findUnknowChar() {
 		List<Integer> list = new ArrayList<>();
-		for (int i = 0; i < super.getTheWord().length(); i++) { // TODO calculer la length avant la boucle
+		int length = super.getTheWord().length();
+		for (int i = 0; i < length; i++) {
 			if (super.getTheWord().charAt(i) == UNKNOWCHAR) {
 				list.add(i);
 			}
