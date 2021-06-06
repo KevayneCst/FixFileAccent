@@ -3,7 +3,7 @@ package core.grammar;
 /**
  * Classe utilitaire où je stock mes expressions régulières pour les retrouver
  * plus facilement, et factoriser le code.
- * 
+ *
  * @author Kévin Constantin
  *
  */
@@ -22,13 +22,13 @@ public class Regex {
 	}
 
 	public static boolean isPuncOrSpace(String theLine, int indexToCheck) {
-		int lengthTheLine = theLine.length();
-		String toCheck = theLine.charAt(indexToCheck) + "";
+		final int lengthTheLine = theLine.length();
+		final String toCheck = theLine.charAt(indexToCheck) + "";
 		if (toCheck.matches(REGEX_PUNCTUATION) || toCheck.matches(REGEX_SPACE)) {
 			if (toCheck.equals("-")) {
-				int indexNextChar = indexToCheck + 1;
+				final int indexNextChar = indexToCheck + 1;
 				if (indexNextChar <= lengthTheLine - 1) {
-					String nextChar = theLine.charAt(indexToCheck + 1) + "";
+					final String nextChar = theLine.charAt(indexToCheck + 1) + "";
 					if (nextChar.matches(REGEX_ONLY_LETTERS)) {
 						return false;
 					}

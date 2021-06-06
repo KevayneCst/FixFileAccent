@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 import core.grammar.Dictionnary;
-import core.grammar.Word;
 import core.grammar.WordDictionnary;
 import core.log.Log;
 import core.log.TypeLog;
@@ -15,7 +14,7 @@ import core.log.TypeLog;
  * Classe concrète étendant <code>Dictionnary</code>, elle indique notamment
  * l'emplacement du fichier dictionnaire, et implémente la façon de lire se
  * fichier.
- * 
+ *
  * @author Kévin Constantin
  *
  */
@@ -29,22 +28,22 @@ public class FrenchDictionnary extends Dictionnary {
 
 	@Override
 	public void fillDictionnary() {
-		long startTime = System.currentTimeMillis();
-		File fichier = new File(PATHFILEDICTIONNARY);
+		final long startTime = System.currentTimeMillis();
+		final File fichier = new File(PATHFILEDICTIONNARY);
 		try (BufferedReader br = new BufferedReader(new FileReader(fichier))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-				String before = line;
+				final String before = line;
 				line = line.trim();
 				if (!line.isEmpty()) {
-					WordDictionnary newEntry = new WordDictionnary(before);
+					final WordDictionnary newEntry = new WordDictionnary(before);
 					super.getRawDico().add(newEntry);
 					super.getDico().computeIfAbsent(before.length(), k -> new ArrayList<>()).add(newEntry);
 				}
 			}
 			Log.printLog("Lecture du dictionnaire \"" + PATHFILEDICTIONNARY + "\" en "
 					+ (System.currentTimeMillis() - startTime) + " ms", TypeLog.DEBUGGING);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Log.printLog("Erreur lors de la lecture du fichier: \"" + PATHFILEDICTIONNARY + "\"", TypeLog.CRITICAL);
 		}
 	}

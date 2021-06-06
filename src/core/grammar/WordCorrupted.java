@@ -5,21 +5,22 @@ import java.util.List;
 
 public class WordCorrupted extends Word {
 
-	private int indexBeginInSentence;
-	private int indexEndInSentence;
+	private final int indexBeginInSentence;
+	private final int indexEndInSentence;
 
 	/**
 	 * /!\ Constructeur pour les tests /!\
+	 *
 	 * @param s
 	 * @param indexBeginInSentence
 	 * @param indexEndInSentence
 	 */
 	public WordCorrupted(String s) {
 		super(s);
-		this.indexBeginInSentence = -1;
-		this.indexEndInSentence = -1;
+		indexBeginInSentence = -1;
+		indexEndInSentence = -1;
 	}
-	
+
 	public WordCorrupted(String s, int indexBeginInSentence, int indexEndInSentence) {
 		super(s);
 		this.indexBeginInSentence = indexBeginInSentence;
@@ -29,12 +30,12 @@ public class WordCorrupted extends Word {
 	/**
 	 * Trouve les caractères correspondant à un symbole inconnu, et range dans une
 	 * liste d'indice du caractère inconnu
-	 * 
+	 *
 	 * @return la liste d'indices de caractères inconnus
 	 */
 	public List<Integer> findUnknowChar() {
-		List<Integer> list = new ArrayList<>();
-		int length = super.getTheWord().length();
+		final List<Integer> list = new ArrayList<>();
+		final int length = super.getTheWord().length();
 		for (int i = 0; i < length; i++) {
 			if (super.getTheWord().charAt(i) == UNKNOWCHAR) {
 				list.add(i);
@@ -42,7 +43,7 @@ public class WordCorrupted extends Word {
 		}
 		return list;
 	}
-	
+
 	public WordCorrupted convert(WordDictionnary wd) {
 		return new WordCorrupted(wd.getTheWord(), indexBeginInSentence, indexEndInSentence);
 	}
@@ -69,16 +70,15 @@ public class WordCorrupted extends Word {
 		if (!super.equals(obj)) {
 			return false;
 		} else if (obj instanceof WordCorrupted) {
-			WordCorrupted other = (WordCorrupted) obj;
-			return this.indexBeginInSentence == other.indexBeginInSentence
-					&& this.indexEndInSentence == other.indexEndInSentence;
+			final WordCorrupted other = (WordCorrupted) obj;
+			return indexBeginInSentence == other.indexBeginInSentence && indexEndInSentence == other.indexEndInSentence;
 		}
 		return false;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		builder.append("WordCorrupted [");
 		builder.append(super.toString());
 		builder.append(", indexBeginInSentence=");

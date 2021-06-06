@@ -11,7 +11,7 @@ import core.grammar.Sentence;
 /**
  * Classe utilitaire ayant pour but de lire un fichier dont on donnera le chemin
  * d'accès, afin de créer des phrases exploitables pour le reste des classes.
- * 
+ *
  * @author Kévin Constantin
  *
  */
@@ -22,14 +22,14 @@ public class Reader {
 	}
 
 	public List<Sentence> readFile(String pathFile) {
-		List<Sentence> list = new ArrayList<>();
-		File fichier = new File(pathFile);
+		final List<Sentence> list = new ArrayList<>();
+		final File fichier = new File(pathFile);
 		try (BufferedReader br = new BufferedReader(new FileReader(fichier))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				list.add(new Sentence(line));
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			System.out.println("Erreur lors de la lecture du fichier: \"" + pathFile + "\":");
 			e.printStackTrace();
 		}

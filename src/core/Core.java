@@ -18,17 +18,17 @@ import core.write.Creater;
 /**
  * Classe contenant l'algorithme et la logique principale nécessaire au bon
  * fonctionnement de l'application.
- * 
+ *
  * @author Kévin Constantin
  *
  */
 public class Core {
 
 	public static final LevelLog level = Config.getInstance().getLevelLog();
-	private Creater c;
-	private Reader r;
-	private Finder f;
-	private Language lang;
+	private final Creater c;
+	private final Reader r;
+	private final Finder f;
+	private final Language lang;
 
 	public Core(String pathDirectory) {
 		c = new Creater();
@@ -45,9 +45,9 @@ public class Core {
 	public void start() {
 		Config.getInstance().showProperties();
 
-		List<String> listPathFiles = f.getPathFiles();
-		Map<String, List<Sentence>> fileSentences = readAndStoreLines(listPathFiles);
-		Map<String, List<Sentence>> fileSentencesCorrected = correctFiles(fileSentences);
+		final List<String> listPathFiles = f.getPathFiles();
+		final Map<String, List<Sentence>> fileSentences = readAndStoreLines(listPathFiles);
+		final Map<String, List<Sentence>> fileSentencesCorrected = correctFiles(fileSentences);
 
 		if (Config.getInstance().isConfirmFiles()) {
 			Utilities.showFiles(listPathFiles);
@@ -64,20 +64,20 @@ public class Core {
 	private Map<String, List<Sentence>> readAndStoreLines(List<String> listPathFiles) {
 		Log.printLog("Étape 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers", TypeLog.INFO);
 
-		Map<String, List<Sentence>> fileSentences = new HashMap<>();
+		final Map<String, List<Sentence>> fileSentences = new HashMap<>();
 		listPathFiles.forEach(path -> fileSentences.put(path, r.readFile(path)));
 
 		return fileSentences;
 	}
 
 	private Map<String, List<Sentence>> correctFiles(Map<String, List<Sentence>> fileSentences) {
-		Map<String, List<Sentence>> fileSentencesCorrected = new HashMap<>();
+		final Map<String, List<Sentence>> fileSentencesCorrected = new HashMap<>();
 		Log.printLog("Étape 2: Corriger toutes les lignes qui ont besoin d'être corrigé pour tous les fichiers",
 				TypeLog.INFO);
-		for (Map.Entry<String, List<Sentence>> hm : fileSentences.entrySet()) {
+		for (final Map.Entry<String, List<Sentence>> hm : fileSentences.entrySet()) {
 			int numLigne = 1;
 			Log.printLog("============ Traitement du fichier: " + hm.getKey() + " ============", TypeLog.DEBUGGING);
-			for (Sentence sentence : hm.getValue()) {
+			for (final Sentence sentence : hm.getValue()) {
 				if (sentence.needCorrection()) {
 					Log.printLog("Ligne " + numLigne + ", la phrase \"" + sentence.getTheLine()
 							+ "\" a besoin d'être corrigée", TypeLog.DEBUGGING);

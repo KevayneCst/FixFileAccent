@@ -13,7 +13,7 @@ import core.log.TypeLog;
  * considéré comme une phrase (qu'elle contienne uniquement du code ou pas) et
  * facilitant la correction de cette phrase (si cela s'avère être nécessaire)
  * pour la classe <code>Word</code>.
- * 
+ *
  * @author Kévin Constantin
  *
  */
@@ -22,17 +22,17 @@ public class Sentence {
 	private String theLine;
 
 	public Sentence(String s) {
-		this.theLine = s;
+		theLine = s;
 	}
 
 	/**
 	 * Remplace par l'ensemble des mots de la liste dans <code>theLine</code>.
-	 * 
+	 *
 	 * @see replaceWord(Word w)
 	 * @param listOfWords
 	 */
 	public void replaceWords(List<WordCorrupted> listOfWords) {
-		for (WordCorrupted w : listOfWords) {
+		for (final WordCorrupted w : listOfWords) {
 			replaceWord(w);
 		}
 	}
@@ -42,11 +42,11 @@ public class Sentence {
 	 * <code>w.getIndexBeginInSentence()</code> à
 	 * <code>w.getIndexEndInSentence()</code>, en remplaçant par
 	 * <code>w.getTheWords()</code>.
-	 * 
+	 *
 	 * @param w
 	 */
 	private void replaceWord(WordCorrupted w) {
-		StringBuilder sb = new StringBuilder(theLine);
+		final StringBuilder sb = new StringBuilder(theLine);
 		sb.replace(w.getIndexBeginInSentence(), w.getIndexEndInSentence(), w.getTheWord());
 		theLine = sb.toString();
 	}
@@ -54,15 +54,15 @@ public class Sentence {
 	/**
 	 * A partir de <code>theLine</code>, va renvoyer la liste des mots qui sont
 	 * corrompus en extryant précisémment le mot sans déborder sur d'autre mots.
-	 * 
+	 *
 	 * @return
 	 */
 	public List<WordCorrupted> extractCorruptedWords() {
-		Set<WordCorrupted> corruptedWords = new LinkedHashSet<>();
-		List<Integer> corruptedCharIndexe = findUnknowChar();
+		final Set<WordCorrupted> corruptedWords = new LinkedHashSet<>();
+		final List<Integer> corruptedCharIndexe = findUnknowChar();
 
 		corruptedCharIndexe.forEach(index -> {
-			WordCorrupted w = extractWord(index);
+			final WordCorrupted w = extractWord(index);
 			if (w == null) {
 				Log.printLog("Erreur inattendue lors de l'extraction, ne devrait jamais arriver...", TypeLog.CRITICAL);
 			} else {
@@ -70,7 +70,7 @@ public class Sentence {
 			}
 		});
 
-		List<WordCorrupted> convertedSet = new ArrayList<>();
+		final List<WordCorrupted> convertedSet = new ArrayList<>();
 		convertedSet.addAll(corruptedWords);
 		return convertedSet;
 	}
@@ -78,14 +78,14 @@ public class Sentence {
 	/**
 	 * Fonction qui va rechercher et extraire, à partir d'un indice de caractère
 	 * corrompu, le mot dans lequel se trouve se caractère corrompu.
-	 * 
+	 *
 	 * @param indexOfCorruptedChars
 	 * @return
 	 */
 	private WordCorrupted extractWord(int indexOfCorruptedChars) {
-		int lengthTheLine = theLine.length();
-		int lastIndexLeftSide = indexOfCorruptedChars - 1;
-		int beginIndexRightSide = indexOfCorruptedChars + 1;
+		final int lengthTheLine = theLine.length();
+		final int lastIndexLeftSide = indexOfCorruptedChars - 1;
+		final int beginIndexRightSide = indexOfCorruptedChars + 1;
 
 		int indexToCutBegin;
 		int indexToCutEnd;
@@ -105,15 +105,15 @@ public class Sentence {
 		} else {
 			indexToCutEnd = beginIndexRightSide + countRightSide(beginIndexRightSide, lengthTheLine);
 		}
-		String extracted = theLine.substring(indexToCutBegin, indexToCutEnd);
+		final String extracted = theLine.substring(indexToCutBegin, indexToCutEnd);
 		return new WordCorrupted(extracted, indexToCutBegin, indexToCutEnd);
 	}
 
 	private int countLeftSide(int indexOfCorruptedChars) {
 		int indexToCutBegin;
-		StringBuilder sb = new StringBuilder(theLine.substring(0, indexOfCorruptedChars)).reverse();
+		final StringBuilder sb = new StringBuilder(theLine.substring(0, indexOfCorruptedChars)).reverse();
 		int count = 0;
-		int lengthSb = sb.length();
+		final int lengthSb = sb.length();
 		for (int i = 0; i < lengthSb; i++) {
 			if (Regex.isPuncOrSpace(sb.toString(), i)) {
 				break;
@@ -125,9 +125,9 @@ public class Sentence {
 	}
 
 	private int countRightSide(int begin, int end) {
-		StringBuilder sb = new StringBuilder(theLine.substring(begin, end));
+		final StringBuilder sb = new StringBuilder(theLine.substring(begin, end));
 		int count = 0;
-		int lengthSb = sb.length();
+		final int lengthSb = sb.length();
 		for (int i = 0; i < lengthSb; i++) {
 			if (Regex.isPuncOrSpace(sb.toString(), i)) {
 				break;
@@ -139,7 +139,7 @@ public class Sentence {
 
 	/**
 	 * La phrase contient-elle des caractères inconnus ?
-	 * 
+	 *
 	 * @return <code>True</code> oui<br>
 	 *         <code>False</code> non
 	 */
@@ -149,12 +149,13 @@ public class Sentence {
 
 	/**
 	 * Compte le nombre de caractère inconnus dans la phrase
-	 * 
+	 *
 	 * @return <code>int</code>
 	 */
 	public int countUnknowChar() {
-		if (!needCorrection())
+		if (!needCorrection()) {
 			return 0;
+		}
 		int count = 0;
 		for (int i = 0; i < theLine.length(); i++) {
 			if (theLine.charAt(i) == Word.UNKNOWCHAR) {
@@ -167,11 +168,11 @@ public class Sentence {
 	/**
 	 * Trouve les caractères correspondant à un symbole inconnu, et range dans une
 	 * liste d'indice du caractère inconnu
-	 * 
+	 *
 	 * @return la liste d'indices de caractères inconnus
 	 */
 	public List<Integer> findUnknowChar() {
-		List<Integer> list = new ArrayList<>();
+		final List<Integer> list = new ArrayList<>();
 		for (int i = 0; i < theLine.length(); i++) {
 			if (theLine.charAt(i) == Word.UNKNOWCHAR) {
 				list.add(i);
@@ -188,15 +189,15 @@ public class Sentence {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((theLine == null) ? 0 : theLine.hashCode());
+		result = prime * result + (theLine == null ? 0 : theLine.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Sentence) {
-			Sentence other = (Sentence) obj;
-			return other.theLine.equals(this.theLine);
+			final Sentence other = (Sentence) obj;
+			return other.theLine.equals(theLine);
 		}
 		return false;
 	}

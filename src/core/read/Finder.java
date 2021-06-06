@@ -15,24 +15,24 @@ import core.log.TypeLog;
  * <code>Utilisateurs</code> le programme va fouiller l'ensemble du dossier et
  * donc risque de prendre beaucoup de temps selon la taille du dossier. <i>Soyez
  * judicieux dans le choix de votre dossier de départ</i>.
- * 
+ *
  * @author Kévin Constantin
  *
  */
 public class Finder {
 
-	private List<String> pathFiles;
+	private final List<String> pathFiles;
 
 	public Finder(String projectDirectory) {
-		this.pathFiles = new ArrayList<>();
-		File mainDir = new File(projectDirectory);
-		File[] files = mainDir.listFiles();
+		pathFiles = new ArrayList<>();
+		final File mainDir = new File(projectDirectory);
+		final File[] files = mainDir.listFiles();
 		Log.printLog("Recherche des fichiers .java dans le répertoire \"" + projectDirectory + "\"", TypeLog.DEBUGGING);
 		findFiles(files);
 	}
 
 	public void findFiles(File[] files) {
-		for (File f : files) {
+		for (final File f : files) {
 			if (f.isFile()) {
 				if (f.getName().endsWith(".java")) {
 					pathFiles.add(f.getAbsolutePath());

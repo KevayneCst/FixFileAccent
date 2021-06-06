@@ -12,7 +12,7 @@ import core.Core;
 /**
  * Classe permettant de générer des logs dans un fichier et d'avoir un feedback
  * dans la console pour l'utilisateur
- * 
+ *
  * @author Kévin Constantin
  *
  */
@@ -27,18 +27,19 @@ public class Log {
 
 	/**
 	 * Écrit dans le fichier de log et la console le message passé en paramètre
-	 * 
+	 *
 	 * @param message Le message à afficher
 	 * @param tl      L
 	 */
 	public static void printLog(String message, TypeLog tl) {
 		if (!Core.level.equals(LevelLog.QUIET) || tl.isPriorityTypeLog()) {
 			try {
-				Date today = new Date();
-				SimpleDateFormat formater = new SimpleDateFormat("'['yyyy-MM-dd | HH:mm:ss:SSSS']'");
-				String callingClass = new Exception().getStackTrace()[0].getClassName();
-				String[] spliter = callingClass.split("[\\.]");
-				String finalMessage = formater.format(today) + " [" + spliter[1] + "|" + tl.toString() + "] " + message;
+				final Date today = new Date();
+				final SimpleDateFormat formater = new SimpleDateFormat("'['yyyy-MM-dd | HH:mm:ss:SSSS']'");
+				final String callingClass = new Exception().getStackTrace()[0].getClassName();
+				final String[] spliter = callingClass.split("[\\.]");
+				final String finalMessage = formater.format(today) + " [" + spliter[1] + "|" + tl.toString() + "] "
+						+ message;
 
 				writeOnNormalLog(finalMessage);
 				if (tl.equals(TypeLog.CRITICAL)) {
@@ -53,10 +54,10 @@ public class Log {
 					System.err.println(finalMessage);
 					writeOnErrorLog(finalMessage);
 				} else if (tl.equals(TypeLog.ESSENTIAL) || tl.equals(TypeLog.INFO)
-						|| (tl.equals(TypeLog.DEBUGGING) && Core.level.equals(LevelLog.DEBUG))) {
+						|| tl.equals(TypeLog.DEBUGGING) && Core.level.equals(LevelLog.DEBUG)) {
 					System.out.println(finalMessage);
 				}
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				System.out.println("Erreur d'interruption lors du sommeil du programme, aucune action n'est requise");
 				Thread.currentThread().interrupt();
 			}
@@ -70,7 +71,7 @@ public class Log {
 			pw.write(message);
 			pw.println();
 			pw.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			System.out.println(
 					"Erreur lors de la lecture du fichier de log, vérifiez que le fichier n'est pas manquant ou ouvert à l'emplacement suivant:\""
 							+ LOG_FILE.getAbsolutePath() + "\"");
@@ -84,7 +85,7 @@ public class Log {
 			pw.write(message);
 			pw.println();
 			pw.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			System.out.println(
 					"Erreur lors de la lecture du fichier de log d'erreurs, vérifiez que le fichier n'est pas manquant ou ouvert à l'emplacement suivant:\""
 							+ LOG_ERRORS_FILE.getAbsolutePath() + "\"");

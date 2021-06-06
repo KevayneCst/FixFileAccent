@@ -18,7 +18,7 @@ import core.tools.Utilities;
  * Classe concrète étendant <code>Language</code>, définissant les caractères
  * possédant des accents, et déduis les accents manquants grâce à son
  * dictionnaire.
- * 
+ *
  * @author ck802131
  *
  */
@@ -30,11 +30,12 @@ public class French extends Language {
 
 	@Override
 	public Sentence correctSentence(Sentence toCorrect) {
-		List<WordCorrupted> correctedWords = new ArrayList<>();
-		List<WordCorrupted> listWord = toCorrect.extractCorruptedWords();
-		int sizeCorruptedWords = listWord.size();
+		final List<WordCorrupted> correctedWords = new ArrayList<>();
+		final List<WordCorrupted> listWord = toCorrect.extractCorruptedWords();
+		final int sizeCorruptedWords = listWord.size();
 		if (sizeCorruptedWords == 0) {
-			Log.printLog("La phrase n'a pas besoin d'être corrigée: \""+toCorrect.getTheLine()+"\"", TypeLog.DEBUGGING);
+			Log.printLog("La phrase n'a pas besoin d'être corrigée: \"" + toCorrect.getTheLine() + "\"",
+					TypeLog.DEBUGGING);
 			return toCorrect;
 		} else if (sizeCorruptedWords == 1) {
 			Log.printLog("Correction de la phrase suivante[" + sizeCorruptedWords + " mot corrompu]: \""
@@ -43,16 +44,16 @@ public class French extends Language {
 			Log.printLog("Correction de la phrase suivante[" + sizeCorruptedWords + " mots corrompus]: \""
 					+ toCorrect.getTheLine() + "\"", TypeLog.DEBUGGING);
 		}
-		
+
 		for (int i = 0; i < sizeCorruptedWords; i++) {
-			WordCorrupted currentWord = listWord.get(i);
-			WordCorrupted correctedWord = matchWordWithDictionnary(currentWord);
+			final WordCorrupted currentWord = listWord.get(i);
+			final WordCorrupted correctedWord = matchWordWithDictionnary(currentWord);
 			correctedWords.add(correctedWord);
 			Log.printLog("Mots corrigés:" + Utilities.debugStringList(correctedWords), TypeLog.DEBUGGING);
 		}
 
 		toCorrect.replaceWords(correctedWords);
-		Log.printLog("Phrase corrigée :\""+toCorrect.getTheLine()+"\"", TypeLog.DEBUGGING);
+		Log.printLog("Phrase corrigée :\"" + toCorrect.getTheLine() + "\"", TypeLog.DEBUGGING);
 		return toCorrect;
 	}
 
@@ -74,7 +75,7 @@ public class French extends Language {
 	 * Je vais maintenant remplacer à l'indice de l'accent manquant de X, le
 	 * caractère se trouvant au même indice qu'un des mots de A, ici on va commencer
 	 * par "pièce":<br>
-	 * 
+	 *
 	 * "cr�er" n'a pas d'accent à l'indice 2. Je prends donc un mot de A, "pièce",
 	 * dont je vais prendre le deuxième indice (ici le caractère 'è', et je le
 	 * partage avec mon X, maintenant X = "crèer".<br>
@@ -84,27 +85,27 @@ public class French extends Language {
 	 * donc X = mot de A<br>
 	 * <br>
 	 * DONC le mot qu'on cherchait était "créer".
-	 * 
-	 * 
+	 *
+	 *
 	 * @param w Le mot corrompu et inconnu à corriger
 	 * @return <code>Word</code>
 	 */
 	@Override
 	public WordCorrupted matchWordWithDictionnary(WordCorrupted w) {
-		List<Integer> unknowsCharIndexes = w.findUnknowChar();
+		final List<Integer> unknowsCharIndexes = w.findUnknowChar();
 		if (unknowsCharIndexes.isEmpty()) {
 			Log.printLog("\"" + w.getTheWord() + "\" n'a pas besoin d'être corrigé, il n'aurait jamais dû arriver ici",
 					TypeLog.DEBUGGING);
 			return w;
 		} else {
-			Word potentialSavedWord = super.checkIfWordAlreadyCorrected(w);
+			final Word potentialSavedWord = super.checkIfWordAlreadyCorrected(w);
 			if (potentialSavedWord instanceof WordCorrupted) {
 				Log.printLog("Pas de correction en mémoire pour \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
 				return tryCorrection(w, unknowsCharIndexes);
 			} else {
 				Log.printLog("Une correction a été trouvé dans la mémoire pour \"" + w.getTheWord() + "\"",
 						TypeLog.DEBUGGING);
-				return w.convert((WordDictionnary)potentialSavedWord);
+				return w.convert((WordDictionnary) potentialSavedWord);
 			}
 		}
 	}
@@ -113,7 +114,7 @@ public class French extends Language {
 	 * Fonction qui va tenter de corriger <code>w</code> en recherchant les mots
 	 * candidats pour une correction, et qui pour chacun d'eux va vérifier s'ils le
 	 * sont vraiment dans <code>computePotentialMatches</code>.
-	 * 
+	 *
 	 * @param w                  Le mot corrompu à corriger
 	 * @param unknowsCharIndexes Liste d'indice du/des caractère(s) corrompu(s) de
 	 *                           <code>w</code>
@@ -121,19 +122,19 @@ public class French extends Language {
 	 */
 	private WordCorrupted tryCorrection(WordCorrupted w, List<Integer> unknowsCharIndexes) {
 		Log.printLog("Correction du mot \"" + w.getTheWord() + "\"", TypeLog.DEBUGGING);
-		List<WordDictionnary> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
-		List<WordCorrupted> rightMatches = new ArrayList<>();
-		
+		final List<WordDictionnary> potentialMatches = super.getDictionnary().getDico().get(w.getTheWord().length());
+		final List<WordCorrupted> rightMatches = new ArrayList<>();
+
 		if (potentialMatches != null) {
 			Log.printLog(potentialMatches.size() + " mots candidats pour la correction", TypeLog.DEBUGGING);
-			WordCorrupted result = computePotentialMatches(w, unknowsCharIndexes, potentialMatches, rightMatches);
+			final WordCorrupted result = computePotentialMatches(w, unknowsCharIndexes, potentialMatches, rightMatches);
 			if (result != null) {
 				return result;
 			} else {
 				if (!rightMatches.isEmpty()) {
-					WordCorrupted choosenWord = rightMatches.size() == 1 ? rightMatches.get(0)
+					final WordCorrupted choosenWord = rightMatches.size() == 1 ? rightMatches.get(0)
 							: Utilities.waitConfirmationWord(w, rightMatches);
-					WordDictionnary correction = super.getDictionnary().findWord(choosenWord.getTheWord());
+					final WordDictionnary correction = super.getDictionnary().findWord(choosenWord.getTheWord());
 					if (correction == null) {
 						Log.printLog("La correction du mot \"" + w.getTheWord()
 								+ "\" a généré une correction en un mot inéxistant lors de l'essai de correction => \""
@@ -158,7 +159,7 @@ public class French extends Language {
 	 * désactivé, va renvoyer le premier résultat positif (un type
 	 * <code>Word</code>), sinon va chercher tous les résultats positifs, les
 	 * stocker dans <code>rightMatches</code> et renvoyer <code>null</code>.
-	 * 
+	 *
 	 * @param w                  Le mot corrompu à corriger
 	 * @param unknowsCharIndexes Liste d'indice du/des caractère(s) corrompu(s) de
 	 *                           <code>w</code>
@@ -169,11 +170,11 @@ public class French extends Language {
 	 */
 	private WordCorrupted computePotentialMatches(WordCorrupted w, List<Integer> unknowsCharIndexes,
 			List<WordDictionnary> potentialMatches, List<WordCorrupted> rightMatches) {
-		for (WordDictionnary wd : potentialMatches) {
-			List<Character> unknowsChars = new ArrayList<>();
-			StringBuilder tmp = new StringBuilder(w.getTheWord());
-			for (int i : unknowsCharIndexes) {
-				char currentPotentialMatchChar = wd.getTheWord().charAt(i);
+		for (final WordDictionnary wd : potentialMatches) {
+			final List<Character> unknowsChars = new ArrayList<>();
+			final StringBuilder tmp = new StringBuilder(w.getTheWord());
+			for (final int i : unknowsCharIndexes) {
+				final char currentPotentialMatchChar = wd.getTheWord().charAt(i);
 				if ((currentPotentialMatchChar + "").matches(Regex.REGEX_ONLY_LETTERS)) {
 					break;
 				}
@@ -181,20 +182,20 @@ public class French extends Language {
 				unknowsChars.add(currentPotentialMatchChar);
 			}
 			if (tmp.toString().equalsIgnoreCase(wd.getTheWord())) {
-				StringBuilder sb = new StringBuilder(w.getTheWord());
+				final StringBuilder sb = new StringBuilder(w.getTheWord());
 				int indexListChars = 0;
-				for (Integer i : unknowsCharIndexes) {
+				for (final Integer i : unknowsCharIndexes) {
 					sb.setCharAt(i, unknowsChars.get(indexListChars));
 					indexListChars++;
 				}
-				WordCorrupted correctedWord = new WordCorrupted(sb.toString(), w.getIndexBeginInSentence(),
+				final WordCorrupted correctedWord = new WordCorrupted(sb.toString(), w.getIndexBeginInSentence(),
 						w.getIndexEndInSentence());
 				Log.printLog("Correspondance trouvé pour \"" + w.getTheWord() + "\" => \"" + correctedWord.getTheWord()
 						+ "\"", TypeLog.DEBUGGING);
 				if (Config.getInstance().isConfirmWord()) {
 					rightMatches.add(correctedWord);
 				} else {
-					WordDictionnary correction = super.getDictionnary().findWord(sb.toString());
+					final WordDictionnary correction = super.getDictionnary().findWord(sb.toString());
 					if (correction == null) {
 						Log.printLog("La correction du mot \"" + w.getTheWord()
 								+ "\" a généré une correction en un mot inéxistant lors de la vérifications des mots potentiels => \""
@@ -214,7 +215,7 @@ public class French extends Language {
 	 * <code>rememberChoice=TRUE</code>, sauvegarder la correction trouvé par
 	 * l'algorithme ou par l'utilisateur dans le cas où
 	 * <code>confirmWord=TRUE</code>.
-	 * 
+	 *
 	 * @param unknow    le mot corrompu
 	 * @param corrected la correction pour <code>unknow</code>
 	 */

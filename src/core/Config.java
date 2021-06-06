@@ -19,15 +19,15 @@ import core.tools.Utilities;
 /**
  * Classe Singleton, contient l'ensemble des informations stockés dans le
  * fichier <code>config.properties</code>, relatif au comportement du programme.
- * 
+ *
  * @author Kévin Constantin
  *
  */
 public class Config {
 
 	private static Config instance = new Config();
-	private File configFile;
-	private Properties props;
+	private final File configFile;
+	private final Properties props;
 
 	private String language;
 	private String levelLog;
@@ -38,16 +38,16 @@ public class Config {
 	private String rememberChoice;
 
 	private Config() {
-		this.configFile = new File("./config.properties");
-		this.props = new Properties();
+		configFile = new File("./config.properties");
+		props = new Properties();
 		loadProperties();
 	}
 
 	private void loadProperties() {
-		try(FileReader reader = new FileReader(configFile)) {
+		try (FileReader reader = new FileReader(configFile)) {
 			props.load(reader);
 			getProperties();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			Log.printLog(
 					"Erreur lors de la lecture du fichier de configuration, vérifiez l'existance du fichier à l'emplacement suivant:\""
 							+ configFile.getAbsolutePath() + "\"",
@@ -56,17 +56,17 @@ public class Config {
 	}
 
 	private void getProperties() {
-		this.language = getProperty("language", "FR");
-		this.levelLog = getProperty("levelLog", "QUIET");
-		this.applyCorrection = getProperty("applyCorrection", "TRUE");
-		this.confirmFiles = getProperty("confirmFiles", "TRUE");
-		this.confirmKey = getProperty("confirmKey", "CONFIRM");
-		this.confirmWord = getProperty("confirmWord", "TRUE");
-		this.rememberChoice = getProperty("rememberChoice", "TRUE");
+		language = getProperty("language", "FR");
+		levelLog = getProperty("levelLog", "QUIET");
+		applyCorrection = getProperty("applyCorrection", "TRUE");
+		confirmFiles = getProperty("confirmFiles", "TRUE");
+		confirmKey = getProperty("confirmKey", "CONFIRM");
+		confirmWord = getProperty("confirmWord", "TRUE");
+		rememberChoice = getProperty("rememberChoice", "TRUE");
 	}
 
 	private String getProperty(String key, String defaultValue) {
-		String value = props.getProperty(key, defaultValue);
+		final String value = props.getProperty(key, defaultValue);
 		return value.isBlank() ? defaultValue : value;
 	}
 
@@ -87,11 +87,11 @@ public class Config {
 	}
 
 	public Language getLanguage() {
-		LanguageFactory lf = new LanguageFactory();
+		final LanguageFactory lf = new LanguageFactory();
 		Language l;
 		try {
 			l = lf.createLanguage(language);
-		} catch (UnknowLanguageException e) {
+		} catch (final UnknowLanguageException e) {
 			l = new French();
 		}
 		return l;
@@ -100,7 +100,7 @@ public class Config {
 	public LevelLog getLevelLog() {
 		try {
 			return LevelLogFactory.createLevelLog(levelLog);
-		} catch (UnknowLevelLogException e) {
+		} catch (final UnknowLevelLogException e) {
 			return LevelLog.QUIET;
 		}
 	}
@@ -108,19 +108,19 @@ public class Config {
 	public boolean isApplyCorrection() {
 		return Boolean.valueOf(applyCorrection);
 	}
-	
+
 	public boolean isConfirmFiles() {
 		return Boolean.valueOf(confirmFiles);
 	}
-	
+
 	public String getConfirmationKey() {
 		return confirmKey;
 	}
-	
+
 	public boolean isConfirmWord() {
 		return Boolean.valueOf(confirmWord);
 	}
-	
+
 	public boolean isRememberChoice() {
 		return Boolean.valueOf(rememberChoice);
 	}

@@ -11,13 +11,13 @@ import core.grammar.french.French;
  * paramètre de la fonction <code>createLanguage(String s)</code>. Dans le
  * futur, un potentiel développeur pourra rajouter de nouveaux languages dans
  * cette classe.
- * 
+ *
  * @author Kévin Constantin
  *
  */
 public class LanguageFactory {
 
-	private List<Language> nonNativeLanguage = new ArrayList<>();
+	private final List<Language> nonNativeLanguage = new ArrayList<>();
 
 	public LanguageFactory() {
 		// Pattern Factory

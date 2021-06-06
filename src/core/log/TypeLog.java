@@ -54,7 +54,7 @@ public enum TypeLog {
 
 	/**
 	 * <code>WARNING</code> OU <code>SEVERE</code>
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isErrorTypeLog() {
@@ -63,7 +63,7 @@ public enum TypeLog {
 
 	/**
 	 * <code>ESSENTIAL</code> OU <code>CRITICAL</code>
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isPriorityTypeLog() {
