@@ -1,5 +1,11 @@
 package core.log;
 
+/**
+ * Les différents niveaux de log (plus ou moins bavard)
+ *
+ * @author Kévin Constantin
+ *
+ */
 public enum LevelLog {
 	DEBUG(0), NORMAL(1), QUIET(2);
 

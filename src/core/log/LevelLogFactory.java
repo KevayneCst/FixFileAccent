@@ -1,5 +1,11 @@
 package core.log;
 
+/**
+ * Pour créer un objet {@code LevelLog}
+ *
+ * @author Kévin Constantin
+ *
+ */
 public class LevelLogFactory {
 
 	private LevelLogFactory() {

@@ -19,7 +19,7 @@ import core.tools.Utilities;
  * possédant des accents, et déduis les accents manquants grâce à son
  * dictionnaire.
  *
- * @author ck802131
+ * @author Kévin Constantin
  *
  */
 public class French extends Language {

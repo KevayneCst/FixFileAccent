@@ -12,6 +12,13 @@ import core.grammar.WordCorrupted;
 import core.log.Log;
 import core.log.TypeLog;
 
+/**
+ * Classe contenant des méthodes utilitaires comme de l'affichage, saisie au
+ * clavier...
+ *
+ * @author Kévin Constantin
+ *
+ */
 public class Utilities {
 
 	private static final String PROMPT = "$>";

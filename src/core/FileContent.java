@@ -5,6 +5,12 @@ import java.util.List;
 
 import core.grammar.Sentence;
 
+/**
+ * Classe représentant un fichier et son contenu.
+ *
+ * @author Kévin Constantin
+ *
+ */
 public class FileContent {
 
 	private final String path;
