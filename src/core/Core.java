@@ -34,7 +34,9 @@ public class Core {
 		r = new Reader();
 		f = new Finder(pathDirectory);
 		lang = Config.getInstance().getLanguage();
-		c.makeSave(pathDirectory);
+		if (Config.getInstance().isCreateSave()) {
+			c.makeSave(pathDirectory);
+		}
 	}
 
 	public void start() {
