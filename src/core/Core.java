@@ -1,9 +1,8 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import core.grammar.Language;
 import core.grammar.Sentence;
@@ -38,16 +37,12 @@ public class Core {
 		c.makeSave(pathDirectory);
 	}
 
-	private void putIntoMap(Map<String, List<Sentence>> map, String key, Sentence toAdd) {
-		map.computeIfAbsent(key, k -> new ArrayList<>()).add(toAdd);
-	}
-
 	public void start() {
 		Config.getInstance().showProperties();
 
 		final List<String> listPathFiles = f.getPathFiles();
-		final Map<String, List<Sentence>> fileSentences = readAndStoreLines(listPathFiles);
-		final Map<String, List<Sentence>> fileSentencesCorrected = correctFiles(fileSentences);
+		final List<FileContent> fileSentences = readAndStoreLines(listPathFiles);
+		final List<FileContent> fileSentencesCorrected = correctFiles(fileSentences);
 
 		if (Config.getInstance().isConfirmFiles()) {
 			Utilities.showFiles(listPathFiles);
@@ -61,31 +56,33 @@ public class Core {
 		}
 	}
 
-	private Map<String, List<Sentence>> readAndStoreLines(List<String> listPathFiles) {
+	private List<FileContent> readAndStoreLines(List<String> listPathFiles) {
 		Log.printLog("Étape 1: Lecture et sauvegarde de toutes les lignes de tous les fichiers", TypeLog.INFO);
 
-		final Map<String, List<Sentence>> fileSentences = new HashMap<>();
-		listPathFiles.forEach(path -> fileSentences.put(path, r.readFile(path)));
+		final List<FileContent> fileSentences = new ArrayList<>();
+		listPathFiles.forEach(path -> fileSentences.add(new FileContent(path, r.readFile(path))));
 
 		return fileSentences;
 	}
 
-	private Map<String, List<Sentence>> correctFiles(Map<String, List<Sentence>> fileSentences) {
-		final Map<String, List<Sentence>> fileSentencesCorrected = new HashMap<>();
+	private List<FileContent> correctFiles(List<FileContent> fileSentences) {
+		final List<FileContent> fileSentencesCorrected = new ArrayList<>();
 		Log.printLog("Étape 2: Corriger toutes les lignes qui ont besoin d'être corrigé pour tous les fichiers",
 				TypeLog.INFO);
-		for (final Map.Entry<String, List<Sentence>> hm : fileSentences.entrySet()) {
+		for (final FileContent file : fileSentences) {
 			int numLigne = 1;
-			Log.printLog("============ Traitement du fichier: " + hm.getKey() + " ============", TypeLog.DEBUGGING);
-			for (final Sentence sentence : hm.getValue()) {
+			final String path = file.getPath();
+			final List<Sentence> sentences = file.getContent();
+			Log.printLog("============ Traitement du fichier: " + path + " ============", TypeLog.DEBUGGING);
+			for (final Sentence sentence : sentences) {
 				if (sentence.needCorrection()) {
 					Log.printLog("Ligne " + numLigne + ", la phrase \"" + sentence.getTheLine()
 							+ "\" a besoin d'être corrigée", TypeLog.DEBUGGING);
-					putIntoMap(fileSentencesCorrected, hm.getKey(), lang.correctSentence(sentence));
+					putIntoList(fileSentencesCorrected, path, lang.correctSentence(sentence));
 				} else {
 					Log.printLog("Ligne " + numLigne + ", la phrase \"" + sentence.getTheLine()
 							+ "\" n'a pas eu besoin d'être corrigée", TypeLog.DEBUGGING);
-					putIntoMap(fileSentencesCorrected, hm.getKey(), sentence);
+					putIntoList(fileSentencesCorrected, path, sentence);
 				}
 				numLigne++;
 			}
@@ -93,8 +90,19 @@ public class Core {
 		return fileSentencesCorrected;
 	}
 
-	private void writeCorrectionOnFiles(Map<String, List<Sentence>> fileSentencesCorrected) {
+	private void writeCorrectionOnFiles(List<FileContent> fileSentencesCorrected) {
 		Log.printLog("Étape 3: Réécriture sur tous les fichiers qui ont eu besoin de correction", TypeLog.INFO);
-		fileSentencesCorrected.forEach((k, v) -> c.writeFile(k, v));
+		fileSentencesCorrected.forEach(file -> c.writeFile(file.getPath(), file.getContent()));
+	}
+
+	private void putIntoList(List<FileContent> destination, String path, Sentence toAdd) {
+		final Optional<FileContent> entry = destination.stream().filter(x -> x.getPath().equals(path)).findFirst();
+		if (entry.isPresent()) {
+			entry.get().addSentence(toAdd);
+		} else {
+			final FileContent tmp = new FileContent(path);
+			tmp.addSentence(toAdd);
+			destination.add(tmp);
+		}
 	}
 }
