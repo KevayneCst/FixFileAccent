@@ -72,9 +72,8 @@ public class Utilities {
 	 */
 	public static void waitConfirmationKey() {
 		boolean confirmationGiven = false;
-		Log.printLog(
-				"Veuillez saisir le mot " + Config.getInstance().getConfirmationKey() + " pour commencer la correction",
-				TypeLog.ESSENTIAL);
+		Log.printLog("Veuillez saisir le mot \"" + Config.getInstance().getConfirmationKey()
+				+ "\" pour commencer la correction", TypeLog.ESSENTIAL);
 		while (!confirmationGiven) {
 			try {
 				System.out.print(PROMPT);

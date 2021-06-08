@@ -20,7 +20,7 @@ public class Launcher {
 					TypeLog.INFO);
 		} else {
 			System.err.println("Utilisation : java -jar FixFileAccent.jar [pathSrcDirectory]");
-			System.out.println("\nVoir le README.md pour toute information complémentaire.");
+			System.err.println("\nVoir le README.md pour toute information complémentaire.");
 		}
 	}
 }
