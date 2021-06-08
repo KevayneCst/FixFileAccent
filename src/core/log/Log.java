@@ -36,11 +36,7 @@ public class Log {
 			try {
 				final Date today = new Date();
 				final SimpleDateFormat formater = new SimpleDateFormat("'['yyyy-MM-dd | HH:mm:ss:SSSS']'");
-				final String callingClass = new Exception().getStackTrace()[0].getClassName();
-				final String[] spliter = callingClass.split("[\\.]");
-				final String finalMessage = formater.format(today) + " [" + spliter[1] + "|" + tl.toString() + "] "
-						+ message;
-
+				final String finalMessage = formater.format(today) + " [" + tl.toString() + "] " + message;
 				writeOnNormalLog(finalMessage);
 				if (tl.equals(TypeLog.CRITICAL)) {
 					System.err.println(
@@ -65,30 +61,24 @@ public class Log {
 	}
 
 	private static void writeOnNormalLog(String message) {
+		writeOnFile(LOG_FILE, message);
+	}
+
+	private static void writeOnErrorLog(String message) {
+		writeOnFile(LOG_ERRORS_FILE, message);
+	}
+
+	private static void writeOnFile(File file, String message) {
 		PrintWriter pw;
 		try {
-			pw = new PrintWriter(new FileWriter(LOG_FILE, true));
+			pw = new PrintWriter(new FileWriter(file, true));
 			pw.write(message);
 			pw.println();
 			pw.close();
 		} catch (final IOException e) {
 			System.out.println(
 					"Erreur lors de la lecture du fichier de log, vérifiez que le fichier n'est pas manquant ou ouvert à l'emplacement suivant:\""
-							+ LOG_FILE.getAbsolutePath() + "\"");
-		}
-	}
-
-	private static void writeOnErrorLog(String message) {
-		PrintWriter pw;
-		try {
-			pw = new PrintWriter(new FileWriter(LOG_ERRORS_FILE, true));
-			pw.write(message);
-			pw.println();
-			pw.close();
-		} catch (final IOException e) {
-			System.out.println(
-					"Erreur lors de la lecture du fichier de log d'erreurs, vérifiez que le fichier n'est pas manquant ou ouvert à l'emplacement suivant:\""
-							+ LOG_ERRORS_FILE.getAbsolutePath() + "\"");
+							+ file.getAbsolutePath() + "\"");
 		}
 	}
 }
