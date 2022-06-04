@@ -37,6 +37,7 @@ public class Config {
 	private String confirmKey;
 	private String confirmWord;
 	private String rememberChoice;
+	private String manualCorrection;
 
 	private Config() {
 		configFile = new File("./config.properties");
@@ -65,6 +66,7 @@ public class Config {
 		confirmKey = getProperty("confirmKey", "CONFIRM");
 		confirmWord = getProperty("confirmWord", "TRUE");
 		rememberChoice = getProperty("rememberChoice", "TRUE");
+		manualCorrection = getProperty("manualCorrection", "TRUE");
 	}
 
 	private String getProperty(String key, String defaultValue) {
@@ -78,14 +80,15 @@ public class Config {
 
 	public void showProperties() {
 		Log.printLog("====== Paramètres de configuration ======", TypeLog.DEBUGGING);
-		Log.printLog(String.format("Langage utilisé            %s %s", ":", language), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Niveau de log              %s %s", ":", levelLog), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Création d'une sauvegarde  %s %s", ":", createSave), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Correction activée         %s %s", ":", applyCorrection), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Confirmation activée       %s %s", ":", confirmFiles), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Mot de confirmation        %s %s", ":", confirmKey), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Choix du mot corrigé       %s %s", ":", confirmWord), TypeLog.DEBUGGING);
-		Log.printLog(String.format("Rappel du choix effectué   %s %s", ":", confirmWord), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Langage utilisé                      : %s", language), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Niveau de log                        : %s", levelLog), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Création d'une sauvegarde            : %s", createSave), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Correction activée                   : %s", applyCorrection), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Confirmation activée                 : %s", confirmFiles), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Mot de confirmation                  : %s", confirmKey), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Choix du mot corrigé                 : %s", confirmWord), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Rappel du choix effectué             : %s", rememberChoice), TypeLog.DEBUGGING);
+		Log.printLog(String.format("Correction manuelle mot introuvable  : %s", manualCorrection), TypeLog.DEBUGGING);
 		Utilities.waitEntry();
 	}
 
@@ -130,5 +133,9 @@ public class Config {
 
 	public boolean isRememberChoice() {
 		return Boolean.valueOf(rememberChoice);
+	}
+
+	public boolean isManualCorrection() {
+		return Boolean.valueOf(manualCorrection);
 	}
 }

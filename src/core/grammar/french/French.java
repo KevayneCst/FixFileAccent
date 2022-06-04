@@ -146,6 +146,14 @@ public class French extends Language {
 				}
 			}
 		}
+		if (Config.getInstance().isManualCorrection()) {
+			final WordCorrupted result = Utilities.manualCorrection(w);
+			if (result != null) {
+				saveCorrection(w, new WordDictionnary(result.getTheWord()));
+				return result;
+			}
+			return w;
+		}
 		Log.printLog("Impossible de trouver une correspondance dans le dictionnaire pour \"" + w.getTheWord() + "\"",
 				TypeLog.WARNING);
 		return w;
@@ -213,8 +221,8 @@ public class French extends Language {
 	/**
 	 * Méthode qui va, si dans <code>config.properties</code>, l'attribut
 	 * <code>rememberChoice=TRUE</code>, sauvegarder la correction trouvé par
-	 * l'algorithme ou par l'utilisateur dans le cas où
-	 * <code>confirmWord=TRUE</code>.
+	 * l'algorithme ou par l'utilisateur (dans le cas où
+	 * <code>confirmWord=TRUE</code> ou <code>manualCorrection=TRUE</code>).
 	 *
 	 * @param unknow    le mot corrompu
 	 * @param corrected la correction pour <code>unknow</code>

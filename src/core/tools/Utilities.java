@@ -142,6 +142,21 @@ public class Utilities {
 		}
 	}
 
+	public static WordCorrupted manualCorrection(WordCorrupted w) {
+		Log.printLog("Correction manuelle pour le mot \"" + w.getTheWord()
+				+ "\", si vous ne savez pas, appuyez sur la touche \"ENTRÉE\" sans rien saisir au clavier avant",
+				TypeLog.ESSENTIAL);
+		System.out.print(PROMPT);
+		try {
+			final String readedString = INPUT_READER.readLine();
+			return readedString.isBlank() ? null
+					: new WordCorrupted(readedString, w.getIndexBeginInSentence(), w.getIndexEndInSentence());
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static String debugStringList(List<WordCorrupted> listWord) {
 		final StringBuilder sb = new StringBuilder();
 		for (final Word w : listWord) {
